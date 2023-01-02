@@ -61,7 +61,7 @@ class Client:
             final_queries = []
             tmp = []
             for q in queries:
-                if q in ["get", "put"]:
+                if q in ["get", "put", "roleupdate"]:
                     if len(tmp) != 0:
                         final_queries.append(tmp)
                         tmp.clear()
@@ -126,7 +126,7 @@ def argumentParser():
     if data["interactive"]:
         starting = 3
     for i in range(starting, len(args)):
-        if args[i] in ["get", "put"]:
+        if args[i] in ["get", "put", "roleupdate"]:
             # If tmp not empty
             if len(tmp) != 0:
                 data["queries"].append(tmp)
