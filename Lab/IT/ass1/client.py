@@ -142,6 +142,10 @@ def argumentParser():
 if __name__ == "__main__":
     data = argumentParser()
     client = Client(data["host"], data["port"], data["interactive"])
-    client.queries = data["queries"]
-    client.startProcess()
-    client.close()
+    try:
+        client.queries = data["queries"]
+        client.startProcess()
+        client.close()
+    except KeyboardInterrupt:
+        print("Client shutdown !")
+        client.close()
