@@ -98,6 +98,7 @@ class Server:
         try:
             x =  self.keystore[key]
             # Verify manager
+            self.restoreUserData()
             if self.userdata[username][1] == "manager":
                 return x[0]
             # Guest user
@@ -107,13 +108,14 @@ class Server:
                 return ""
         except:
             return ""
+        
 
     def close(self):
         self.socket.close()
 
 
 if __name__ == "__main__":
-    server = Server("127.0.0.1", 5000)
+    server = Server("127.0.0.1", 6000)
     try:
         server.listenToConnections()
     except KeyboardInterrupt:
