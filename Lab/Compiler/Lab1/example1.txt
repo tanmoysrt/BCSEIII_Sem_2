@@ -1,0 +1,3 @@
+I have some integer numbers -> 2, 34, 56, 67
+I have some floatig point numbers -> 2.3, 34.5, 56.7, 67.8
+I have some mixed numbers -> 2.3, 34, 56.7, 67

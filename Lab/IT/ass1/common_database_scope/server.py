@@ -83,15 +83,6 @@ class Server:
                             value = query.split("\t")[2]
                             # Put value to store
                             self.putValue(key, value, username)
-                        elif query.startswith("roleupdate"):
-                            requested_username = query.split("\t")[1]
-                            requested_roll = query.split("\t")[2]
-                            # Update role of other users by manager
-                            status = self.updateRole(username, requested_username, requested_roll)
-                            if status:
-                                returnval = returnval + "role updated\n"
-                            else:
-                                returnval = returnval + "role update failed\n"
 
                     returnval = returnval +"--END--\n"
                     conn.sendall(returnval.encode())
@@ -100,16 +91,6 @@ class Server:
         # Close the connection
         conn.close()
 
-    def updateRole(self, approver_username, requested_username, new_roll):
-        self.restoreUserData()
-        if self.userdata[approver_username][1] == "manager":
-            if requested_username not in self.userdata: return False
-            self.userdata[requested_username][1] = new_roll
-            self.storeUserData()
-            return True
-        else:
-            return False
-
     def putValue(self, key, value, username):
         self.keystore[key] = [value, username]
     
@@ -117,6 +98,7 @@ class Server:
         try:
             x =  self.keystore[key]
             # Verify manager
+            self.restoreUserData()
             if self.userdata[username][1] == "manager":
                 return x[0]
             # Guest user
@@ -126,13 +108,14 @@ class Server:
                 return ""
         except:
             return ""
+        
 
     def close(self):
         self.socket.close()
 
 
 if __name__ == "__main__":
-    server = Server("127.0.0.1", 7000)
+    server = Server("127.0.0.1", 6000)
     try:
         server.listenToConnections()
     except KeyboardInterrupt:

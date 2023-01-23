@@ -126,7 +126,7 @@ def argumentParser():
     if data["interactive"]:
         starting = 3
     for i in range(starting, len(args)):
-        if args[i] in ["get", "put", "getall"]:
+        if args[i] in ["get", "put"]:
             # If tmp not empty
             if len(tmp) != 0:
                 data["queries"].append(tmp)

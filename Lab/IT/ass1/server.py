@@ -72,7 +72,13 @@ class Server:
                     queries = data.split("\n")
                     returnval = ""
                     for query in queries:
-                        if query.startswith("get"):
+                        if query.startswith("getall"):
+                            key = query.split("\t")[1]
+                            # Fetch  value
+                            value = self.getAllValues(key, username)
+                            returnval = value + "\n"
+
+                        elif query.startswith("get"):
                             key = query.split("\t")[1]
                             # Fetch value from store
                             value = self.getValue(key, username) + "\n"
@@ -92,22 +98,40 @@ class Server:
         conn.close()
 
     def putValue(self, key, value, username):
-        self.keystore[key] = [value, username]
+        if key not in self.keystore:
+            self.keystore[key] = []
+
+        found = False
+        for entry in self.keystore[key]:
+            if entry[1] == username:
+                entry[0] = value
+                found = True
+        if not found:
+            self.keystore[key].append([value, username])
     
     def getValue(self, key, username):
         try:
-            x =  self.keystore[key]
             # Verify manager
             self.restoreUserData()
-            if self.userdata[username][1] == "manager":
-                return x[0]
+            # if self.userdata[username][1] == "manager":
+            #     return x[0]
             # Guest user
-            if x[1] == username:
-                return x[0]
+            for entry  in self.keystore[key]:
+                if entry[1] == username:
+                    return entry[0]
             else:
                 return ""
         except:
             return ""
+
+    def getAllValues(self, key, username):
+        self.restoreUserData()
+        if self.userdata[username][1] == "manager":
+            if key in self.keystore:
+                return json.dumps(self.keystore[key])
+            else:
+                return json.dumps([])
+        return ""
         
 
     def close(self):
@@ -115,7 +139,7 @@ class Server:
 
 
 if __name__ == "__main__":
-    server = Server("127.0.0.1", 6000)
+    server = Server("127.0.0.1", 5000)
     try:
         server.listenToConnections()
     except KeyboardInterrupt:
