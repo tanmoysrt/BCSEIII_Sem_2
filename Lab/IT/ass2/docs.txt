@@ -1,0 +1,6 @@
+- /auth/login - login page
+- /auth/register - register page
+- /<username> - list all repostories
+- /<username>/<repository> - list all details
+
+Private / Public repo facility
