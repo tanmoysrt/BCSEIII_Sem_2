@@ -3,7 +3,7 @@ const prisma = require("../db").getInstance();
 
 // login page
 router.get("/login", (req, res) => {
-
+    res.render("login");
 })
 
 // Handle login submission
@@ -19,7 +19,7 @@ router.get("/logout", (req, res) => {
 
 // Registration page
 router.get("/register", (req, res) => {
-
+    res.render("register");
 })
 
 // Handle registration

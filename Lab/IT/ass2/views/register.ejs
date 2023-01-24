@@ -1,0 +1,41 @@
+<%- include("partials/header.ejs") %> 
+
+<div class="flex flex-col justify-center items-center h-[100vh]">
+    <img src="/logo.png" class="h-16" />
+    <div class="w-5/6 md:w-1/6 mt-[30px] md:mt-[50px]">
+        <form method="post">
+            <label class="block mt-4">
+                <span class="text-gray-700">Enter your full name</span>
+                <input
+                    type="text"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    placeholder="Your full name"
+                    required
+                />
+            </label>
+            <label class="block mt-6">
+                <span class="text-gray-700">Enter an username</span>
+                <input
+                    type="text"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    placeholder="Your username"
+                    required
+                />
+            </label>
+            <label class="block mt-6">
+                <span class="text-gray-700">Enter password</span>
+                <input
+                    type="password"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    placeholder="Your password"
+                    required
+                />
+            </label>
+            <button type="submit" class="inline-block w-full mt-6 px-6 py-2.5 bg-teal-600 text-white font-medium text-base leading-tight uppercase shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out rounded-md text-center">Login Now</button>
+        </form>
+    </div>
+</div>
+
+
+
+<%- include("partials/footer.ejs") %> 

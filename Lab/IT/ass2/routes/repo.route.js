@@ -3,7 +3,7 @@ const prisma = require("../db").getInstance();
 
 // Show repo details
 router.get("/", (req, res) => {
-
+    res.render("repo");
 })
 
 // Handle new content submission (POST)

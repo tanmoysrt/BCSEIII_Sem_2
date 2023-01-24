@@ -3,7 +3,7 @@ const prisma = require("../db").getInstance();
 
 // Send list of repo available in profile
 router.get("/", async (req, res) => {
-
+    res.render("repo-list");
 })
 
 // Register new repo

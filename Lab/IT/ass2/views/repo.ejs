@@ -1,0 +1,28 @@
+<%- include("partials/header.ejs") %> 
+
+<form action="post">
+    <input type="hidden" name="action" value="make_private" />
+    <button type="submit">Make it private</button>
+</form>
+
+</br>
+<form action="post">
+    <input type="hidden" name="action" value="make_public" />
+    <button type="submit">Make it public</button>
+</form>
+
+</br>
+
+<form action="post">
+    <input type="hidden" name="action" value="submit_content" />
+    <input type="radio" id="image" name="content_type" value="image">
+    <label for="image">Image</label><br>
+    <input type="radio" id="text" name="content_type" value="text">
+    <label for="text">Text</label><br>
+    <input type="text" name="text_content"/><br>
+    <input type="file" name="image_content" /><br>
+    <button type="submit">Submit</button>
+</form>
+
+
+<%- include("partials/footer.ejs") %> 
