@@ -10,6 +10,7 @@ const app = express();
 // Config
 app.disable('x-powered-by')
 app.set('view engine', 'ejs');
+app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }));
 
 // Route
