@@ -2,7 +2,16 @@
 module.exports = {
   content: ["./views/**/*.ejs"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        brand: "#50d0ba",
+      },
+      fontFamily: {
+        sans: ["Poppins", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
+        courgette: ["Courgette", "cursive"],
+      },
+    },
   },
   plugins: [
     require('@tailwindcss/forms')({
