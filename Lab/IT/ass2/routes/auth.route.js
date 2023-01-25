@@ -58,6 +58,7 @@ router.post("/login", async (req, res) => {
     // Set cookie
     res.cookie("token", generatedToken, {
         httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
     });
     // Redirect to home
     res.redirect("/");
