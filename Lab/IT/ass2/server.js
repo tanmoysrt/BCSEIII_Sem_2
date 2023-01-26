@@ -7,17 +7,29 @@ const DEBUG = parseInt(process.env.DEBUG);
 const express = require('express');
 const app = express();
 
+// Cookie parser
+var cookieParser = require('cookie-parser');
+
 // Config
 app.disable('x-powered-by')
 app.set('view engine', 'ejs');
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+
+
+
+// Middleware
+const {AuthMiddleware} = require("./middleware");
+
+app.use(AuthMiddleware.resolveUser);
 
 // Route
-app.use("", require("./routes/home.route"));
 app.use("/auth", require("./routes/auth.route"));
-app.use("/:username", require("./routes/user.route"));
-app.use("/:username/:reponame", require("./routes/repo.route"));
+app.use("", require("./routes/user.route"));
+app.use("", require("./routes/repo.route"));
+app.use("", AuthMiddleware.redirectLoggedInUser, require("./routes/home.route"));
 
 
 // Global error handler

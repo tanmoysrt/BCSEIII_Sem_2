@@ -23,13 +23,13 @@ class AuthMiddleware {
      * @param {NextFunction} next 
      */
     static async resolveUser(req, res, next) {
-        if (!req.headers.authorization || JWT.verify(req.headers.authorization) == false) {
+        if (!req.cookies.token || JWT.verify(req.cookies.token) == false) {
             req.is_authenticated = false;
-            req.user = undefined;
+            req.user = null;
         }else{
             req.is_authenticated = true;
             const [_, content] = JWT.getContent(req.headers.authorization);
-            req.user = await prisma.user.findUnique({
+            req.user = await prisma.user.findFirst({
                 where: {
                     username: content.username
                 },
@@ -39,8 +39,36 @@ class AuthMiddleware {
                     username: true
                 }
             })
+            if(req.user == null) req.is_authenticated = false;
+        }
+        next();
+    }
+
+    /**
+     * @param {Request} req 
+     * @param {Response} res 
+     * @param {NextFunction} next 
+     */
+    static redirectLoggedInUser(req, res, next) {
+        if (req.is_authenticated) {
+            res.redirect(`/${req.user.username}`);
+        }else{
+            next();
+        }
+    }
+
+    /**
+     * @param {Request} req 
+     * @param {Response} res 
+     * @param {NextFunction} next 
+     */
+    static loginRequired(req, res, next) {
+        if (req.is_authenticated) {
+            next();
+        }else{
+            res.redirect("/auth/login");
         }
     }
 }
 
-module.exports = AuthMiddleware;
+module.exports = {AuthMiddleware};

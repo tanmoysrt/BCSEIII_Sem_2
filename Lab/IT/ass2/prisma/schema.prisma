@@ -19,7 +19,6 @@ model User {
 model Repository {
   id          Int       @id @default(autoincrement())
   name        String    @unique
-  description String
   isPrivate   Boolean
   user        User      @relation(fields: [userId], references: [id])
   userId      Int
