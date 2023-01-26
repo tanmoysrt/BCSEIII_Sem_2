@@ -8,7 +8,7 @@ router.get("/:username", async (req, res) => {
     // Show private repo
     let isPrivate = false;
     if(req.is_authenticated){
-        if(req.user.username === username) isPrivate = false;
+        if(req.user.username === username) isPrivate = true;
     }
     // Fetch all repo list
     const repoList = await prisma.repository.findMany({

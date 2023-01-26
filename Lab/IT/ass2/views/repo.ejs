@@ -1,19 +1,19 @@
 <%- include("partials/header.ejs") %> 
 
-<form action="post">
+<form method="post">
     <input type="hidden" name="action" value="make_private" />
     <button type="submit">Make it private</button>
 </form>
 
 </br>
-<form action="post">
+<form method="post">
     <input type="hidden" name="action" value="make_public" />
     <button type="submit">Make it public</button>
 </form>
 
 </br>
 
-<form action="post">
+<form method="post" enctype="multipart/form-data">
     <input type="hidden" name="action" value="submit_content" />
     <input type="radio" id="image" name="content_type" value="image">
     <label for="image">Image</label><br>

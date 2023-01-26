@@ -11,6 +11,7 @@ const app = express();
 var cookieParser = require('cookie-parser');
 
 // Config
+global.__basedir = __dirname;
 app.disable('x-powered-by')
 app.set('view engine', 'ejs');
 app.use(express.static('public'))
