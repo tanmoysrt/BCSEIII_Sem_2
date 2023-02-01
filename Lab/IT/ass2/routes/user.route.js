@@ -6,23 +6,22 @@ const {AuthMiddleware} = require("../middleware");
 router.get("/:username", async (req, res) => {
     const username = req.params["username"];
     // Show private repo
-    let isPrivate = false;
+    let showPrivateRepo = false;
     if(req.is_authenticated){
-        if(req.user.username === username) isPrivate = true;
+        if(req.user.username === username) showPrivateRepo = true;
     }
     // Fetch all repo list
     let repoList = await prisma.repository.findMany({
         where: {
             user: {
                 username: username
-            }
+            },
+            isPrivate: showPrivateRepo ? undefined : false
         },
         select: {
             id: true,
             name: true,
-            content: {
-                
-            }
+            isPrivate: true,
         }
     })
     // Re-query and get count of contents
