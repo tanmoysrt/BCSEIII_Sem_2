@@ -9,10 +9,34 @@ router.get("/:username/:reponame", async(req, res) => {
     const username = req.params["username"];
     const reponame = req.params["reponame"];
     // Show private repo
-    let isPrivate = false;
+    let showPrivateContent = false;
     if(req.is_authenticated){
-        if(req.user.username !== username) isPrivate = true;
+        if(req.user.username !== username) showPrivateContent = true;
     }
+    // Verify user in case of private repo
+    const repo_details = await prisma.repository.findFirst({
+        where: {
+            user: {
+                username: username
+            },
+            name: reponame
+        },
+        select: {
+            isPrivate: true
+        }
+    })
+    if(repo_details == null){
+        return res.status(404).send("Repo not found");
+    }
+    if(repo_details.isPrivate){
+        if(!req.is_authenticated){
+            return res.status(403).send("Not authorized");
+        }
+        if(req.user.username !== username){
+            return res.status(403).send("Not authorized");
+        }
+    }
+
     const repo = await prisma.repository.findMany({
         where: {
             user:{
