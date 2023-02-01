@@ -40,7 +40,12 @@ router.get("/:username/:reponame", async(req, res) => {
             }
         }
     })
-    res.render("repo", ...repo);
+
+    let showEditForm = false;
+    if(req.is_authenticated){
+        if(req.user.username == username) showEditForm = true;
+    }
+    res.render("repo", {...repo['0'], showEditForm});
 })
 
 const cpUpload = upload.fields([{ name: 'image_content', maxCount: 1 }])
@@ -126,7 +131,6 @@ router.get("/:username/:reponame/:contentid", async(req, res)=>{
             imagePath: true
         }
     })
-    console.log(__basedir)
     fs.readFile(__basedir+"/"+content.imagePath, function (err, data) {
         if (err) {
           throw err;

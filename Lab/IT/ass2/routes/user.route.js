@@ -11,7 +11,7 @@ router.get("/:username", async (req, res) => {
         if(req.user.username === username) isPrivate = true;
     }
     // Fetch all repo list
-    const repoList = await prisma.repository.findMany({
+    let repoList = await prisma.repository.findMany({
         where: {
             user: {
                 username: username
@@ -19,12 +19,34 @@ router.get("/:username", async (req, res) => {
         },
         select: {
             id: true,
-            name: true
+            name: true,
+            content: {
+                
+            }
         }
     })
+    // Re-query and get count of contents
+    repoList = await Promise.all(repoList.map(async (repo) => {
+        const contentCount = await prisma.content.count({
+            where: {
+                repository: {
+                    id: repo.id
+                }
+            }
+        })
+        return {
+            ...repo,
+            contentCount
+        }
+    }))
+    let showForm = false;
+    if(req.is_authenticated){
+        if(req.user.username == username) showForm = true;
+    }
     res.render("repo-list", {
         "username": username,
-        "repos": repoList
+        "repos": repoList,
+        "showForm": showForm
     });
 })
 
