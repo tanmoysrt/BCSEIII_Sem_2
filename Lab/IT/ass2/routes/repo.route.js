@@ -24,6 +24,11 @@ router.get("/:username/:reponame", async(req, res) => {
             id: true,
             name: true,
             isPrivate: isPrivate,
+            user: {
+                select: {
+                    username: true
+                }
+            },
             content: {
                 select: {
                     id: true,

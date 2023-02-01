@@ -25,4 +25,11 @@
 </form>
 
 
+<h1>Lists </h1>
+
+<% content.forEach(e =>{ %>
+    <p><%= e.text %></p>
+    <img src="/<%= user.username %>/<%= name %>/<%= e.id %>" />
+<% }) %>
+
 <%- include("partials/footer.ejs") %> 

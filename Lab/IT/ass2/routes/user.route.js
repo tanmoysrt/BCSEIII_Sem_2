@@ -13,7 +13,6 @@ router.get("/:username", async (req, res) => {
     // Fetch all repo list
     const repoList = await prisma.repository.findMany({
         where: {
-            isPrivate: isPrivate,
             user: {
                 username: username
             }
