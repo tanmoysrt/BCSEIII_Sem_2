@@ -23,7 +23,7 @@ router.get("/:username/:reponame", async(req, res) => {
         select: {
             id: true,
             name: true,
-            isPrivate: isPrivate,
+            isPrivate: true,
             user: {
                 select: {
                     username: true

@@ -1,39 +1,99 @@
-<%- include("partials/header.ejs") %> 
+<%- include("partials/header.ejs") %>
 
-<% if (showEditForm) { %>
-    <form method="post">
-        <input type="hidden" name="action" value="make_private" />
-        <button type="submit">Make it private</button>
-    </form>
-    
-    </br>
-    <form method="post">
-        <input type="hidden" name="action" value="make_public" />
-        <button type="submit">Make it public</button>
-    </form>
-    
-    </br>
-    
-    <form method="post" enctype="multipart/form-data">
-        <input type="hidden" name="action" value="submit_content" />
-        <input type="radio" id="image" name="content_type" value="image">
-        <label for="image">Image</label><br>
-        <input type="radio" id="text" name="content_type" value="text">
-        <label for="text">Text</label><br>
-        <input type="text" name="text_content"/><br>
-        <input type="file" name="image_content" /><br>
-        <button type="submit">Submit</button>
-    </form>
-    
-<% } %> 
+    <div class="w-full p-5 md:p-8">
+        <div class="flex justify-between items-center h-12 mt-4">
+            <img src="/logo.png" class="max-h-[80px]" />
+            <% if (showEditForm) { %>
+                <% if (isPrivate) { %>
+                    <form method="post">
+                        <input type="hidden" name="action" value="make_public" />
+                        <button
+                            class="inline-block px-8 py-2 bg-teal-600 text-white font-medium text-base shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out rounded-full"
+                            type="submit">Make it public</button>
+                    </form>
+                    <% } else { %>
+                        <form method="post">
+                            <input type="hidden" name="action" value="make_private" />
+                            <button
+                                class="inline-block px-8 py-2 bg-teal-600 text-white font-medium text-base shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out rounded-full"
+                                type="submit">Make it private</button>
+                        </form>
+                        <% } %>
+
+                            <% } else { %>
+                                <div></div>
+                                <% } %>
+        </div>
+
+        <% if (showEditForm) { %>
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="submit_content" />
+
+                <div class="flex flex-row gap-4 items-center p-3 border border-sky-100 rounded-md mt-4">
+                    <div class="flex flex-row gap-4 w-1/3 items-center">
+                        <p>Choose Content Type : </p>
+                        <div class="flex items-center">
+                            <input id="default-radio-1" type="radio" value="text" name="content_type"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                onchange="toggleUploadField()">
+                            <label for="default-radio-1"
+                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Text</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input checked id="default-radio-2" type="radio" value="image" name="content_type"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                onchange="toggleUploadField()">
+                            <label for="default-radio-2"
+                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Image</label>
+                        </div>
+                    </div>
+                    <input type="text" id="text_content_block"
+                        class="w-1/3 mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        placeholder="Enter some text" name="text_content" />
+                    <input type="file" id="image_upload_block"
+                        class="w-1/3 mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        placeholder="Upload Image" name="image_content" />
+                        <button
+                        class="inline-block px-8 py-2 bg-teal-600 text-white font-medium text-base shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out rounded-md"
+                        type="submit">Submit</button>
+                </div>
 
 
 
-<h1>Lists </h1>
+            </form>
+            <% } else { %>
+                <% } %>
 
-<% content.forEach(e =>{ %>
-    <p><%= e.text %></p>
-    <img src="/<%= user.username %>/<%= name %>/<%= e.id %>" />
-<% }) %>
+    </div>
 
-<%- include("partials/footer.ejs") %> 
+    <div class="flex flex-row flex-wrap gap-5 p-10">
+        <% content.forEach(e=>{ %>
+            <div class="w-[250px] h-[250px] border border-sky-200 rounded-md overflow-hidden">
+                <%if (e.isImage) { %>
+                    <img src="/<%= user.username %>/<%= name %>/<%= e.id %>"  />
+                <% } else { %>
+                    <p class="p-1"><%= e.text %></p>
+                <% } %>
+            </div>
+        <% }) %>
+    </div>
+
+            <script>
+                function toggleUploadField() {
+                    const contentType = document.querySelector('input[name="content_type"]:checked').value;
+                    const textContent = document.getElementById("text_content_block");
+                    const imageContent = document.getElementById("image_upload_block");
+
+                    if (contentType === 'text') {
+                        textContent.style.display = 'block';
+                        imageContent.style.display = 'none';
+                    } else {
+                        textContent.style.display = 'none';
+                        imageContent.style.display = 'block';
+                    }
+                }
+
+                document.addEventListener("DOMContentLoaded", toggleUploadField);
+            </script>
+
+            <%- include("partials/footer.ejs") %>
