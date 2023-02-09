@@ -2,6 +2,8 @@ const router = require("express").Router();
 const prisma = require("../db").getInstance();
 const multer  = require('multer')
 const fs  = require("fs");
+const JSZip = require('jszip');
+
 const upload = multer({ dest: 'uploads/' })
 
 // Show repo details
@@ -132,6 +134,43 @@ router.post("/:username/:reponame", cpUpload, async (req, res) => {
     res.redirect(`/${username}/${reponame}`)
 });
 
+router.get("/:username/:reponame/downloadall", async(req, res)=>{
+    const username = req.params["username"];
+    const reponame = req.params["reponame"];
+    // Show private repo
+    let isPrivateAccessible = false;
+    if(req.is_authenticated){
+        if(req.user.username !== username) isPrivateAccessible = true;
+    }
+    const ccontent = await prisma.content.findMany({
+        where: {
+            repository: {
+                name: reponame,
+                user: {
+                    username: username
+                }
+            }
+        },
+        select: {
+            imagePath: true,
+            imageName: true,
+            isImage: true,
+            text: true,
+        }
+    })
+
+    const zip = new JSZip();
+    for(let i=0; i<ccontent.length; i++){
+        if(ccontent[i].isImage){
+            zip.file(ccontent[i].imageName, fs.readFileSync(__basedir+"/"+ccontent[i].imagePath));
+        }else{
+            zip.file("text_"+i+".txt", ccontent[i].text);
+        }
+    }
+    res.setHeader('Content-disposition', 'attachment; filename='+reponame+'.zip');
+    zip.generateNodeStream({type:"nodebuffer", streamFiles: true})
+    .pipe(res)
+})
 
 router.get("/:username/:reponame/:contentid", async(req, res)=>{
     const username = req.params["username"];
@@ -164,5 +203,8 @@ router.get("/:username/:reponame/:contentid", async(req, res)=>{
       });
 
 })
+
+
+
 
 module.exports = router;
