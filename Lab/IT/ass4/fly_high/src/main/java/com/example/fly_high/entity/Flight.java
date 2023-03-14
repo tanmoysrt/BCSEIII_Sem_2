@@ -1,6 +1,9 @@
 package com.example.fly_high.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.*;
@@ -34,6 +37,7 @@ public class Flight {
     private int seats;
 
     @OneToOne(mappedBy = "flight")
+    @JsonBackReference
     private Offer offer;
 
     public Flight() {
@@ -48,21 +52,6 @@ public class Flight {
         this.seats = seats;
         this.offer = null;
     }
-
-    @Override
-    public String toString() {
-        return "Flight{" +
-                "id=" + id +
-                ", departureCity='" + departureCity + '\'' +
-                ", arrivalCity='" + arrivalCity + '\'' +
-                ", departureDate=" + departureDate +
-                ", departureTime=" + departureTime +
-                ", cost=" + cost +
-                ", seats=" + seats +
-                ", offer=" + offer +
-                '}';
-    }
-
 
     public int getId() {
         return id;

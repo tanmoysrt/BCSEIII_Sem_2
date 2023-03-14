@@ -1,6 +1,7 @@
 package com.example.fly_high.service;
 
 import com.example.fly_high.entity.Flight;
+import com.example.fly_high.entity.Offer;
 
 import java.util.List;
 

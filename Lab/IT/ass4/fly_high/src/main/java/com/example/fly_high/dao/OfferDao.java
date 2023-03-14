@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OfferDao {
     public void save(Offer offer);
-    public void delete(Offer offer);
+    public void delete(int offerId);
     public void update(Offer offer);
 
     public Offer find(int id);

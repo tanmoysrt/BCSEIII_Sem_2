@@ -1,7 +1,9 @@
 package com.example.fly_high.rest;
 
 import com.example.fly_high.entity.Flight;
+import com.example.fly_high.entity.Offer;
 import com.example.fly_high.service.FlightService;
+import com.example.fly_high.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,5 +56,11 @@ public class FlightRestController {
         Boolean status = flightService.delete(flightId);
         Map<String, Object> response = Map.of("status", status);
         return response;
+    }
+
+    @GetMapping("/{flightId}/offer")
+    public Offer getFlightOffer(@PathVariable int flightId){
+        Flight flight = flightService.find(flightId);
+        return flight.getOffer();
     }
 }

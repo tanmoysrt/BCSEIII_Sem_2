@@ -18,7 +18,6 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
-    @Transactional
     public boolean save(Offer offer) {
         try {
             offerDao.save(offer);
@@ -30,10 +29,9 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
-    @Transactional
-    public boolean delete(Offer offer) {
+    public boolean delete(int offerId) {
         try {
-            offerDao.delete(offer);
+            offerDao.delete(offerId);
             return true;
         }catch (Exception e) {
             System.out.println("Error while deleting offer: " + e.getMessage());
@@ -42,7 +40,6 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
-    @Transactional
     public boolean update(Offer offer) {
         try {
             offerDao.update(offer);
@@ -54,7 +51,6 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
-    @Transactional
     public Offer find(int id) {
         try{
             return offerDao.find(id);
@@ -65,21 +61,11 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
-    @Transactional
-    public List<Offer> find(Date date) {
-        try {
-            return offerDao.find(date);
-        }catch (Exception e) {
-            System.out.println("Error while finding offer: " + e.getMessage());
-            return new ArrayList<Offer>();
-        }
-    }
-
-    @Override
-    @Transactional
     public List<Offer> find() {
         try {
-            return offerDao.find();
+            // Current date
+            Date date = new Date();
+            return offerDao.find(date);
         }catch (Exception e) {
             System.out.println("Error while finding offer: " + e.getMessage());
             return new ArrayList<Offer>();

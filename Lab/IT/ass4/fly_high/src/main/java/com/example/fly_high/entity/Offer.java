@@ -1,6 +1,8 @@
 package com.example.fly_high.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -30,32 +32,21 @@ public class Offer {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "flight_id", referencedColumnName = "id")
+    @JsonManagedReference
     private Flight flight;
 
     public Offer() {
     }
 
-    public Offer(int cost, boolean isLimitedTimeOffer) {
+    public Offer(int cost, Date date, boolean isLimitedTimeOffer, Time validUntil, Flight flight){
         this.cost = cost;
-        this.isLimitedTimeOffer = isLimitedTimeOffer;
-        if(isLimitedTimeOffer) throw new IllegalArgumentException("Limited time offer must have a validUntil time");
-    }
-
-    public Offer(int cost) {
-        this.cost = cost;
-        this.isLimitedTimeOffer = false;
-    }
-
-    public Offer(int cost, boolean isLimitedTimeOffer, Time validUntil) {
-        this.cost = cost;
+        this.date = date;
         this.isLimitedTimeOffer = isLimitedTimeOffer;
         this.validUntil = validUntil;
-    }
-
-    public Offer(int cost, Flight flight) {
-        this.cost = cost;
         this.flight = flight;
     }
+
+
 
     public int getId() {
         return id;
@@ -105,15 +96,5 @@ public class Offer {
         this.validUntil = validUntil;
     }
 
-    @Override
-    public String toString() {
-        return "Offer{" +
-                "id=" + id +
-                ", cost=" + cost +
-                ", date=" + date +
-                ", isLimitedTimeOffer=" + isLimitedTimeOffer +
-                ", validUntil=" + validUntil +
-                ", flight=" + flight +
-                '}';
-    }
+
 }

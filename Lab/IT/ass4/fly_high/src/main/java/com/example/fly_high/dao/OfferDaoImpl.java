@@ -30,9 +30,9 @@ public class OfferDaoImpl implements OfferDao {
 
     @Override
     @Transactional
-    public void delete(Offer offer) {
+    public void delete(int offerId) {
         Session currentSession = entityManager.unwrap(Session.class);
-        Offer dbOffer = currentSession.get(Offer.class, offer.getId());
+        Offer dbOffer = currentSession.get(Offer.class, offerId);
         currentSession.remove(dbOffer);
     }
 
