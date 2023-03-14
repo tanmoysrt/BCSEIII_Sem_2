@@ -3,6 +3,7 @@ package com.example.fly_high.service;
 import com.example.fly_high.dao.OfferDao;
 import com.example.fly_high.entity.Offer;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +18,7 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
+    @Transactional
     public boolean save(Offer offer) {
         try {
             offerDao.save(offer);
@@ -28,6 +30,7 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
+    @Transactional
     public boolean delete(Offer offer) {
         try {
             offerDao.delete(offer);
@@ -39,6 +42,7 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
+    @Transactional
     public boolean update(Offer offer) {
         try {
             offerDao.update(offer);
@@ -50,6 +54,7 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
+    @Transactional
     public Offer find(int id) {
         try{
             return offerDao.find(id);
@@ -60,6 +65,7 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
+    @Transactional
     public List<Offer> find(Date date) {
         try {
             return offerDao.find(date);
@@ -70,6 +76,7 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
+    @Transactional
     public List<Offer> find() {
         try {
             return offerDao.find();

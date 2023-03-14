@@ -3,6 +3,7 @@ package com.example.fly_high.service;
 import com.example.fly_high.dao.FlightDao;
 import com.example.fly_high.entity.Flight;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;

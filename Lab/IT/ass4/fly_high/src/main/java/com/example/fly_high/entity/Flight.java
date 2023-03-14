@@ -1,5 +1,6 @@
 package com.example.fly_high.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.sql.*;
@@ -19,9 +20,11 @@ public class Flight {
     private String arrivalCity;
 
     @Column(name = "departure_date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date departureDate;
 
     @Column(name = "departure_time")
+    @JsonFormat(pattern = "HH:mm:ss")
     private Time departureTime;
 
     @Column(name = "cost")
@@ -36,11 +39,13 @@ public class Flight {
     public Flight() {
     }
 
-    public Flight(String departureCity, String arrivalCity, Date departureDate, Time departureTime) {
+    public Flight(String departureCity, String arrivalCity, Date departureDate, Time departureTime, int cost, int seats) {
         this.departureCity = departureCity;
         this.arrivalCity = arrivalCity;
         this.departureDate = departureDate;
         this.departureTime = departureTime;
+        this.cost = cost;
+        this.seats = seats;
         this.offer = null;
     }
 
@@ -105,5 +110,21 @@ public class Flight {
 
     public void setOffer(Offer offer) {
         this.offer = offer;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    public int getSeats() {
+        return seats;
+    }
+
+    public void setSeats(int seats) {
+        this.seats = seats;
     }
 }
