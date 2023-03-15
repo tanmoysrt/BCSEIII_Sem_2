@@ -30,6 +30,13 @@ public class Flight {
     @JsonFormat(pattern = "HH:mm:ss")
     private Time departureTime;
 
+    @Column(name = "arrival_time")
+    @JsonFormat(pattern = "HH:mm:ss")
+    private Time arrivalTime;
+
+    @Column(name = "hops")
+    private String hops;
+
     @Column(name = "cost")
     private int cost;
 
@@ -43,11 +50,13 @@ public class Flight {
     public Flight() {
     }
 
-    public Flight(String departureCity, String arrivalCity, Date departureDate, Time departureTime, int cost, int seats) {
+    public Flight(String departureCity, String arrivalCity, Date departureDate, Time departureTime, Time arrivalTime, String hops, int cost, int seats) {
         this.departureCity = departureCity;
         this.arrivalCity = arrivalCity;
         this.departureDate = departureDate;
         this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.hops = hops;
         this.cost = cost;
         this.seats = seats;
         this.offer = null;
@@ -115,5 +124,21 @@ public class Flight {
 
     public void setSeats(int seats) {
         this.seats = seats;
+    }
+
+    public String getHops() {
+        return hops;
+    }
+
+    public void setHops(String hops) {
+        this.hops = hops;
+    }
+
+    public Time getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(Time arrivalTime) {
+        this.arrivalTime = arrivalTime;
     }
 }
