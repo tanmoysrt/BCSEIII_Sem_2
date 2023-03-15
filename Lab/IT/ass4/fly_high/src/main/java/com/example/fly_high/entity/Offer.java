@@ -18,6 +18,10 @@ public class Offer {
     @Column(name = "id")
     private int id;
 
+
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "cost")
     private int cost;
 
@@ -38,12 +42,13 @@ public class Offer {
     public Offer() {
     }
 
-    public Offer(int cost, Date date, boolean isLimitedTimeOffer, Time validUntil, Flight flight){
+    public Offer(int cost, Date date, boolean isLimitedTimeOffer, Time validUntil, Flight flight, String description){
         this.cost = cost;
         this.date = date;
         this.isLimitedTimeOffer = isLimitedTimeOffer;
         this.validUntil = validUntil;
         this.flight = flight;
+        this.description = description;
     }
 
 
@@ -96,5 +101,11 @@ public class Offer {
         this.validUntil = validUntil;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
