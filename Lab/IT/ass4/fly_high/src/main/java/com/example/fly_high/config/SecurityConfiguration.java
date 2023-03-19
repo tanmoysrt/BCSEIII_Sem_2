@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                 .cors().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/flight", "/flight/", "/flight/search").permitAll()
-                .requestMatchers("/auth/register").permitAll()
+                .requestMatchers("/auth/register", "/auth/login").permitAll()
                 .requestMatchers("/offer").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
