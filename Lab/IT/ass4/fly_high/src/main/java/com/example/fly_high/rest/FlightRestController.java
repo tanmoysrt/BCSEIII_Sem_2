@@ -3,7 +3,6 @@ package com.example.fly_high.rest;
 import com.example.fly_high.entity.Flight;
 import com.example.fly_high.entity.Offer;
 import com.example.fly_high.service.FlightService;
-import com.example.fly_high.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
