@@ -17,3 +17,33 @@
         color-scheme: light;
     }
 }
+
+
+/* Scrollbar related */
+:root {
+    --primary: rgb(243, 241, 241);
+    --secondary: rgba(7, 14, 10, 0.37);
+}
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary) var(--primary);
+}
+
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--primary);
+    border-radius: 16px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--secondary);
+    border-radius: 16px;
+    border: 2.5px solid var(--primary);
+}
