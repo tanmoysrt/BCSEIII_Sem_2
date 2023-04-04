@@ -19,6 +19,7 @@ export default function Index(){
             if(success){
                 const token = response.data.token;
                 localStorage.setItem("token", token);
+                localStorage.setItem("role", response.data.role);
                 toast.success("Login successful");
                 window.location.href = "/admin/flight";
             }else{

@@ -6,11 +6,11 @@ import {useEffect, useState} from "react";
 import Link from "next/link";
 
 const navigation = [
-    { name: 'Manage Flight', href: '/admin/flight' },
-    { name: 'Add Flight', href: '/admin/flight/add' },
-    { name: 'Manage Offers', href: '/admin/offer' },
-    { name: 'Add Offer', href: '/admin/offer/add' },
-    { name: 'User Management', href: '/admin/user' }
+    { name: 'Manage Flight', href: '/admin/flight', staff: true },
+    { name: 'Add Flight', href: '/admin/flight/add', staff: false },
+    { name: 'Manage Offers', href: '/admin/offer', staff: true },
+    { name: 'Add Offer', href: '/admin/offer/add', staff: true },
+    { name: 'User Management', href: '/admin/user', staff: false },
 ]
 
 function classNames(...classes) {
@@ -20,8 +20,16 @@ function classNames(...classes) {
 export default function Navbar() {
 
     const [currentRoute, setCurrentRoute] = useState("");
+    const [role, setRole] = useState("STAFF");
+
+    function handleLogout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        window.location.href = "/admin";
+    }
 
     useEffect(() => {
+        setRole(localStorage.getItem("role"));
         setCurrentRoute(window.location.pathname);
     }, [currentRoute]);
 
@@ -37,6 +45,7 @@ export default function Navbar() {
                             <div className="hidden sm:ml-6 sm:block">
                                 <div className="flex space-x-4">
                                     {navigation.map((item) => (
+                                        item.staff || (item.staff === false && role === "ADMIN") ?
                                         <Link
                                             key={item.name}
                                             href={item.href}
@@ -47,13 +56,14 @@ export default function Navbar() {
                                             aria-current={item.current ? 'page' : undefined}
                                         >
                                             {item.name}
-                                        </Link>
+                                        </Link> : null
                                     ))}
                                 </div>
                             </div>
                         </div>
                         <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                             <button
+                                onClick={handleLogout}
                                 type="button"
                                 className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 flex"
                             >
