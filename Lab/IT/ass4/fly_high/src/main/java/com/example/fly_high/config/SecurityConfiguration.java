@@ -1,5 +1,6 @@
 package com.example.fly_high.config;
 
+import com.example.fly_high.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,17 +35,20 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/flight", "/flight/**").permitAll()
-                .requestMatchers("/offer", "/offer/**").permitAll()
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/offer").hasAuthority("ADMIN")
-                .requestMatchers("/flight/add").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/flight/search").permitAll()
+                .requestMatchers(HttpMethod.POST, "/flight/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/flight/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/offer").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/offer/**").permitAll()
+                .requestMatchers("/auth/register/admin", "/auth/register/staff").permitAll()
+                .requestMatchers("/auth/users").permitAll()
+                .requestMatchers(HttpMethod.DELETE,"/auth/user/**").permitAll()
+                .requestMatchers("/flight", "/flight/**", "/offer", "/offer/**", "/offer/generic", "/auth/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
     }

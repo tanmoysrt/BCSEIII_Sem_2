@@ -34,7 +34,7 @@ public class AuthRestController {
         user.setRole(Role.STAFF);
         String token =  authenticationService.register(user);
         Map<String, Object> response = new HashMap<>();
-        response.put("role", Role.ADMIN);
+        response.put("role", Role.STAFF);
         response.put("success", !token.equals(""));
         return response;
     }
