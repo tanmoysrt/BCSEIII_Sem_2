@@ -7,6 +7,10 @@ class ApiClient{
     /** @type {axios} */
     static axiosClient = null;
     static #token = "";
+
+    /**
+     * @returns {ApiClient}
+     */
     static getInstance() {
         if(ApiClient.instance !== null) return ApiClient.instance;
         ApiClient.axiosClient = axios;

@@ -2,12 +2,15 @@ import {ArrowLeftOnRectangleIcon} from '@heroicons/react/24/outline'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlaneDeparture} from "@fortawesome/free-solid-svg-icons";
 import {faPercent} from "@fortawesome/free-solid-svg-icons/faPercent";
+import {useEffect, useState} from "react";
+import Link from "next/link";
 
 const navigation = [
-    { name: 'Manage Flight', href: '/admin/flight', current: true },
-    { name: 'Add Flight', href: '/admin/flight/add', current: false },
-    { name: 'Manage Offers', href: '#', current: false },
-    { name: 'User Management', href: '#', current: false }
+    { name: 'Manage Flight', href: '/admin/flight' },
+    { name: 'Add Flight', href: '/admin/flight/add' },
+    { name: 'Manage Offers', href: '/admin/offer' },
+    { name: 'Add Offer', href: '/admin/offer/add' },
+    { name: 'User Management', href: '#' }
 ]
 
 function classNames(...classes) {
@@ -15,6 +18,13 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+
+    const [currentRoute, setCurrentRoute] = useState("");
+
+    useEffect(() => {
+        setCurrentRoute(window.location.pathname);
+    }, [currentRoute]);
+
     return (
         <div as="nav" className="bg-gray-800">
             <>
@@ -27,26 +37,18 @@ export default function Navbar() {
                             <div className="hidden sm:ml-6 sm:block">
                                 <div className="flex space-x-4">
                                     {navigation.map((item) => (
-                                        <a
+                                        <Link
                                             key={item.name}
                                             href={item.href}
                                             className={classNames(
-                                                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                item.href === currentRoute ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                                 'rounded-md px-3 py-2 text-sm font-medium'
                                             )}
                                             aria-current={item.current ? 'page' : undefined}
                                         >
                                             {item.name}
-                                        </a>
+                                        </Link>
                                     ))}
-                                    <a
-                                        className={classNames(
-                                            'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                            'rounded-md px-3 py-2 text-sm font-medium'
-                                        )}
-                                    >
-                                        Add Offer
-                                    </a>
                                 </div>
                             </div>
                         </div>
