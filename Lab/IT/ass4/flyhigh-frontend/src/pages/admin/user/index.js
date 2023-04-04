@@ -30,7 +30,7 @@ export default function () {
         setIsOpen(true)
     }
 
-    async function fetcUsers() {
+    async function fetchUsers() {
         const response = await apiclient.request('get', '/auth/users');
         if(response.success) {
             setUsers(response.data);
@@ -52,15 +52,24 @@ export default function () {
         if(response.success) {
             toast.success('User created successfully');
             closeModal();
-            fetcUsers();
+            fetchUsers();
         }
     }
 
     useEffect(() => {
-        fetcUsers();
+        fetchUsers();
     },[])
 
 
+    async function deleteUser(id) {
+        const response = await apiclient.request('delete', '/auth/user/'+id);
+        if(response.success) {
+            toast.success('User deleted successfully');
+            fetchUsers();
+        }else{
+            toast.error('Error deleting user');
+        }
+    }
 
     return (
         <>
@@ -92,6 +101,9 @@ export default function () {
                             <th scope="col" className="px-6 py-3">
                                 Role
                             </th>
+                            <th scope="col" className="px-6 py-3">
+                                Delete
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -113,6 +125,9 @@ export default function () {
                                     </td>
                                     <td className="px-6 py-4">
                                         {user.role}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <button className="bg-transparent hover:bg-red-500 text-red-500 font-semibold hover:text-white py-1 px-4 border border-red-500 hover:border-transparent rounded" onClick={()=>deleteUser(user.id)}><FontAwesomeIcon icon={faTrash} className="mr-2"  />Delete</button>
                                     </td>
                                 </tr>
                             )
