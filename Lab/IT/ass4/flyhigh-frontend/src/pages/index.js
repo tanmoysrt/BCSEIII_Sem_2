@@ -23,6 +23,7 @@ export default function Home() {
 
   async function searchFlights() {
     if(dataRef.current.maxCost === "") dataRef.current.maxCost = -1;
+    if(dataRef.current.departure === "" || dataRef.current.destination === "" || dataRef.current.departureDate === "" ) return;
     else dataRef.current.maxCost = parseInt(dataRef.current.maxCost);
     const response = await apiclient.request('post', '/flight/search', {
       "departure": dataRef.current.departure,
