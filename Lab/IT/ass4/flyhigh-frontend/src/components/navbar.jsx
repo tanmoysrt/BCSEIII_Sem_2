@@ -10,7 +10,7 @@ const navigation = [
     { name: 'Add Flight', href: '/admin/flight/add' },
     { name: 'Manage Offers', href: '/admin/offer' },
     { name: 'Add Offer', href: '/admin/offer/add' },
-    { name: 'User Management', href: '#' }
+    { name: 'User Management', href: '/admin/user' }
 ]
 
 function classNames(...classes) {
