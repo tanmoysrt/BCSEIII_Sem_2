@@ -2,6 +2,7 @@ package com.example.fly_high.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -32,6 +33,7 @@ public class Offer {
     private boolean isLimitedTimeOffer;
 
     @Column(name = "valid_until")
+    @JsonFormat(pattern = "HH:mm:ss")
     private Time validUntil;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -85,12 +87,12 @@ public class Offer {
         this.date = date;
     }
 
-    public boolean isLimitedTimeOffer() {
+    public boolean getIsLimitedTimeOffer() {
         return isLimitedTimeOffer;
     }
 
-    public void setLimitedTimeOffer(boolean limitedTimeOffer) {
-        isLimitedTimeOffer = limitedTimeOffer;
+    public void setIsLimitedTimeOffer(boolean isLimitedTimeOffer) {
+        this.isLimitedTimeOffer = isLimitedTimeOffer;
     }
 
     public Time getValidUntil() {

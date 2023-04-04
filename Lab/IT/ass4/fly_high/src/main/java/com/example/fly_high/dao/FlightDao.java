@@ -13,4 +13,6 @@ public interface FlightDao {
     public Flight find(int id);
     public List<Flight> find(String departureCity, String arrivalCity, String departureDate);
     public List<Flight> find(String departureCity, String arrivalCity, String departureDate, Integer maxCost);
+
+    List<Flight> findAll();
 }

@@ -25,11 +25,16 @@ public class FlightRestController {
         String destination = (String) payload.get("destination");
         String departureDate = (String) payload.get("departureDate");
         Integer maxCost = (Integer) payload.get("maxCost");
-        if (maxCost != null) {
+        if (maxCost != null && maxCost != -1) {
             return flightService.find(departure, destination, departureDate, maxCost);
         }
 
         return flightService.find(departure, destination, departureDate);
+    }
+
+    @GetMapping("/all")
+    public List<Flight> getAllFlights() {
+        return flightService.findAll();
     }
 
     @PostMapping("")

@@ -13,4 +13,5 @@ public interface OfferDao {
     public Offer find(int id);
     public List<Offer> find(Date date);
     public List<Offer> find();
+    public List<Offer> findGenericOffers();
 }

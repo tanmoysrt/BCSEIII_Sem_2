@@ -27,6 +27,11 @@ public class OfferRestController {
         return offerService.find();
     }
 
+    @GetMapping("/generic")
+    public List<Offer> getGenericOffers() {
+        return offerService.findGenericOffers();
+    }
+
     @GetMapping("/{offerId}")
     public Offer getOffer(@PathVariable int offerId){
         Offer offer = offerService.find(offerId);

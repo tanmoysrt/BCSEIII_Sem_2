@@ -1,6 +1,7 @@
 package com.example.fly_high.dao;
 
 import com.example.fly_high.entity.Flight;
+import com.example.fly_high.entity.Offer;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -35,7 +36,15 @@ public class FlightDaoImpl implements FlightDao{
     public void delete(int id) {
         Session currentSession = entityManager.unwrap(Session.class);
         Flight dbFlight = currentSession.get(Flight.class, id);
+        Offer offer = dbFlight.getOffer();
+        if (offer != null) {
+            offer.setFlight(null);
+            currentSession.merge(offer);
+            currentSession.remove(offer);
+        }
         currentSession.remove(dbFlight);
+        currentSession.flush();
+
     }
 
     @Override
@@ -75,5 +84,12 @@ public class FlightDaoImpl implements FlightDao{
         query.setParameter("departureDate", date);
         query.setParameter("maxCost", maxCost);
         return query.getResultList();
+    }
+
+    @Override
+    public List<Flight> findAll() {
+        // sort by departure date desc
+        Session currentSession = entityManager.unwrap(Session.class);
+        return currentSession.createQuery("from Flight order by departureDate desc", Flight.class).getResultList();
     }
 }

@@ -1,15 +1,15 @@
 package com.example.fly_high.rest;
 
+import com.example.fly_high.entity.Role;
 import com.example.fly_high.entity.User;
 import com.example.fly_high.models.LoginRequest;
 import com.example.fly_high.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,9 +19,29 @@ public class AuthRestController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @PostMapping("/register")
-    public String register(@RequestBody User user) {
-        return authenticationService.register(user);
+    @PostMapping("/register/admin")
+    public Map<String, Object> registerAdmin(@RequestBody User user) {
+        user.setRole(Role.ADMIN);
+        String token =  authenticationService.register(user);
+        Map<String, Object> response = new HashMap<>();
+        response.put("role", Role.ADMIN);
+        response.put("success", !token.equals(""));
+        return response;
+    }
+
+    @PostMapping("/register/staff")
+    public Map<String, Object> registerStaff(@RequestBody User user) {
+        user.setRole(Role.STAFF);
+        String token =  authenticationService.register(user);
+        Map<String, Object> response = new HashMap<>();
+        response.put("role", Role.ADMIN);
+        response.put("success", !token.equals(""));
+        return response;
+    }
+
+    @DeleteMapping("/user/{id}")
+    public void deleteUser(@PathVariable int id) {
+        authenticationService.deleteUser(id);
     }
 
     @PostMapping("/login")
@@ -29,7 +49,14 @@ public class AuthRestController {
         String token = authenticationService.authenticate(request);
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
+        response.put("role", authenticationService.getRoleFromRequest(request.username));
         response.put("success", !token.equals(""));
+
         return response;
+    }
+
+    @GetMapping("/users")
+    List<User> getAllUsers() {
+        return authenticationService.getAllUsers();
     }
 }

@@ -63,4 +63,12 @@ public class OfferDaoImpl implements OfferDao {
         Date currentDate = new Date();
         return find(currentDate);
     }
+
+
+    @Override
+    public List<Offer> findGenericOffers() {
+        Session currentSession = entityManager.unwrap(Session.class);
+        Date currentDate = new Date();
+        return currentSession.createQuery("from Offer where flight is null and date=:date", Offer.class).setParameter("date", currentDate).getResultList();
+    }
 }

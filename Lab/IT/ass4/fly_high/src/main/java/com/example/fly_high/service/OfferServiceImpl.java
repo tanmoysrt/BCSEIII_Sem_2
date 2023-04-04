@@ -71,4 +71,14 @@ public class OfferServiceImpl implements OfferService{
             return new ArrayList<Offer>();
         }
     }
+
+    @Override
+    public List<Offer> findGenericOffers() {
+        try {
+            return offerDao.findGenericOffers();
+        }catch (Exception e) {
+            System.out.println("Error while finding offer: " + e.getMessage());
+            return new ArrayList<Offer>();
+        }
+    }
 }

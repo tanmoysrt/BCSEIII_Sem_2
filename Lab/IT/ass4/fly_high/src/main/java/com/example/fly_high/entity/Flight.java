@@ -16,6 +16,9 @@ public class Flight {
     @Column(name = "id")
     private int id;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "departure_city")
     private String departureCity;
 
@@ -140,5 +143,13 @@ public class Flight {
 
     public void setArrivalTime(Time arrivalTime) {
         this.arrivalTime = arrivalTime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

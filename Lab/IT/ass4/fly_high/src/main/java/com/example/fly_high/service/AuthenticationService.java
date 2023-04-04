@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,7 +22,6 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
     public String register(User user) {
-        user.setRole(Role.ADMIN);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         var savedUser = repository.save(user);
         return jwtService.generateToken(savedUser);
@@ -33,5 +33,22 @@ public class AuthenticationService {
             return jwtService.generateToken(foundUser.get());
         }
         return "";
+    }
+
+    public Role getRoleFromRequest(String username){
+        Optional<User> foundUser = repository.findByUsername(username);
+        return foundUser.map(User::getRole).orElse(null);
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users =  repository.findAll();
+        for (int i = 0; i < users.size(); i++) {
+            users.get(i).setPassword("");
+        }
+        return users;
+    }
+
+    public void deleteUser(int id) {
+        repository.deleteById(id);
     }
 }

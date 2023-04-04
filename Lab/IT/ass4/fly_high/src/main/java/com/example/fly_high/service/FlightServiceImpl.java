@@ -56,6 +56,16 @@ public class FlightServiceImpl implements FlightService{
     }
 
     @Override
+    public List<Flight> findAll() {
+        try {
+            return flightDao.findAll();
+        }catch (Exception e){
+            System.out.println("Error while finding flight: " + e.getMessage());
+            return new ArrayList<Flight>();
+        }
+    }
+
+    @Override
     public List<Flight> find(String departureCity, String arrivalCity, String departureDate) {
         try {
             return flightDao.find(departureCity, arrivalCity, departureDate);

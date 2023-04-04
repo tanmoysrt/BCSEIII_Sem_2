@@ -13,4 +13,5 @@ public interface OfferService {
 
     public Offer find(int id);
     public List<Offer> find();
+    public List<Offer> findGenericOffers();
 }
