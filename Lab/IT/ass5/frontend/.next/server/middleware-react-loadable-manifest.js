@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST={"_app.js -> react-hot-toast":{"id":"_app.js -> react-hot-toast","files":["static/chunks/node_modules_react-hot-toast_dist_index_mjs.js"]}}
