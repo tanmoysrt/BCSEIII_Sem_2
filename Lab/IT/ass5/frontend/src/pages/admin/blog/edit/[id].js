@@ -6,6 +6,8 @@ import { toast } from "react-hot-toast";
 export default function AddFlight({data}) {
     const [uploading, setUploading] = useState(false);
     const [uploadedImageName, setUploadedImageName] = useState("");
+    const imageUploadRef = useRef(null);
+    const contentFieldRef = useRef(null);
     const dataRef = useRef({
         "title": data.title,
         "content": data.content,
@@ -41,10 +43,31 @@ export default function AddFlight({data}) {
         const response = await apiClient.request("put", "/blog/"+data.id, dataRef.current);
         if (response.success) {
             toast.success("Blog updated successfully");
-            // TODO open the blog in new tab
         } else {
             toast.error("Failed to add blog");
         }
+    }
+
+    async function insertImage(){
+        const files = imageUploadRef.current.files;
+        if(files.length === 0){
+            toast.error("Please select a image first");
+            return;
+        }
+        const file = files[0];
+        setUploading(true);
+        const res = await apiClient.uploadFile(file);
+        if(res.success){
+            toast.success("Image uploaded successfully");
+            const actualLink = apiClient.getLinkFromFileName(res.link);
+            contentFieldRef.current.value += `![IMAGE TAG HERE](${actualLink})`;
+            dataRef.current.content = contentFieldRef.current.value;
+        }
+        else{
+            toast.error("Failed to upload image");
+        }
+        imageUploadRef.current.value = "";
+        setUploading(false);
     }
 
     useEffect(()=>{
@@ -73,7 +96,11 @@ export default function AddFlight({data}) {
                     </div>
                     <div>
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blog</label>
-                        <textarea defaultValue={data.content} onChange={(e)=>dataRef.current.content = e.target.value} rows="20" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required></textarea>
+                        <textarea ref={contentFieldRef} defaultValue={data.content} onChange={(e)=>dataRef.current.content = e.target.value} rows="20" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required></textarea>
+                    </div>
+                    <div className="flex flex-row gap-6">
+                        <input ref={imageUploadRef} type="file"  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required accept="image/*" />
+                        <button onClick={insertImage} className="bg-blue-500 hover:bg-blue-700 text-white text-base font-bold py-1 px-4 rounded-md">Insert Image In Blog</button>
                     </div>
                     <div>
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Topics</label>
