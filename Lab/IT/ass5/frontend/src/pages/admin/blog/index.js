@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import Navbar from "@/components/navbar";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPencil, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faLink, faPencil, faTrash} from "@fortawesome/free-solid-svg-icons";
 import ApiClient from "@/controllers/api";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
@@ -76,6 +76,7 @@ export default function () {
                                 data.map((item, index) => <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                     <th scope="row"
                                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            <Link target="_blank" href={`/blog/${item.id}`}><FontAwesomeIcon icon={faLink} className="text-blue-400 mr-5" /></Link>
                                         {item.title}
                                     </th>
                                     <td className="px-6 py-4">

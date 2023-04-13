@@ -75,6 +75,10 @@ export default function AddFlight({data}) {
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Blog</label>
                         <textarea defaultValue={data.content} onChange={(e)=>dataRef.current.content = e.target.value} rows="20" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required></textarea>
                     </div>
+                    <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Topics</label>
+                        <input defaultValue={data.topics} onChange={(e)=>dataRef.current.topics = e.target.value} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
+                    </div>
                 </div>
                 <div className="flex gap-5 mt-2 w-full">
                     <button className="bg-blue-500 hover:bg-blue-700 text-white text-base font-bold py-1 px-4 rounded-md" onClick={updateBlog} disabled={uploading}>

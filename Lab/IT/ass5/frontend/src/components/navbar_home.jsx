@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faHive} from "@fortawesome/free-brands-svg-icons";
 import { Pacifico } from 'next/font/google'
+import Link from "next/link";
 
 
 const FontPacifico = Pacifico({
@@ -10,9 +11,11 @@ const FontPacifico = Pacifico({
 
 export default function NavbarHome() {
     return (
-        <div className="flex justify-center items-center gap-4 mb-10">
-            <FontAwesomeIcon icon={faHive} size="2xl" color="blue" />
-            <h2 className={"text-2xl "+FontPacifico.className}>Road to Development</h2>
-        </div>
+        <Link href="/" >
+            <div className="flex justify-center items-center gap-4 mb-10">
+                <FontAwesomeIcon icon={faHive} size="2xl" color="blue" />
+                <h2 className={"text-2xl "+FontPacifico.className}>Road to Development</h2>
+            </div>
+        </Link>
     );
 }
