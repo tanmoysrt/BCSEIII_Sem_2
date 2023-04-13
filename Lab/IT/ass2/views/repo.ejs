@@ -39,6 +39,13 @@
                                 class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Text</label>
                         </div>
                         <div class="flex items-center">
+                            <input checked id="default-radio-2" type="radio" value="doc" name="content_type"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                onchange="toggleUploadField()">
+                            <label for="default-radio-2"
+                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Other Docs</label>
+                        </div>
+                        <div class="flex items-center">
                             <input checked id="default-radio-2" type="radio" value="image" name="content_type"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                                 onchange="toggleUploadField()">
@@ -51,7 +58,10 @@
                         placeholder="Enter some text" name="text_content" />
                     <input type="file" id="image_upload_block"
                         class="max-w-[85vw] max-w-1/3 w-[85vw]md:w-1/3 mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                        placeholder="Upload Image" name="image_content" />
+                        placeholder="Upload Image" name="image_content" accept="image/*" />
+                    <input type="file" id="document_upload_block"
+                        class="max-w-[85vw] max-w-1/3 w-[85vw]md:w-1/3 mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        placeholder="Upload Image" name="image_content" accept="image/*" />
                     <button
                         class="w-[85vw] md:w-fit inline-block px-8 py-2 bg-teal-600 text-white font-medium text-base shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out rounded-md"
                         type="submit">Submit</button>
@@ -88,13 +98,20 @@
             const contentType = document.querySelector('input[name="content_type"]:checked').value;
             const textContent = document.getElementById("text_content_block");
             const imageContent = document.getElementById("image_upload_block");
+            const documentContent = document.getElementById("document_upload_block");
 
             if (contentType === 'text') {
                 textContent.style.display = 'block';
                 imageContent.style.display = 'none';
-            } else {
+                documentContent.style.display = "none";
+            } else if(contentType == "image") {
                 textContent.style.display = 'none';
                 imageContent.style.display = 'block';
+                documentContent.style.display = "none";
+            } else if(contentType == "doc"){
+                documentContent.style.display = "block";
+                textContent.style.display = 'none';
+                imageContent.style.display = 'none';
             }
         }
 

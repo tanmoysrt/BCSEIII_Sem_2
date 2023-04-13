@@ -1,0 +1,9 @@
+int main()
+{   
+    float d = 1.5;
+    int a = 10;
+    int c = a + b;
+    int b = 20;
+    int 34d = 56;
+    return 0;
+}

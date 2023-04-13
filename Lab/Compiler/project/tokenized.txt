@@ -1,0 +1,81 @@
+Lexeme:  (
+Type:  Delimiter
+Line No.:  1   Column No.:  8
+
+Lexeme:  )
+Type:  Delimiter
+Line No.:  1   Column No.:  9
+
+Lexeme:  +
+Type:  Arithmetic Operator
+Line No.:  6   Column No.:  13
+
+Lexeme:  ,
+Type:  Unknown
+Line No.:  2   Column No.:  6
+
+Lexeme:  0
+Type:  Numerical Constant
+Line No.:  9   Column No.:  9
+
+Lexeme:  ;
+Type:  Delimiter
+Line No.:  2   Column No.:  9
+Line No.:  3   Column No.:  6
+Line No.:  4   Column No.:  6
+Line No.:  6   Column No.:  16
+Line No.:  7   Column No.:  8
+Line No.:  9   Column No.:  9
+
+Lexeme:  =
+Type:  Arithmetic Operator
+Line No.:  6   Column No.:  9
+
+Lexeme:  get
+Type:  Keyword
+Line No.:  3   Column No.:  4
+Line No.:  4   Column No.:  4
+
+Lexeme:  int
+Type:  Keyword
+Line No.:  1   Column No.:  3
+Line No.:  2   Column No.:  4
+Line No.:  6   Column No.:  4
+
+Lexeme:  main
+Type:  Keyword
+Line No.:  1   Column No.:  8
+
+Lexeme:  put
+Type:  Keyword
+Line No.:  7   Column No.:  4
+
+Lexeme:  return
+Type:  Keyword
+Line No.:  9   Column No.:  7
+
+Lexeme:  sum
+Type:  ID
+Line No.:  6   Column No.:  8
+Line No.:  7   Column No.:  8
+
+Lexeme:  x
+Type:  ID
+Line No.:  2   Column No.:  6
+Line No.:  3   Column No.:  6
+Line No.:  6   Column No.:  12
+
+Lexeme:  y
+Type:  ID
+Line No.:  2   Column No.:  9
+Line No.:  4   Column No.:  6
+Line No.:  6   Column No.:  16
+
+Lexeme:  {
+Type:  Delimiter
+Line No.:  1   Column No.:  11
+
+Lexeme:  }
+Type:  Delimiter
+Line No.:  10   Column No.:  0
+

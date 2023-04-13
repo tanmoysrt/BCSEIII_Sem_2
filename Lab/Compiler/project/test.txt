@@ -1,0 +1,10 @@
+int main() {
+	int x, y;
+	get x;
+	get y;
+
+	int sum = x + y;
+	put sum;
+
+	return 0;
+}

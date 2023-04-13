@@ -17,8 +17,14 @@ public class Blog {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition="LONGTEXT")
     private String content;
+
+    @Column(name = "cover_image")
+    private String coverImage;
+
+    @Column(name = "topics")
+    private String topics;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
@@ -30,11 +36,13 @@ public class Blog {
     public Blog() {
     }
 
-    public Blog(String title, String content, User author, Date date) {
+    public Blog(String title, String content, User author, Date date, String coverImage, String topics) {
         this.title = title;
         this.content = content;
         this.author = author;
         this.date = date;
+        this.coverImage = coverImage;
+        this.topics = topics;
     }
 
 
@@ -76,5 +84,21 @@ public class Blog {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getCoverImage() {
+        return coverImage;
+    }
+
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
+    }
+
+    public String getTopics() {
+        return topics;
+    }
+
+    public void setTopics(String topics) {
+        this.topics = topics;
     }
 }

@@ -29,7 +29,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@JsonIgnoreProperties({"password", "active", "role", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
+@JsonIgnoreProperties({ "active", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
 @Table(name = "User")
 public class User implements UserDetails {
     @Id

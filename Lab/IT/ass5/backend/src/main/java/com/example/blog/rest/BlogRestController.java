@@ -24,6 +24,14 @@ public class BlogRestController {
         return blogs;
     }
 
+    @GetMapping("/all/filtered")
+    public List<Blog> getAllBlogsByUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        List<Blog> blogs = blogService.findByAuthorUsername(user.getUsername());
+        return blogs;
+    }
+
     @GetMapping("/{blogId}")
     public Blog getBlog(@PathVariable int blogId) {
         return blogService.findById(blogId);
@@ -34,13 +42,23 @@ public class BlogRestController {
         // Current logged in user is the author of the blog
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
-        return blogService.createBlog(blog.getTitle(), blog.getContent(), user.getUsername());
+        return blogService.createBlog(blog.getTitle(), blog.getContent(), user.getUsername(), blog.getCoverImage(), blog.getTopics());
     }
 
     @PutMapping("/{blogId}")
     public Boolean updateBlog(@PathVariable int blogId, @RequestBody Blog blog) {
         try {
-            blogService.updateBlog(blogId, blog.getTitle(), blog.getContent());
+            blogService.updateBlog(blogId, blog.getTitle(), blog.getContent(), blog.getCoverImage(), blog.getTopics());
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
+    }
+
+    @DeleteMapping("/{blogId}")
+    public Boolean deleteBlog(@PathVariable int blogId) {
+        try {
+            blogService.deleteBlog(blogId);
             return true;
         }catch (Exception e) {
             return false;

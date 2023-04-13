@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const PORT = parseInt(process.env.PORT);
 const DEBUG = parseInt(process.env.DEBUG);
+require("http").Server
 
 // Express
 const express = require('express');

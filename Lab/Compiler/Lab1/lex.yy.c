@@ -322,6 +322,9 @@ void yyfree ( void *  );
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
 /* Begin user sect3 */
+
+#define yywrap() (/*CONSTCOND*/1)
+#define YY_SKIP_YYWRAP
 typedef flex_uint8_t YY_CHAR;
 
 FILE *yyin = NULL, *yyout = NULL;
@@ -444,7 +447,8 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "calc.l"
-#line 2 "calc.l"
+#define YY_NO_INPUT 1
+#line 4 "calc.l"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -454,8 +458,8 @@ int last_operation = 0;
 // Last read number
 double number = 0;
 
-#line 458 "lex.yy.c"
-#line 459 "lex.yy.c"
+#line 462 "lex.yy.c"
+#line 463 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -515,8 +519,6 @@ extern int yywrap ( void );
 #endif
 
 #ifndef YY_NO_UNPUT
-    
-    static void yyunput ( int c, char *buf_ptr  );
     
 #endif
 
@@ -672,9 +674,9 @@ YY_DECL
 		}
 
 	{
-#line 13 "calc.l"
+#line 15 "calc.l"
 
-#line 678 "lex.yy.c"
+#line 680 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -733,7 +735,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 14 "calc.l"
+#line 16 "calc.l"
 {
     sscanf(yytext, "%lf", &number);
     switch(last_operation) {
@@ -761,46 +763,46 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 39 "calc.l"
+#line 41 "calc.l"
 { last_operation = 1; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 40 "calc.l"
+#line 42 "calc.l"
 { last_operation = 2; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 41 "calc.l"
+#line 43 "calc.l"
 { last_operation = 3; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 42 "calc.l"
+#line 44 "calc.l"
 { last_operation = 4; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 43 "calc.l"
+#line 45 "calc.l"
 { last_operation = 5; }
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 44 "calc.l"
+#line 46 "calc.l"
 { printf("%.2lf\n", result); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 45 "calc.l"
+#line 47 "calc.l"
 ;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 46 "calc.l"
+#line 48 "calc.l"
 ECHO;
 	YY_BREAK
-#line 804 "lex.yy.c"
+#line 806 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1135,43 +1137,6 @@ static int yy_get_next_buffer (void)
 }
 
 #ifndef YY_NO_UNPUT
-
-    static void yyunput (int c, char * yy_bp )
-{
-	char *yy_cp;
-    
-    yy_cp = (yy_c_buf_p);
-
-	/* undo effects of setting up yytext */
-	*yy_cp = (yy_hold_char);
-
-	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-		{ /* need to shift things up to make room */
-		/* +2 for EOB chars. */
-		int number_to_move = (yy_n_chars) + 2;
-		char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
-					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
-		char *source =
-				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move];
-
-		while ( source > YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
-			*--dest = *--source;
-
-		yy_cp += (int) (dest - source);
-		yy_bp += (int) (dest - source);
-		YY_CURRENT_BUFFER_LVALUE->yy_n_chars =
-			(yy_n_chars) = (int) YY_CURRENT_BUFFER_LVALUE->yy_buf_size;
-
-		if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-			YY_FATAL_ERROR( "flex scanner push-back overflow" );
-		}
-
-	*--yy_cp = (char) c;
-
-	(yytext_ptr) = yy_bp;
-	(yy_hold_char) = *yy_cp;
-	(yy_c_buf_p) = yy_cp;
-}
 
 #endif
 
@@ -1805,7 +1770,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 46 "calc.l"
+#line 48 "calc.l"
 
 
 // Main function
@@ -1813,3 +1778,4 @@ int main() {
     yylex();
     return 0;
 }
+
