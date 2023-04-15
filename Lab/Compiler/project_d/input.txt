@@ -1,0 +1,12 @@
+int main() {
+    int a = 5;
+    char c = 'x';
+    string s[10] = "hello";
+    put a + 2 * 3;
+    if (a > 3) {
+        put "a is greater than 3";
+    } else {
+        put "a is less than or equal to 3";
+    }
+    return 0;
+}

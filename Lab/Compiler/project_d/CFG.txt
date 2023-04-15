@@ -1,0 +1,20 @@
+prog -> type main ( ) { stmts }
+type -> int | char | string
+stmts -> stmt stmts | stmt
+delimeter -> ;
+stmt -> assignment_stmt | return_stmt | conditional_stmt | get_stmt | put_stmt | { stmts }
+return_stmt -> return expr delimeter
+assignment_stmt -> type id = expr delimeter | id = expr delimeter
+conditional_stmt -> expr ? expr : expr delimeter
+get_stmt -> get id delimeter
+put_stmt -> put expr delimeter
+arith_op -> + | - | *
+relop -> < | > | ==
+expr -> id expr' | num expr' | ( expr ) expr'
+expr' -> arith_op expr expr' | relop expr expr' | EPSILON
+S -> a B D h
+B -> c C
+C -> b C | EPSILON
+D -> E F
+E -> g | EPSILON
+F -> f | EPSILON
