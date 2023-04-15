@@ -75,8 +75,10 @@ public class SLR {
                     first.addAll(firstSymbolFirst);
                     break;
                 }else{
-                    System.out.println("First of " + production.get(i) + " contains epsilon");
-                    firstSymbolFirst.remove(EPSILON);
+                    // remove only if it is not the last symbol
+                    if(i + 1 < production.size()) {
+                        firstSymbolFirst.remove(EPSILON);
+                    }
                     first.addAll(firstSymbolFirst);
                 }
             }
@@ -168,11 +170,11 @@ public class SLR {
 
     public static void main(String[] args) throws Exception {
         // Read the grammar from CFG.txt
-        Path fileName = Path.of("./CFG.txt");
+        Path fileName = Path.of("./CFG_test.txt");
         SLR slr = new SLR();
         slr.readProductions(fileName);
-        slr.computerFirstPos();
-        System.out.println(slr.findFirst("D"));
+        // slr.computerFirstPos();
+        // System.out.println(slr.findFirst("S"));
         SLR.START_SYMBOL = "S";
         System.out.println(slr.findFollow("S"));
         System.out.println(slr.findFollow("B"));
@@ -180,6 +182,10 @@ public class SLR {
         System.out.println(slr.findFollow("D"));
         System.out.println(slr.findFollow("E"));
         System.out.println(slr.findFollow("F"));
+        // System.out.println(slr.findFollow("C"));
+        // System.out.println(slr.findFollow("D"));
+        // System.out.println(slr.findFollow("E"));
+        // System.out.println(slr.findFollow("F"));
         // slr.readProductions(fileName);
         // slr.findFirstPos("prog", new String[] {"type", "main", "(", ")", "{", "stmts", "}"});
 

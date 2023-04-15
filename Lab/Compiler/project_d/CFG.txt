@@ -12,9 +12,3 @@ arith_op -> + | - | *
 relop -> < | > | ==
 expr -> id expr' | num expr' | ( expr ) expr'
 expr' -> arith_op expr expr' | relop expr expr' | EPSILON
-S -> a B D h
-B -> c C
-C -> b C | EPSILON
-D -> E F
-E -> g | EPSILON
-F -> f | EPSILON
