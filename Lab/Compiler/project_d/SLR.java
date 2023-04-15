@@ -10,11 +10,13 @@ public class SLR {
     public static final String EPSILON = "EPSILON";
     public static final String DOLLAR = "$";
     public static String START_SYMBOL = null;
+    private Map<Integer, Map<String, List<List<String>>>> itemSets;
 
     public SLR() {
         production_rules = new HashMap<>();
         firstPos = new HashMap<>();
         followPos = new HashMap<>();
+        itemSets = new HashMap<>();
     }
 
     public void readProductions(Path path) throws Exception {
@@ -38,6 +40,10 @@ public class SLR {
 
     public boolean isNonTerminal(String symbol) {
         return production_rules.containsKey(symbol);
+    }
+
+    public boolean isTerminal(String symbol) {
+        return !isNonTerminal(symbol);
     }
 
     public Set<String> findFirst(String symbol) {
@@ -161,42 +167,191 @@ public class SLR {
         return symbol.equals(EPSILON);
     }
 
-
-    public void computerFirstPos() {
+    public void computeFirstPos() {
         for (String nonTerminal : production_rules.keySet()) {
             findFirst(nonTerminal);
         }
     }
+    
+    public Map<String, List<List<String>>> closure(String symbol) {
+        Map<String, List<List<String>>> closureSet = new HashMap<>();
+        Queue<String> queue = new LinkedList<>();
+        List<String> startRule = new ArrayList<>(Arrays.asList(".", symbol));
+        List<List<String>> startClosure = new ArrayList<>(Arrays.asList(startRule));
+        closureSet.put(symbol, startClosure);
+        queue.offer(symbol);
+        while (!queue.isEmpty()) {
+            String nextSymbol = queue.poll();
+            List<List<String>> nextClosureSet = closureSet.get(nextSymbol);
+            for (int i = 0; i < nextClosureSet.size(); i++) {
+                List<String> nextAugmentedRule = new ArrayList<>(nextClosureSet.get(i));
+                if (nextAugmentedRule.indexOf(".") == nextAugmentedRule.size() - 1) {
+                    continue;
+                }
+                String nextNextSymbol = nextAugmentedRule.get(nextAugmentedRule.indexOf(".") + 1);
+                if (!production_rules.containsKey(nextNextSymbol)) {
+                    continue;
+                }
+                List<List<String>> nextNextClosureSet = closureSet.getOrDefault(nextNextSymbol, new ArrayList<>());
+                for (List<String> nextProductionRule : production_rules.get(nextNextSymbol)) {
+                    List<String> nextNextAugmentedRule = new ArrayList<>(nextProductionRule);
+                    nextNextAugmentedRule.add(0, ".");
+                    boolean added = false;
+                    for (Iterator<List<String>> it = nextNextClosureSet.iterator(); it.hasNext();) {
+                        List<String> rule = it.next();
+                        if (rule.equals(nextNextAugmentedRule)) {
+                            added = true;
+                            break;
+                        }
+                    }
+                    if (!added) {
+                        nextNextClosureSet.add(nextNextAugmentedRule);
+                        closureSet.put(nextNextSymbol, nextNextClosureSet);
+                        queue.offer(nextNextSymbol);
+                    }
+                }
+            }
+        }
+        // delete the self E -> . E
+        if(startClosure.size() > 0){
+            closureSet.get(symbol).remove(startClosure.get(0));
+        }
+        return closureSet;
+    }
+    
+    public void preapareFirstSet(){
+        Map<String, List<List<String>>> closureSet = closure(START_SYMBOL);
+        closureSet.put(START_SYMBOL+"'", new ArrayList<>(Arrays.asList(new ArrayList<>(Arrays.asList(".", START_SYMBOL)))));
+        itemSets.put(itemSets.size(), closureSet);
+    }
+
+    public Map<String, List<List<String>>> gotoSet(Map<String, List<List<String>>> closureSet, String symbol) {
+        Map<String, List<List<String>>> closureSetCopy = new HashMap<>();
+        for (String nonTerminal : closureSet.keySet()) {
+            List<List<String>> rules = new ArrayList<>();
+            for (List<String> rule : closureSet.get(nonTerminal)) {
+                rules.add(new ArrayList<>(rule));
+            }
+            closureSetCopy.put(nonTerminal, rules);
+        }
+
+        Map<String, List<List<String>>> gotoSets = new HashMap<>();
+        // filter the closure which has symbol after dot
+        for (String nonTerminal : closureSetCopy.keySet()) {
+            List<List<String>> rules = new ArrayList<>();
+            for (List<String> rule : closureSetCopy.get(nonTerminal)) {
+                if (rule.indexOf(".") + 1 < rule.size() && rule.get(rule.indexOf(".") + 1).equals(symbol)) {
+                    rules.add(rule);
+                }
+            }
+            if(rules.size() > 0){
+                gotoSets.put(nonTerminal, rules);
+            }
+        }
+
+        // move the dot
+        for (String nonTerminal : gotoSets.keySet()) {
+            List<List<String>> rules = gotoSets.get(nonTerminal);
+            for (List<String> rule : rules) {
+                int dotIndex = rule.indexOf(".");
+                rule.set(dotIndex, rule.get(dotIndex + 1));
+                rule.set(dotIndex + 1, ".");
+            }
+        }
+
+        // generate the list of symbols after dot
+        Set<String> symbols_after_dot = new HashSet<>();
+        for (String nonTerminal : gotoSets.keySet()) {
+            List<List<String>> rules = gotoSets.get(nonTerminal);
+            for (List<String> rule : rules) {
+                int dotIndex = rule.indexOf(".");
+                if(dotIndex + 1 < rule.size()){
+                    symbols_after_dot.add(rule.get(dotIndex + 1));
+                }
+            }
+        }
+
+        // generate closure set for each symbol after dot
+        for (String symbol_after_dot : symbols_after_dot) {
+            Map<String, List<List<String>>> closureSetForSymbol = closure(symbol_after_dot);
+            for (String nonTerminal : closureSetForSymbol.keySet()) {
+                List<List<String>> rules = closureSetForSymbol.get(nonTerminal);
+                if(rules.size() > 0){
+                    if(gotoSets.containsKey(nonTerminal)){
+                        gotoSets.get(nonTerminal).addAll(rules);
+                    }else{
+                        gotoSets.put(nonTerminal, rules);
+                    }
+                }
+            }
+        }
+
+        return gotoSets;
+    }
+
+    public void generateItemSets() {
+        // Prepare I0
+        preapareFirstSet();
+        System.out.println("Item Sets > "+itemSets);
+        // Create list of symbols
+        HashSet<String> symbols = new HashSet<>();
+        for (String nonTerminal : production_rules.keySet()) {
+            symbols.add(nonTerminal);
+            for (List<String> rule : production_rules.get(nonTerminal)) {
+                symbols.addAll(rule);
+            }
+        }
+        // Generate item sets
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(0);
+        System.out.println(itemSets);
+
+        while (!queue.isEmpty()) {
+            int itemSetId = queue.poll();
+            // System.out.println("Item Set Id > "+itemSetId);
+            Map<String, List<List<String>>> itemSetMap = itemSets.get(itemSetId);
+            
+            for (String symbol : symbols) {
+                Map<String, List<List<String>>> gotoSet = gotoSet(itemSetMap, symbol);
+                System.out.println("ID > "+itemSetId+" Symbol > "+symbol+" Goto Set > "+gotoSet);
+
+                if (gotoSet.size() == 0) {
+                    continue;
+                }
+                itemSets.put(itemSets.size(), gotoSet);
+                queue.offer(itemSets.size() - 1);
+            }
+        }
+    }
 
     public static void main(String[] args) throws Exception {
-        // Read the grammar from CFG.txt
-        Path fileName = Path.of("./CFG_test.txt");
+        // ? Read the grammar from CFG.txt
+        Path fileName = Path.of("./CFG_test_2.txt");
         SLR slr = new SLR();
+        SLR.START_SYMBOL = "E";
         slr.readProductions(fileName);
-        // slr.computerFirstPos();
+        // slr.computeFirstPos();
         // System.out.println(slr.findFirst("S"));
-        SLR.START_SYMBOL = "S";
-        System.out.println(slr.findFollow("S"));
-        System.out.println(slr.findFollow("B"));
-        System.out.println(slr.findFollow("C"));
-        System.out.println(slr.findFollow("D"));
-        System.out.println(slr.findFollow("E"));
-        System.out.println(slr.findFollow("F"));
+        // ? Prepare followpos and firstpos
+        // System.out.println(slr.findFollow("S"));
+        // System.out.println(slr.findFollow("B"));
         // System.out.println(slr.findFollow("C"));
         // System.out.println(slr.findFollow("D"));
         // System.out.println(slr.findFollow("E"));
         // System.out.println(slr.findFollow("F"));
-        // slr.readProductions(fileName);
-        // slr.findFirstPos("prog", new String[] {"type", "main", "(", ")", "{", "stmts", "}"});
 
-        // for (String production : slr.productions) {
-        //     String[] parts = production.split("->");
-        //     String nonTerminal = parts[0].trim();
-        //     String[] symbols = parts[1].trim().split(" ");
-        //     slr.findFirstPos(nonTerminal, symbols);
-        //     slr.findFollowPos(nonTerminal, symbols);
-        // }
-        // Prepare followpos and firstpos
+        // Prepare LR(0) items
+        // System.out.println(slr.closure("E"));
+
+        // slr.preapareFirstSet();
+        slr.generateItemSets();
+        // System.out.println(slr.itemSets);
+        // System.out.println(slr.gotoSet(slr.itemSets.get(0), "("));
+        // System.out.println(slr.itemSets);
+        // slr.generateItemSets(); 
+        System.out.println(slr.itemSets);
+
         // Prepare the parsing table
+
     }
 }
