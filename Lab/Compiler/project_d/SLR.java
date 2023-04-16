@@ -5,18 +5,24 @@ import java.util.stream.Collectors;
 
 public class SLR {
     private Map<String, List<List<String>>> production_rules;
-    private Map<String, Set<String>> firstPos;
-    private Map<String, Set<String>> followPos;
+    private Map<String, List<String>> production_rules_numbered; // only for parsing purpose, to lookup reduced production
+    public Map<String, Set<String>> firstPos;
+    public Map<String, Set<String>> followPos;
     public static final String EPSILON = "EPSILON";
     public static final String DOLLAR = "$";
     public static String START_SYMBOL = null;
     private Map<Integer, Map<String, List<List<String>>>> itemSets;
+    private Map<Integer, Map<String, Integer>> gotoTable;
+    private Map<Integer, Map<String, String>> parsingTable ;
 
     public SLR() {
         production_rules = new HashMap<>();
+        production_rules_numbered = new HashMap<>();
         firstPos = new HashMap<>();
         followPos = new HashMap<>();
         itemSets = new HashMap<>();
+        gotoTable = new HashMap<>();
+        parsingTable = new HashMap<>();
     }
 
     public void readProductions(Path path) throws Exception {
@@ -35,6 +41,15 @@ public class SLR {
                 productions.add(tmp);
             }
             production_rules.put(nonTerminal, productions);
+        }
+
+        // generate the numbered productions
+        for(String symbol : production_rules.keySet()) {
+            List<List<String>> productions = production_rules.get(symbol);
+            for (int i = 0; i < productions.size(); i++) {
+                List<String> production = productions.get(i);
+                production_rules_numbered.put(symbol+"_"+i, production);
+            }
         }
     }
 
@@ -292,7 +307,7 @@ public class SLR {
     public void generateItemSets() {
         // Prepare I0
         preapareFirstSet();
-        System.out.println("Item Sets > "+itemSets);
+        // System.out.println("Item Sets > "+itemSets);
         // Create list of symbols
         HashSet<String> symbols = new HashSet<>();
         for (String nonTerminal : production_rules.keySet()) {
@@ -301,10 +316,10 @@ public class SLR {
                 symbols.addAll(rule);
             }
         }
+        symbols.remove(EPSILON);
         // Generate item sets
         Queue<Integer> queue = new LinkedList<>();
         queue.offer(0);
-        System.out.println(itemSets);
 
         while (!queue.isEmpty()) {
             int itemSetId = queue.poll();
@@ -313,45 +328,291 @@ public class SLR {
             
             for (String symbol : symbols) {
                 Map<String, List<List<String>>> gotoSet = gotoSet(itemSetMap, symbol);
-                System.out.println("ID > "+itemSetId+" Symbol > "+symbol+" Goto Set > "+gotoSet);
+                // System.out.println("ID > "+itemSetId+" Symbol > "+symbol+" Goto Set > "+gotoSet);
 
                 if (gotoSet.size() == 0) {
                     continue;
                 }
-                itemSets.put(itemSets.size(), gotoSet);
-                queue.offer(itemSets.size() - 1);
+
+                // check if there is already existing item set with sa me content as gotoSet
+                boolean found = false;
+                int movedState = -1;
+                for (int i = 0; i < itemSets.size(); i++) {
+                    if (itemSets.get(i).equals(gotoSet)) {
+                        movedState = i;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    movedState = itemSets.size();
+                    itemSets.put(itemSets.size(), gotoSet);
+                    queue.offer(itemSets.size() - 1);
+                }
+
+                // entry in goto table
+                if (gotoTable.containsKey(itemSetId)) {
+                    gotoTable.get(itemSetId).put(symbol, movedState);
+                } else {
+                    gotoTable.put(itemSetId, new HashMap<>());
+                    gotoTable.get(itemSetId).put(symbol, movedState);
+                }
+
             }
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        // ? Read the grammar from CFG.txt
-        Path fileName = Path.of("./CFG_test_2.txt");
-        SLR slr = new SLR();
-        SLR.START_SYMBOL = "E";
-        slr.readProductions(fileName);
-        // slr.computeFirstPos();
-        // System.out.println(slr.findFirst("S"));
-        // ? Prepare followpos and firstpos
-        // System.out.println(slr.findFollow("S"));
-        // System.out.println(slr.findFollow("B"));
-        // System.out.println(slr.findFollow("C"));
-        // System.out.println(slr.findFollow("D"));
-        // System.out.println(slr.findFollow("E"));
-        // System.out.println(slr.findFollow("F"));
+    public void generateParsingTable(){
+        // rows -> size of item sets
+        // columns -> size of symbols
+        // I0 -> { * -> S4, + -> ACC ,  * -> R5}
+        parsingTable = new HashMap<>();
+        HashSet<String> symbols = new HashSet<>();
+        for (String nonTerminal : production_rules.keySet()) {
+            symbols.add(nonTerminal);
+            for (List<String> rule : production_rules.get(nonTerminal)) {
+                symbols.addAll(rule);
+            }
+        }
+        symbols.remove(EPSILON);
+        Set<String> terminals = symbols.stream().filter(x -> !isNonTerminal(x)).collect(Collectors.toSet());
+        // Set<String> nonTerminals = symbols.stream().filter(x -> isNonTerminal(x)).collect(Collectors.toSet());
+        
+        // create hashmaps
+        for (int i = 0; i < itemSets.size(); i++) {
+            parsingTable.put(i, new HashMap<>());
+        }
 
-        // Prepare LR(0) items
-        // System.out.println(slr.closure("E"));
+        // fill the table with shift
+        for (Integer startState : gotoTable.keySet()){
+            for (String symbol : gotoTable.get(startState).keySet()){
+                if(terminals.contains(symbol)){
+                    parsingTable.get(startState).put(symbol, "S_"+gotoTable.get(startState).get(symbol));
+                }else{
+                    parsingTable.get(startState).put(symbol, gotoTable.get(startState).get(symbol).toString());
+                }
+            }
+        }
 
-        // slr.preapareFirstSet();
-        slr.generateItemSets();
-        // System.out.println(slr.itemSets);
-        // System.out.println(slr.gotoSet(slr.itemSets.get(0), "("));
-        // System.out.println(slr.itemSets);
-        // slr.generateItemSets(); 
-        System.out.println(slr.itemSets);
+        // fill the accept state
+        for(Integer itemSetId : itemSets.keySet()){
+            Map<String, List<List<String>>> itemSet = itemSets.get(itemSetId);
+            for (String symbol : itemSet.keySet()) {
+                if(symbol.equals(START_SYMBOL+"'")){
+                    List<List<String>> rules = itemSet.get(symbol);
+                    for (List<String> rule : rules) {
+                        if(rule.get(rule.size() - 1).equals(".") && rule.get(0).equals(START_SYMBOL)){
+                            parsingTable.get(itemSetId).put("$", "ACC");
+                        }
+                    }
+                }
+            }
+        }
 
-        // Prepare the parsing table
-
+        // fill the reduce state
+        for(Integer itemSetId : itemSets.keySet()){
+            // itemset
+            Map<String, List<List<String>>> itemSet = itemSets.get(itemSetId);
+            // each rule in itemset
+            for (String symbol : itemSet.keySet()) {
+                // if non terminal
+                if(isNonTerminal(symbol)){
+                    List<List<String>> rules = itemSet.get(symbol);
+                    for (List<String> rule : rules) {
+                        if(rule.get(rule.size() - 1).equals(".")){
+                            List<String> ruleCopy = new ArrayList<>(rule);
+                            ruleCopy.remove(".");
+                            // find ruleCopy in production rules numbered
+                            for(String nonTerminal: production_rules_numbered.keySet()){
+                                if(nonTerminal.startsWith(symbol+"_") && production_rules_numbered.get(nonTerminal).equals(ruleCopy)){
+                                    // find follow
+                                    Set<String> follows = findFollow(symbol);
+                                    // fill in parsing table
+                                    for (String follow : follows) {
+                                        parsingTable.get(itemSetId).put(follow, "R_"+nonTerminal);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
+
+    public void parseInput(String input){
+        ArrayList<String> inputList = new ArrayList<>(Arrays.asList(input.split(" ")));
+        inputList.add("$");
+        System.out.println(inputList);
+        Stack<String> stateStack = new Stack<>();
+        Queue<String> inputQueue = new LinkedList<>(inputList);
+        stateStack.push("0");
+        while(true){
+            String currentState = stateStack.peek();
+            String currentInput = inputQueue.peek();
+            if(isDigit(currentState)){
+                Integer currentState__int = Integer.parseInt(currentState);
+                if(parsingTable.get((currentState__int)).containsKey(currentInput)){
+                    String action = parsingTable.get(currentState__int).get(currentInput);
+                    if(action.startsWith("S")){
+                        // shift operation
+                        stateStack.push(currentInput);
+                        stateStack.push(action.split("_")[1]);
+                        inputQueue.poll();
+                    }
+                    else if(action.startsWith("R")){
+                        // reduce operation
+                        String nonTerminal = action.split("_", 2)[1];
+                        List<String> ruleList = production_rules_numbered.get(nonTerminal);
+                        // pop the stack ruleLength*2 times
+                        Integer ruleLength = ruleList.size();
+                        for (int i = 0; i < ruleLength; i++) {
+                            stateStack.pop();
+                            stateStack.pop();
+                        }
+                        // add non terminal to stack
+                        String s = nonTerminal.split("_")[0];
+                        stateStack.push(s);
+
+                        // take last 2 elements of stack
+                        String lastState = stateStack.get(stateStack.size() - 2);
+                        String lastNonTerminal = stateStack.peek();
+
+                        // find state from latState , lastNonTerminal
+                        String c = parsingTable.get(Integer.parseInt(lastState)).get(lastNonTerminal);
+                        // push state to stack
+                        stateStack.push(c);
+                    }
+                    else if(action.equals("ACC")){
+                        System.out.println("Accepted");
+                        break;
+                    }else{
+                        System.out.println("Parsing Failed !");
+                        break;
+                    }
+                    System.out.println("Action: "+action+" Stack: "+stateStack+" Input Queue: "+inputQueue);
+                }else{
+                    System.out.println("Can't find action for state: "+currentState+" and input: "+currentInput+" in parsing table !");
+                    System.out.println("Parsing failed !");
+                    break;
+                }
+            }else{
+                System.out.println("Parsing failed !");
+                System.out.println("In stack last element is not a state !");
+                break;
+            }
+        }
+    }
+
+    public boolean isDigit(String s){
+        return s.chars().allMatch(Character::isDigit);
+    }
+
+    // Display functions
+    public void displayProductionRules(){
+        for (String nonTerminal : production_rules.keySet()) {
+            for (List<String> rule : production_rules.get(nonTerminal)) {
+                System.out.print(nonTerminal+" -> ");
+                for (String symbol : rule) {
+                    System.out.print(symbol+" ");
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    public void displayParsingTable(){
+        HashSet<String> symbols = new HashSet<>();
+        for (String nonTerminal : production_rules.keySet()) {
+            symbols.add(nonTerminal);
+            for (List<String> rule : production_rules.get(nonTerminal)) {
+                symbols.addAll(rule);
+            }
+        }
+        symbols.remove(EPSILON);
+        symbols.add("$");
+        // print header
+        System.out.print("State\t");
+        for (String symbol : symbols) {
+            System.out.print(symbol+"\t\t");
+        }
+        // print rows
+        for (Integer state : parsingTable.keySet()) {
+            System.out.println();
+            System.out.print(state+"\t\t");
+            for (String symbol : symbols) {
+                if(parsingTable.get(state).containsKey(symbol)){
+                    System.out.print(parsingTable.get(state).get(symbol)+"\t");
+                }else{
+                    System.out.print("\t\t");
+                }
+            }
+        }
+        System.out.println();
+    }
+
+    public void displayItemSets(){
+        for (Integer itemSetId : itemSets.keySet()) {
+            System.out.println(">> I"+itemSetId);
+            Map<String, List<List<String>>> itemSet = itemSets.get(itemSetId);
+            for (String nonTerminal : itemSet.keySet()) {
+                for (List<String> rule : itemSet.get(nonTerminal)) {
+                    System.out.print(nonTerminal+" -> ");
+                    for (String symbol : rule) {
+                        System.out.print(symbol+" ");
+                    }
+                    System.out.println();
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public void displayFirstPosTable(){
+        for (String nonTerminal : production_rules.keySet()) {
+            System.out.println(nonTerminal+" -> "+findFirst(nonTerminal));
+        }
+        System.out.println();
+    }
+
+    public void displayFollowPosTable(){
+        for (String nonTerminal : production_rules.keySet()) {
+            System.out.println(nonTerminal+" -> "+findFollow(nonTerminal));
+        }
+        System.out.println();
+    }
+
+    // public static void main(String[] args) throws Exception {
+    //     // ? Read the grammar from CFG.txt
+    //     Path fileName = Path.of("./CFG_test_2.txt");
+    //     SLR slr = new SLR();
+    //     SLR.START_SYMBOL = "E";
+    //     slr.readProductions(fileName);
+    //     // System.out.println(slr.production_rules_numbered);
+    //     // slr.computeFirstPos();
+    //     // System.out.println(slr.findFirst("S"));
+    //     // ? Prepare followpos and firstpos
+    //     // System.out.println(slr.findFollow("S"));
+    //     // System.out.println(slr.findFollow("B"));
+    //     // System.out.println(slr.findFollow("C"));
+    //     // System.out.println(slr.findFollow("D"));
+    //     // System.out.println(slr.findFollow("E"));
+    //     // System.out.println(slr.findFollow("F"));
+
+    //     // Prepare LR(0) items
+    //     // System.out.println(slr.closure("E"));
+
+    //     // slr.preapareFirstSet();
+    //     slr.generateItemSets();
+    //     // System.out.println(slr.itemSets);
+    //     // System.out.println(slr.gotoTable);
+    //     slr.generateParsingTable();
+    //     System.out.println(slr.parsingTable);
+    //     slr.parseInput("id * id + id");
+    //     // slr.displayParsingTable();
+
+    //     // Prepare the parsing table
+
+    // }
 }
