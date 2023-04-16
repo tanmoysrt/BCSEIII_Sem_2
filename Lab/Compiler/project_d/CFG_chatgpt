@@ -1,0 +1,33 @@
+prog -> type main ( ) { stmts }
+type -> int | char | string
+stmts -> stmt stmts | EPSILON
+stmt -> assignmentStmt | returnStmt | conditionalStmt | getStmt | putStmt | blockStmt
+returnStmt -> RETURN expr ;
+assignmentStmt -> type id ASSIGN_OP expr ;
+conditionalStmt -> expr QUESTION_MARK expr COLON expr ;
+getStmt -> GET id ;
+putStmt -> PUT expr ;
+blockStmt -> LEFT_BRACE stmts RIGHT_BRACE
+expr -> term expr'
+expr' -> relop term expr' | EPSILON
+term -> factor term'
+term' -> arith_op factor term' | EPSILON
+factor -> id | num | LEFT_PAREN expr RIGHT_PAREN
+id -> letter id'
+id' -> letter | digit | EPSILON
+num -> digit num'
+num' -> digit num' | EPSILON
+letter -> a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z
+digit -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
+ASSIGN_OP -> =
+QUESTION_MARK -> ?
+COLON -> :
+LEFT_PAREN -> (
+RIGHT_PAREN -> )
+LEFT_BRACE -> {
+RIGHT_BRACE -> }
+SEMICOLON -> ;
+RETURN -> return
+GET -> get
+PUT -> put

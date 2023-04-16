@@ -231,12 +231,28 @@ public class SLR {
         if(startClosure.size() > 0){
             closureSet.get(symbol).remove(startClosure.get(0));
         }
+        // if E -> . EPSILON is there, delete EPSILON from first set
+        for (String nonTerminal : closureSet.keySet()) {
+            List<List<String>> rules = closureSet.get(nonTerminal);
+            for (int i = 0; i < rules.size(); i++) {
+                List<String> rule = rules.get(i);
+                if(rule.size() == 2 && rule.get(1).equals(EPSILON)){
+                    rule.remove(1);
+                }
+            }
+            for (List<String> rule : rules) {
+                if(rule.size() == 2 && rule.get(1).equals(EPSILON)){
+                    firstPos.get(nonTerminal).remove(EPSILON);
+                }
+            }
+        }
+
         return closureSet;
     }
     
     public void preapareFirstSet(){
         Map<String, List<List<String>>> closureSet = closure(START_SYMBOL);
-        closureSet.put(START_SYMBOL+"'", new ArrayList<>(Arrays.asList(new ArrayList<>(Arrays.asList(".", START_SYMBOL)))));
+        closureSet.put(START_SYMBOL+"'", new ArrayList<>(List.of(new ArrayList<>(Arrays.asList(".", START_SYMBOL)))));
         itemSets.put(itemSets.size(), closureSet);
     }
 
@@ -249,6 +265,8 @@ public class SLR {
             }
             closureSetCopy.put(nonTerminal, rules);
         }
+
+
 
         Map<String, List<List<String>>> gotoSets = new HashMap<>();
         // filter the closure which has symbol after dot
@@ -532,20 +550,21 @@ public class SLR {
         }
         symbols.remove(EPSILON);
         symbols.add("$");
+        int width = 10;
         // print header
-        System.out.print("State\t");
+        System.out.print(centerText("State", width));
         for (String symbol : symbols) {
-            System.out.print(symbol+"\t\t");
+            System.out.print(centerText(symbol, width));
         }
         // print rows
         for (Integer state : parsingTable.keySet()) {
             System.out.println();
-            System.out.print(state+"\t\t");
+            System.out.print(centerText(state.toString(), width));
             for (String symbol : symbols) {
                 if(parsingTable.get(state).containsKey(symbol)){
-                    System.out.print(parsingTable.get(state).get(symbol)+"\t");
+                    System.out.print(centerText(parsingTable.get(state).get(symbol), width));
                 }else{
-                    System.out.print("\t\t");
+                    System.out.print(centerText("", width));
                 }
             }
         }
@@ -569,6 +588,15 @@ public class SLR {
         }
     }
 
+    public void displayGotoTable(){
+        for(Integer state : gotoTable.keySet()){
+            for (String symbol : gotoTable.get(state).keySet()) {
+                System.out.println("goto("+state+","+symbol+") = "+gotoTable.get(state).get(symbol));
+            }
+            System.out.println();
+        }
+    }
+
     public void displayFirstPosTable(){
         for (String nonTerminal : production_rules.keySet()) {
             System.out.println(nonTerminal+" -> "+findFirst(nonTerminal));
@@ -582,6 +610,28 @@ public class SLR {
         }
         System.out.println();
     }
+
+    public static String centerText(String input, int width) {
+        if (input.length() >= width) {
+            return input; // if the input is already wider than the desired width, return it as-is
+        }
+        
+        int padding = width - input.length();
+        int leftPadding = padding / 2;
+        int rightPadding = padding - leftPadding;
+        
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < leftPadding; i++) {
+            builder.append(" "); // add left padding
+        }
+        builder.append(input); // add the input text
+        for (int i = 0; i < rightPadding; i++) {
+            builder.append(" "); // add right padding
+        }
+        
+        return builder.toString();
+    }
+    
 
     // public static void main(String[] args) throws Exception {
     //     // ? Read the grammar from CFG.txt
