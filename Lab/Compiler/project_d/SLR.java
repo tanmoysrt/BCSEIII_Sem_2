@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class SLR {
+    private List<String> nonTerminalKeys;
     private Map<String, List<List<String>>> production_rules;
     private Map<String, List<String>> production_rules_numbered; // only for parsing purpose, to lookup reduced production
     public Map<String, Set<String>> firstPos;
@@ -16,6 +17,7 @@ public class SLR {
     private Map<Integer, Map<String, String>> parsingTable ;
 
     public SLR() {
+        nonTerminalKeys = new ArrayList<>();
         production_rules = new HashMap<>();
         production_rules_numbered = new HashMap<>();
         firstPos = new HashMap<>();
@@ -30,6 +32,7 @@ public class SLR {
         for(String line : raw_lines) {
             String[] parts = line.split("->");
             String nonTerminal = parts[0].trim();
+            nonTerminalKeys.add(nonTerminal);
             List<List<String>> productions = new ArrayList<>();
             String[] production_parts = parts[1].trim().split("\\|");
             for (String production_part : production_parts) {
@@ -48,6 +51,9 @@ public class SLR {
             List<List<String>> productions = production_rules.get(symbol);
             for (int i = 0; i < productions.size(); i++) {
                 List<String> production = productions.get(i);
+                if(production.size() == 1 && production.get(0).equals(EPSILON)){
+                    production = new ArrayList<>();
+                }
                 production_rules_numbered.put(symbol+"_"+i, production);
             }
         }
@@ -82,10 +88,10 @@ public class SLR {
             first.add(EPSILON);
             return first;
         }
-        // 3
-        if(firstPos.containsKey(symbol)) {
-            return firstPos.get(symbol);
-        }
+        // 3 TODO
+        // if(firstPos.containsKey(symbol)) {
+        //     return firstPos.get(symbol);
+        // }
         // 4
         List<List<String>> productions = production_rules.get(symbol);
         // 5
@@ -573,42 +579,59 @@ public class SLR {
 
     public void displayItemSets(){
         for (Integer itemSetId : itemSets.keySet()) {
-            System.out.println(">> I"+itemSetId);
+            System.out.print("I"+itemSetId+" => ");
             Map<String, List<List<String>>> itemSet = itemSets.get(itemSetId);
+            System.out.print("{ ");
             for (String nonTerminal : itemSet.keySet()) {
                 for (List<String> rule : itemSet.get(nonTerminal)) {
                     System.out.print(nonTerminal+" -> ");
                     for (String symbol : rule) {
                         System.out.print(symbol+" ");
                     }
-                    System.out.println();
+                    System.out.print(" # ");
                 }
             }
-            System.out.println();
+            System.out.println(" }");
         }
     }
 
     public void displayGotoTable(){
         for(Integer state : gotoTable.keySet()){
             for (String symbol : gotoTable.get(state).keySet()) {
-                System.out.println("goto("+state+","+symbol+") = "+gotoTable.get(state).get(symbol));
+                int state_no = gotoTable.get(state).get(symbol);
+                System.out.print("goto("+state+","+symbol+") => I"+state_no);
+                Map<String, List<List<String>>> itemSet = itemSets.get(state_no);
+                System.out.print("{ ");
+                for (String nonTerminal : itemSet.keySet()) {
+                    for (List<String> rule : itemSet.get(nonTerminal)) {
+                        System.out.print(nonTerminal+" -> ");
+                        for (String symboll : rule) {
+                            System.out.print(symboll+" ");
+                        }
+                        System.out.print(" # ");
+                    }
+                }
+                System.out.println(" }");
+            }
+        }
+    }
+
+    public void displayFirstAndFollowPosTable(){
+        System.out.println(centerText("Symbol", 10) + centerText("FIRST", 30) + centerText("FOLLOW", 30));
+        for (String nonTerminal : nonTerminalKeys) {
+            System.out.println(centerText(nonTerminal, 10)+centerText(findFirst(nonTerminal).toString(), 30)+centerText(findFollow(nonTerminal).toString(), 30));
+        }
+        System.out.println();
+    }
+
+    public void displayNumberedProductionRules(){
+        for (String nonTerminal : production_rules_numbered.keySet()) {
+            System.out.print(nonTerminal+" -> ");
+            for (String symbol : production_rules_numbered.get(nonTerminal)) {
+                System.out.print(symbol+" ");
             }
             System.out.println();
         }
-    }
-
-    public void displayFirstPosTable(){
-        for (String nonTerminal : production_rules.keySet()) {
-            System.out.println(nonTerminal+" -> "+findFirst(nonTerminal));
-        }
-        System.out.println();
-    }
-
-    public void displayFollowPosTable(){
-        for (String nonTerminal : production_rules.keySet()) {
-            System.out.println(nonTerminal+" -> "+findFollow(nonTerminal));
-        }
-        System.out.println();
     }
 
     public static String centerText(String input, int width) {
@@ -632,6 +655,7 @@ public class SLR {
         return builder.toString();
     }
     
+
 
     // public static void main(String[] args) throws Exception {
     //     // ? Read the grammar from CFG.txt

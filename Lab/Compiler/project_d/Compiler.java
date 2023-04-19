@@ -15,8 +15,8 @@ public class Compiler {
        }
        System.out.println("\n--------------------\n");
         // Generate symbol table
-//        SymbolTable symbolTable = SymbolTable.generateFromTokens(tokens);
-//        symbolTable.display();
+    //    SymbolTable symbolTable = SymbolTable.generateFromTokens(tokens);
+    //    symbolTable.display();
 //        System.out.println("--------------------\n");
 
         // Create instance of SLR
@@ -27,18 +27,13 @@ public class Compiler {
         System.out.println("> Production Rules : \n");
         // Display production rules
         slr.displayProductionRules();
-        System.out.println("--------------------\n");
+        System.out.println();
         // Set start symbol
         SLR.START_SYMBOL = "S";
         // Generate first set
         slr.computeFirstPos();
-        System.out.println("> First Set : \n");
-        slr.displayFirstPosTable();
-        System.out.println("--------------------\n");
-        // Display follow set
-        System.out.println("\n> Follow Set : \n");
-        slr.displayFollowPosTable();
-        System.out.println("--------------------\n");
+        System.out.println("> First / Follow Set \n");
+        slr.displayFirstAndFollowPosTable();
         // Generate LR(0) Item Set
         slr.generateItemSets();
         // Display LR(0) Item Set
@@ -47,7 +42,9 @@ public class Compiler {
         // Display goto table
         System.out.println("\n> Goto Table : \n");
         slr.displayGotoTable();
-        System.out.println("--------------------\n");
+        // Display production numbers
+        System.out.println("\n> Production Numbers : \n");
+        slr.displayNumberedProductionRules();
         // Generate SLR Parsing Table
         slr.generateParsingTable();
         // Display SLR Parsing Table
