@@ -5,14 +5,14 @@ public class Compiler {
     public static void main(String[] args) throws Exception{
 //        String code = "id + id * id";
         // String code = "id + ( id )";
-        String code = "int main ( ) { int a = \"a\" ; get a ; put a ; return a ; } ";
-       System.out.println(code);
+        String code = "int main(){int a = 0; a = (a < 2)  ; a=6; get a; put a; return a; } ";
+       System.out.println(code); 
         // Generate tokens
        ArrayList<Token> tokens = Tokenizer.tokenize(code);
        System.out.println("\n> Tokens: ");
        for (Token token : tokens) {
            System.out.print(token.text);
-           System.out.print(" ");
+           System.out.print("|");
        }
        System.out.println("\n--------------------\n");
         // Generate symbol table

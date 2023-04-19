@@ -36,20 +36,49 @@ public class Tokenizer {
                 Pattern pattern = Pattern.compile(tokenRegex[1]);
                 matcher = pattern.matcher(inputString.substring(position));
                 if (matcher.lookingAt()) {
+                    // Get the line and column number of the token
+                    int[] lineColumn = getLineAndColumn(inputString, position);
+
                     String text = matcher.group(0);
+                    boolean charPatternMatched = false;
+                    boolean stringPatternMatched = false;
+                    
                     // For string and char tokens, remove the quotes
                     if (tokenRegex[0].equals("constant")) {
                         // check if constant is a string or char
-                        Pattern charOrStringPattern = Pattern.compile("(\'.\'|\".*\")");
-                        Matcher charOrStringMatcher = charOrStringPattern.matcher(text);
-                        if (charOrStringMatcher.matches()) {
+                        Pattern charPattern = Pattern.compile("\'.\'");
+                        Pattern stringPattern = Pattern.compile("\".\"");
+                        Matcher charPatternMatcher = charPattern.matcher(text);
+                        Matcher stringPatternMatcher = stringPattern.matcher(text);
+                        charPatternMatched = charPatternMatcher.matches();
+                        stringPatternMatched = stringPatternMatcher.matches();
+                        if (charPatternMatched || stringPatternMatched) {
                             text = text.substring(1, text.length() - 1);
+
+                            if(stringPatternMatched){
+                                tokens.add(new Token("punctuator", "\"", lineColumn[0], lineColumn[1]));
+                            }
+
+                            if(charPatternMatched){
+                                tokens.add(new Token("punctuator", "\'", lineColumn[0], lineColumn[1]));
+                            }
                         }
+
                     }
-                    // Get the line and column number of the token
-                    int[] lineColumn = getLineAndColumn(inputString, position);
+
                     // Add the token to the list
-                    tokens.add(new Token(tokenRegex[0], text, lineColumn[0], lineColumn[1]));
+                    tokens.add(new Token(tokenRegex[0], text, lineColumn[0], lineColumn[1]+1));
+
+                    // Add quotes in token list if necessary
+
+                    if(stringPatternMatched){
+                        tokens.add(new Token("punctuator", "\"", lineColumn[0], lineColumn[1]+text.length()));
+                    }
+
+                    if(charPatternMatched){
+                        tokens.add(new Token("punctuator", "\'", lineColumn[0], lineColumn[1]+text.length()));
+                    }
+
                     // Update the position
                     position += matcher.end();
                     break;
