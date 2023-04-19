@@ -556,7 +556,7 @@ public class SLR {
         }
         symbols.remove(EPSILON);
         symbols.add("$");
-        int width = 10;
+        int width = 30;
         // print header
         System.out.print(centerText("State", width));
         for (String symbol : symbols) {
@@ -617,9 +617,9 @@ public class SLR {
     }
 
     public void displayFirstAndFollowPosTable(){
-        System.out.println(centerText("Symbol", 10) + centerText("FIRST", 30) + centerText("FOLLOW", 30));
+        System.out.println(centerText("Symbol", 10) + centerText("FIRST", 200) + centerText("FOLLOW", 200));
         for (String nonTerminal : nonTerminalKeys) {
-            System.out.println(centerText(nonTerminal, 10)+centerText(findFirst(nonTerminal).toString(), 30)+centerText(findFollow(nonTerminal).toString(), 30));
+            System.out.println(centerText(nonTerminal, 10)+centerText(findFirst(nonTerminal).toString(), 200)+centerText(findFollow(nonTerminal).toString(), 200));
         }
         System.out.println();
     }
