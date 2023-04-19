@@ -1,11 +1,12 @@
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class Compiler {
     public static void main(String[] args) throws Exception{
-//        String code = "id + id * id";
-        // String code = "id + ( id )";
-        String code = "int main(){int a = 0 ; (a == 2) ? a*5 : a*6 ; a = (a < 2) ? 5 : 2 ; a=6; get a; put a; return a; } ";
+        // Code input from code.txt
+        Path fileName = Path.of("./code.txt");
+        String code = Files.readString(fileName);
        System.out.println(code); 
         // Generate tokens
        ArrayList<Token> tokens = Tokenizer.tokenize(code);
@@ -19,11 +20,10 @@ public class Compiler {
        SymbolTable symbolTable = SymbolTable.generateFromTokens(tokens);
        symbolTable.display();
        System.out.println("--------------------\n");
-
         // Create instance of SLR
         SLR slr = new SLR();
         // Read production rules
-        Path fileName = Path.of("./CFG_latest.txt");
+        fileName = Path.of("./CFG_latest.txt");
         slr.readProductions(fileName);
         System.out.println("> Production Rules : \n");
         // Display production rules

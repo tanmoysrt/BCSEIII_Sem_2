@@ -1,0 +1,9 @@
+int main(){
+    int a = 0;
+    (a == 2) ? a*5 : a*6;
+    a = (a < 2) ? 5 : 2;
+    a=6;
+    get a;
+    put a*6;
+    return 0;
+}
