@@ -5,7 +5,7 @@ public class Compiler {
     public static void main(String[] args) throws Exception{
 //        String code = "id + id * id";
         // String code = "id + ( id )";
-        String code = "int main(){int a = 0; a = (a < 2)  ; a=6; get a; put a; return a; } ";
+        String code = "int main(){int a = 0 ; (a == 2) ? a*5 : a*6 ; a = (a < 2) ? 5 : 2 ; a=6; get a; put a; return a; } ";
        System.out.println(code); 
         // Generate tokens
        ArrayList<Token> tokens = Tokenizer.tokenize(code);

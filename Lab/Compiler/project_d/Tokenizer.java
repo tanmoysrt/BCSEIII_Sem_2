@@ -6,7 +6,7 @@ public class Tokenizer {
 
     // Define regular expression patterns for the tokens
     private static final String[][] TOKEN_REGEX = {
-        {"operator", "(=|<|>|==|\\+|-|\\*|\\?|\\:)"},
+        {"operator", "(==|=|<|>|\\+|-|\\*|\\?|\\:)"},
         {"punctuator", "(\\(|\\)|\\{|\\}|\\,)"},
         {"delimiter", "(;)"},
         {"constant", "(\\d+|\'.\'|\".*\")"},

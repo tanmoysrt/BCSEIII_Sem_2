@@ -4,7 +4,7 @@ stmts -> stmt stmts | stmt
 stmt -> assignmentStmt | returnStmt | conditionalStmt | getStmt | putStmt | { stmts }
 returnStmt -> return expr ;
 assignmentStmt -> type id = expr ; | id = expr ;
-conditionalStmt -> expr ? expr : expr ;
+conditionalStmt -> id = conditionalStmt | expr ? expr : expr ;
 getStmt -> get id ;
 putStmt -> put expr ;
 arithop -> + | - | *
