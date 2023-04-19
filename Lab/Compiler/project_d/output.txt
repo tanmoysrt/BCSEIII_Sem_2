@@ -1,187 +1,1002 @@
-id + ( id )
+int main ( ) { get a ; put a ; } 
 
 > Tokens: 
-id + ( id ) 
+int main ( ) { get a ; put a ; } 
 --------------------
 
 > Production Rules : 
 
-E' -> + T E' 
-E' -> EPSILON 
-S -> E 
-T' -> * F T' 
-T' -> EPSILON 
-T -> F T' 
-E -> T E' 
-F -> ( E ) 
-F -> id 
---------------------
+stmts -> stmt stmts 
+stmts -> stmt 
+conditionalStmt -> expr ? expr : expr ; 
+num -> digit 
+term' -> arith_op factor term' 
+term' -> EPSILON 
+returnStmt -> return expr ; 
+type -> int 
+type -> char 
+type -> string 
+arith_op -> + 
+arith_op -> - 
+arith_op -> * 
+relop -> < 
+relop -> > 
+relop -> == 
+prog -> type main ( ) { stmts } 
+expr' -> relop term expr' 
+expr' -> EPSILON 
+letter -> a 
+letter -> b 
+letter -> c 
+letter -> d 
+letter -> e 
+letter -> f 
+letter -> g 
+letter -> h 
+letter -> i 
+letter -> j 
+letter -> k 
+letter -> l 
+letter -> m 
+letter -> n 
+letter -> o 
+letter -> p 
+letter -> q 
+letter -> r 
+letter -> s 
+letter -> t 
+letter -> u 
+letter -> v 
+letter -> w 
+letter -> x 
+letter -> y 
+letter -> z 
+expr -> term expr' 
+term -> factor term' 
+getStmt -> get id ; 
+id -> letter 
+putStmt -> put expr ; 
+factor -> id 
+factor -> num 
+factor -> ( expr ) 
+assignmentStmt -> id = expr ; 
+stmt -> assignmentStmt 
+stmt -> returnStmt 
+stmt -> conditionalStmt 
+stmt -> getStmt 
+stmt -> putStmt 
+stmt -> { stmts } 
+digit -> 0 
+digit -> 1 
+digit -> 2 
+digit -> 3 
+digit -> 4 
+digit -> 5 
+digit -> 6 
+digit -> 7 
+digit -> 8 
+digit -> 9 
 
-> First Set : 
+> First / Follow Set 
 
-E' -> [+, EPSILON]
-S -> [(, id]
-T' -> [*, EPSILON]
-T -> [(, id]
-E -> [(, id]
-F -> [(, id]
-
---------------------
-
-
-> Follow Set : 
-
-E' -> [$, )]
-S -> [$]
-T' -> [$, ), +]
-T -> [$, ), +]
-E -> [$, )]
-F -> [$, ), *, +]
-
---------------------
+  Symbol              FIRST                         FOLLOW            
+   prog        [string, char, int]                   [$]              
+   type        [string, char, int]                  [main]            
+  stmts   [put, get, a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z, {, return]             [}]              
+   stmt   [put, get, a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z, {, return][put, get, a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z, {, }, return]
+returnStmt           [return]           [put, get, a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z, {, }, return]
+assignmentStmt[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z][put, get, a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z, {, }, return]
+assignmentStmt[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z][put, get, a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z, {, }, return]
+conditionalStmt[a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z][put, get, a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z, {, }, return]
+ getStmt              [get]             [put, get, a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z, {, }, return]
+ putStmt              [put]             [put, get, a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z, {, }, return]
+ arith_op           [*, +, -]           [a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z]
+  relop             [==, <, >]          [a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z]
+   expr   [a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z]         [), :, ;, ?]         
+  expr'        [==, <, >, EPSILON]               [), :, ;, ?]         
+   term   [a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z]    [==, ), :, ;, <, >, ?]    
+  term'         [*, +, -, EPSILON]          [==, ), :, ;, <, >, ?]    
+  factor  [a, b, c, d, e, f, g, h, (, i, j, k, l, m, n, o, p, 0, q, 1, r, 2, s, 3, t, 4, u, 5, v, 6, w, 7, x, 8, y, 9, z][==, ), *, :, +, ;, <, -, >, ?]
+    id    [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z][==, ), *, :, ;, +, <, -, =, >, ?]
+   num    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9][==, ), *, :, +, ;, <, -, >, ?]
+  letter  [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z][==, ), *, :, ;, +, <, -, =, >, ?]
+  digit   [0, 1, 2, 3, 4, 5, 6, 7, 8, 9][==, ), *, :, +, ;, <, -, >, ?]
 
 > LR(0) Item Sets : 
 
->> I0
-S -> . E 
-T -> . F T' 
-S' -> . S 
-E -> . T E' 
-F -> . ( E ) 
-F -> . id 
-
->> I1
-S' -> S . 
-
->> I2
-E' -> . + T E' 
-E' -> . 
-E -> T . E' 
-
->> I3
-S -> E . 
-
->> I4
-T' -> . * F T' 
-T' -> . 
-T -> F . T' 
-
->> I5
-T -> . F T' 
-E -> . T E' 
-F -> ( . E ) 
-F -> . ( E ) 
-F -> . id 
-
->> I6
-F -> id . 
-
->> I7
-E -> T E' . 
-
->> I8
-E' -> + . T E' 
-T -> . F T' 
-F -> . ( E ) 
-F -> . id 
-
->> I9
-T -> F T' . 
-
->> I10
-T' -> * . F T' 
-F -> . ( E ) 
-F -> . id 
-
->> I11
-F -> ( E . ) 
-
->> I12
-E' -> + T . E' 
-E' -> . + T E' 
-E' -> . 
-
->> I13
-T' -> * F . T' 
-T' -> . * F T' 
-T' -> . 
-
->> I14
-F -> ( E ) . 
-
->> I15
-E' -> + T E' . 
-
->> I16
-T' -> * F T' . 
-
+I0 => { prog' -> . prog  # type -> . int  # type -> . char  # type -> . string  # prog -> . type main ( ) { stmts }  #  }
+I1 => { prog -> type . main ( ) { stmts }  #  }
+I2 => { type -> string .  #  }
+I3 => { type -> int .  #  }
+I4 => { prog' -> prog .  #  }
+I5 => { type -> char .  #  }
+I6 => { prog -> type main . ( ) { stmts }  #  }
+I7 => { prog -> type main ( . ) { stmts }  #  }
+I8 => { prog -> type main ( ) . { stmts }  #  }
+I9 => { stmts -> . stmt stmts  # stmts -> . stmt  # conditionalStmt -> . expr ? expr : expr ;  # num -> . digit  # returnStmt -> . return expr ;  # prog -> type main ( ) { . stmts }  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # getStmt -> . get id ;  # id -> . letter  # putStmt -> . put expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # assignmentStmt -> . id = expr ;  # stmt -> . assignmentStmt  # stmt -> . returnStmt  # stmt -> . conditionalStmt  # stmt -> . getStmt  # stmt -> . putStmt  # stmt -> . { stmts }  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+I10 => { factor -> num .  #  }
+I11 => { num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # putStmt -> put . expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+I12 => { factor -> id .  # assignmentStmt -> id . = expr ;  #  }
+I13 => { stmt -> putStmt .  #  }
+I14 => { num -> digit .  #  }
+I15 => { prog -> type main ( ) { stmts . }  #  }
+I16 => { num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> ( . expr )  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+I17 => { stmt -> returnStmt .  #  }
+I18 => { digit -> 0 .  #  }
+I19 => { digit -> 1 .  #  }
+I20 => { digit -> 2 .  #  }
+I21 => { digit -> 3 .  #  }
+I22 => { digit -> 4 .  #  }
+I23 => { digit -> 5 .  #  }
+I24 => { digit -> 6 .  #  }
+I25 => { id -> letter .  #  }
+I26 => { digit -> 7 .  #  }
+I27 => { digit -> 8 .  #  }
+I28 => { digit -> 9 .  #  }
+I29 => { stmt -> getStmt .  #  }
+I30 => { letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # getStmt -> get . id ;  # id -> . letter  #  }
+I31 => { conditionalStmt -> expr . ? expr : expr ;  #  }
+I32 => { expr' -> . relop term expr'  # expr' -> .  # expr -> term . expr'  # relop -> . <  # relop -> . >  # relop -> . ==  #  }
+I33 => { term' -> . arith_op factor term'  # term' -> .  # term -> factor . term'  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+I34 => { stmt -> assignmentStmt .  #  }
+I35 => { letter -> a .  #  }
+I36 => { letter -> b .  #  }
+I37 => { letter -> c .  #  }
+I38 => { letter -> d .  #  }
+I39 => { stmt -> conditionalStmt .  #  }
+I40 => { letter -> e .  #  }
+I41 => { letter -> f .  #  }
+I42 => { letter -> g .  #  }
+I43 => { letter -> h .  #  }
+I44 => { letter -> i .  #  }
+I45 => { letter -> j .  #  }
+I46 => { letter -> k .  #  }
+I47 => { letter -> l .  #  }
+I48 => { letter -> m .  #  }
+I49 => { letter -> n .  #  }
+I50 => { letter -> o .  #  }
+I51 => { letter -> p .  #  }
+I52 => { letter -> q .  #  }
+I53 => { letter -> r .  #  }
+I54 => { letter -> s .  #  }
+I55 => { letter -> t .  #  }
+I56 => { letter -> u .  #  }
+I57 => { letter -> v .  #  }
+I58 => { letter -> w .  #  }
+I59 => { letter -> x .  #  }
+I60 => { letter -> y .  #  }
+I61 => { letter -> z .  #  }
+I62 => { stmts -> . stmt stmts  # stmts -> . stmt  # conditionalStmt -> . expr ? expr : expr ;  # num -> . digit  # returnStmt -> . return expr ;  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # getStmt -> . get id ;  # id -> . letter  # putStmt -> . put expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # assignmentStmt -> . id = expr ;  # stmt -> { . stmts }  # stmt -> . assignmentStmt  # stmt -> . returnStmt  # stmt -> . conditionalStmt  # stmt -> . getStmt  # stmt -> . putStmt  # stmt -> . { stmts }  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+I63 => { stmts -> stmt . stmts  # stmts -> stmt .  # stmts -> . stmt stmts  # stmts -> . stmt  # conditionalStmt -> . expr ? expr : expr ;  # num -> . digit  # returnStmt -> . return expr ;  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # getStmt -> . get id ;  # id -> . letter  # putStmt -> . put expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # assignmentStmt -> . id = expr ;  # stmt -> . assignmentStmt  # stmt -> . returnStmt  # stmt -> . conditionalStmt  # stmt -> . getStmt  # stmt -> . putStmt  # stmt -> . { stmts }  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+I64 => { num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # returnStmt -> return . expr ;  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+I65 => { factor -> id .  #  }
+I66 => { putStmt -> put expr . ;  #  }
+I67 => { num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # assignmentStmt -> id = . expr ;  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+I68 => { prog -> type main ( ) { stmts } .  #  }
+I69 => { factor -> ( expr . )  #  }
+I70 => { getStmt -> get id . ;  #  }
+I71 => { conditionalStmt -> expr ? . expr : expr ;  # num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+I72 => { expr -> term expr' .  #  }
+I73 => { relop -> == .  #  }
+I74 => { relop -> < .  #  }
+I75 => { relop -> > .  #  }
+I76 => { expr' -> relop . term expr'  # num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # term -> . factor term'  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+I77 => { term -> factor term' .  #  }
+I78 => { arith_op -> * .  #  }
+I79 => { arith_op -> + .  #  }
+I80 => { num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # term' -> arith_op . factor term'  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+I81 => { arith_op -> - .  #  }
+I82 => { stmt -> { stmts . }  #  }
+I83 => { stmts -> stmt stmts .  #  }
+I84 => { returnStmt -> return expr . ;  #  }
+I85 => { putStmt -> put expr ; .  #  }
+I86 => { assignmentStmt -> id = expr . ;  #  }
+I87 => { factor -> ( expr ) .  #  }
+I88 => { getStmt -> get id ; .  #  }
+I89 => { conditionalStmt -> expr ? expr . : expr ;  #  }
+I90 => { expr' -> relop term . expr'  # expr' -> . relop term expr'  # expr' -> .  # relop -> . <  # relop -> . >  # relop -> . ==  #  }
+I91 => { term' -> arith_op factor . term'  # term' -> . arith_op factor term'  # term' -> .  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+I92 => { stmt -> { stmts } .  #  }
+I93 => { returnStmt -> return expr ; .  #  }
+I94 => { assignmentStmt -> id = expr ; .  #  }
+I95 => { conditionalStmt -> expr ? expr : . expr ;  # num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+I96 => { expr' -> relop term expr' .  #  }
+I97 => { term' -> arith_op factor term' .  #  }
+I98 => { conditionalStmt -> expr ? expr : expr . ;  #  }
+I99 => { conditionalStmt -> expr ? expr : expr ; .  #  }
 
 > Goto Table : 
 
-goto(0,S) = 1
-goto(0,T) = 2
-goto(0,E) = 3
-goto(0,F) = 4
-goto(0,() = 5
-goto(0,id) = 6
+goto(0,string) => I2{ type -> string .  #  }
+goto(0,char) => I5{ type -> char .  #  }
+goto(0,type) => I1{ prog -> type . main ( ) { stmts }  #  }
+goto(0,int) => I3{ type -> int .  #  }
+goto(0,prog) => I4{ prog' -> prog .  #  }
+goto(64,num) => I10{ factor -> num .  #  }
+goto(64,expr) => I84{ returnStmt -> return expr . ;  #  }
+goto(64,term) => I32{ expr' -> . relop term expr'  # expr' -> .  # expr -> term . expr'  # relop -> . <  # relop -> . >  # relop -> . ==  #  }
+goto(64,id) => I65{ factor -> id .  #  }
+goto(64,factor) => I33{ term' -> . arith_op factor term'  # term' -> .  # term -> factor . term'  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+goto(64,digit) => I14{ num -> digit .  #  }
+goto(64,a) => I35{ letter -> a .  #  }
+goto(64,b) => I36{ letter -> b .  #  }
+goto(64,c) => I37{ letter -> c .  #  }
+goto(64,d) => I38{ letter -> d .  #  }
+goto(64,e) => I40{ letter -> e .  #  }
+goto(64,f) => I41{ letter -> f .  #  }
+goto(64,g) => I42{ letter -> g .  #  }
+goto(64,() => I16{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> ( . expr )  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(64,h) => I43{ letter -> h .  #  }
+goto(64,i) => I44{ letter -> i .  #  }
+goto(64,j) => I45{ letter -> j .  #  }
+goto(64,k) => I46{ letter -> k .  #  }
+goto(64,l) => I47{ letter -> l .  #  }
+goto(64,m) => I48{ letter -> m .  #  }
+goto(64,n) => I49{ letter -> n .  #  }
+goto(64,o) => I50{ letter -> o .  #  }
+goto(64,0) => I18{ digit -> 0 .  #  }
+goto(64,p) => I51{ letter -> p .  #  }
+goto(64,1) => I19{ digit -> 1 .  #  }
+goto(64,q) => I52{ letter -> q .  #  }
+goto(64,2) => I20{ digit -> 2 .  #  }
+goto(64,r) => I53{ letter -> r .  #  }
+goto(64,3) => I21{ digit -> 3 .  #  }
+goto(64,s) => I54{ letter -> s .  #  }
+goto(64,4) => I22{ digit -> 4 .  #  }
+goto(64,t) => I55{ letter -> t .  #  }
+goto(64,5) => I23{ digit -> 5 .  #  }
+goto(64,u) => I56{ letter -> u .  #  }
+goto(64,6) => I24{ digit -> 6 .  #  }
+goto(64,v) => I57{ letter -> v .  #  }
+goto(64,letter) => I25{ id -> letter .  #  }
+goto(64,7) => I26{ digit -> 7 .  #  }
+goto(64,w) => I58{ letter -> w .  #  }
+goto(64,8) => I27{ digit -> 8 .  #  }
+goto(64,x) => I59{ letter -> x .  #  }
+goto(64,9) => I28{ digit -> 9 .  #  }
+goto(64,y) => I60{ letter -> y .  #  }
+goto(64,z) => I61{ letter -> z .  #  }
+goto(1,main) => I6{ prog -> type main . ( ) { stmts }  #  }
+goto(66,;) => I85{ putStmt -> put expr ; .  #  }
+goto(67,num) => I10{ factor -> num .  #  }
+goto(67,expr) => I86{ assignmentStmt -> id = expr . ;  #  }
+goto(67,term) => I32{ expr' -> . relop term expr'  # expr' -> .  # expr -> term . expr'  # relop -> . <  # relop -> . >  # relop -> . ==  #  }
+goto(67,id) => I65{ factor -> id .  #  }
+goto(67,factor) => I33{ term' -> . arith_op factor term'  # term' -> .  # term -> factor . term'  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+goto(67,digit) => I14{ num -> digit .  #  }
+goto(67,a) => I35{ letter -> a .  #  }
+goto(67,b) => I36{ letter -> b .  #  }
+goto(67,c) => I37{ letter -> c .  #  }
+goto(67,d) => I38{ letter -> d .  #  }
+goto(67,e) => I40{ letter -> e .  #  }
+goto(67,f) => I41{ letter -> f .  #  }
+goto(67,g) => I42{ letter -> g .  #  }
+goto(67,() => I16{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> ( . expr )  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(67,h) => I43{ letter -> h .  #  }
+goto(67,i) => I44{ letter -> i .  #  }
+goto(67,j) => I45{ letter -> j .  #  }
+goto(67,k) => I46{ letter -> k .  #  }
+goto(67,l) => I47{ letter -> l .  #  }
+goto(67,m) => I48{ letter -> m .  #  }
+goto(67,n) => I49{ letter -> n .  #  }
+goto(67,o) => I50{ letter -> o .  #  }
+goto(67,0) => I18{ digit -> 0 .  #  }
+goto(67,p) => I51{ letter -> p .  #  }
+goto(67,1) => I19{ digit -> 1 .  #  }
+goto(67,q) => I52{ letter -> q .  #  }
+goto(67,2) => I20{ digit -> 2 .  #  }
+goto(67,r) => I53{ letter -> r .  #  }
+goto(67,3) => I21{ digit -> 3 .  #  }
+goto(67,s) => I54{ letter -> s .  #  }
+goto(67,4) => I22{ digit -> 4 .  #  }
+goto(67,t) => I55{ letter -> t .  #  }
+goto(67,5) => I23{ digit -> 5 .  #  }
+goto(67,u) => I56{ letter -> u .  #  }
+goto(67,6) => I24{ digit -> 6 .  #  }
+goto(67,v) => I57{ letter -> v .  #  }
+goto(67,letter) => I25{ id -> letter .  #  }
+goto(67,7) => I26{ digit -> 7 .  #  }
+goto(67,w) => I58{ letter -> w .  #  }
+goto(67,8) => I27{ digit -> 8 .  #  }
+goto(67,x) => I59{ letter -> x .  #  }
+goto(67,9) => I28{ digit -> 9 .  #  }
+goto(67,y) => I60{ letter -> y .  #  }
+goto(67,z) => I61{ letter -> z .  #  }
+goto(69,)) => I87{ factor -> ( expr ) .  #  }
+goto(6,() => I7{ prog -> type main ( . ) { stmts }  #  }
+goto(70,;) => I88{ getStmt -> get id ; .  #  }
+goto(7,)) => I8{ prog -> type main ( ) . { stmts }  #  }
+goto(71,num) => I10{ factor -> num .  #  }
+goto(71,expr) => I89{ conditionalStmt -> expr ? expr . : expr ;  #  }
+goto(71,term) => I32{ expr' -> . relop term expr'  # expr' -> .  # expr -> term . expr'  # relop -> . <  # relop -> . >  # relop -> . ==  #  }
+goto(71,id) => I65{ factor -> id .  #  }
+goto(71,factor) => I33{ term' -> . arith_op factor term'  # term' -> .  # term -> factor . term'  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+goto(71,digit) => I14{ num -> digit .  #  }
+goto(71,a) => I35{ letter -> a .  #  }
+goto(71,b) => I36{ letter -> b .  #  }
+goto(71,c) => I37{ letter -> c .  #  }
+goto(71,d) => I38{ letter -> d .  #  }
+goto(71,e) => I40{ letter -> e .  #  }
+goto(71,f) => I41{ letter -> f .  #  }
+goto(71,g) => I42{ letter -> g .  #  }
+goto(71,() => I16{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> ( . expr )  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(71,h) => I43{ letter -> h .  #  }
+goto(71,i) => I44{ letter -> i .  #  }
+goto(71,j) => I45{ letter -> j .  #  }
+goto(71,k) => I46{ letter -> k .  #  }
+goto(71,l) => I47{ letter -> l .  #  }
+goto(71,m) => I48{ letter -> m .  #  }
+goto(71,n) => I49{ letter -> n .  #  }
+goto(71,o) => I50{ letter -> o .  #  }
+goto(71,0) => I18{ digit -> 0 .  #  }
+goto(71,p) => I51{ letter -> p .  #  }
+goto(71,1) => I19{ digit -> 1 .  #  }
+goto(71,q) => I52{ letter -> q .  #  }
+goto(71,2) => I20{ digit -> 2 .  #  }
+goto(71,r) => I53{ letter -> r .  #  }
+goto(71,3) => I21{ digit -> 3 .  #  }
+goto(71,s) => I54{ letter -> s .  #  }
+goto(71,4) => I22{ digit -> 4 .  #  }
+goto(71,t) => I55{ letter -> t .  #  }
+goto(71,5) => I23{ digit -> 5 .  #  }
+goto(71,u) => I56{ letter -> u .  #  }
+goto(71,6) => I24{ digit -> 6 .  #  }
+goto(71,v) => I57{ letter -> v .  #  }
+goto(71,letter) => I25{ id -> letter .  #  }
+goto(71,7) => I26{ digit -> 7 .  #  }
+goto(71,w) => I58{ letter -> w .  #  }
+goto(71,8) => I27{ digit -> 8 .  #  }
+goto(71,x) => I59{ letter -> x .  #  }
+goto(71,9) => I28{ digit -> 9 .  #  }
+goto(71,y) => I60{ letter -> y .  #  }
+goto(71,z) => I61{ letter -> z .  #  }
+goto(8,{) => I9{ stmts -> . stmt stmts  # stmts -> . stmt  # conditionalStmt -> . expr ? expr : expr ;  # num -> . digit  # returnStmt -> . return expr ;  # prog -> type main ( ) { . stmts }  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # getStmt -> . get id ;  # id -> . letter  # putStmt -> . put expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # assignmentStmt -> . id = expr ;  # stmt -> . assignmentStmt  # stmt -> . returnStmt  # stmt -> . conditionalStmt  # stmt -> . getStmt  # stmt -> . putStmt  # stmt -> . { stmts }  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(9,num) => I10{ factor -> num .  #  }
+goto(9,put) => I11{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # putStmt -> put . expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(9,id) => I12{ factor -> id .  # assignmentStmt -> id . = expr ;  #  }
+goto(9,putStmt) => I13{ stmt -> putStmt .  #  }
+goto(9,digit) => I14{ num -> digit .  #  }
+goto(9,stmts) => I15{ prog -> type main ( ) { stmts . }  #  }
+goto(9,() => I16{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> ( . expr )  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(9,returnStmt) => I17{ stmt -> returnStmt .  #  }
+goto(9,0) => I18{ digit -> 0 .  #  }
+goto(9,1) => I19{ digit -> 1 .  #  }
+goto(9,2) => I20{ digit -> 2 .  #  }
+goto(9,3) => I21{ digit -> 3 .  #  }
+goto(9,4) => I22{ digit -> 4 .  #  }
+goto(9,5) => I23{ digit -> 5 .  #  }
+goto(9,6) => I24{ digit -> 6 .  #  }
+goto(9,letter) => I25{ id -> letter .  #  }
+goto(9,7) => I26{ digit -> 7 .  #  }
+goto(9,8) => I27{ digit -> 8 .  #  }
+goto(9,9) => I28{ digit -> 9 .  #  }
+goto(9,getStmt) => I29{ stmt -> getStmt .  #  }
+goto(9,get) => I30{ letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # getStmt -> get . id ;  # id -> . letter  #  }
+goto(9,expr) => I31{ conditionalStmt -> expr . ? expr : expr ;  #  }
+goto(9,term) => I32{ expr' -> . relop term expr'  # expr' -> .  # expr -> term . expr'  # relop -> . <  # relop -> . >  # relop -> . ==  #  }
+goto(9,factor) => I33{ term' -> . arith_op factor term'  # term' -> .  # term -> factor . term'  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+goto(9,assignmentStmt) => I34{ stmt -> assignmentStmt .  #  }
+goto(9,a) => I35{ letter -> a .  #  }
+goto(9,b) => I36{ letter -> b .  #  }
+goto(9,c) => I37{ letter -> c .  #  }
+goto(9,d) => I38{ letter -> d .  #  }
+goto(9,conditionalStmt) => I39{ stmt -> conditionalStmt .  #  }
+goto(9,e) => I40{ letter -> e .  #  }
+goto(9,f) => I41{ letter -> f .  #  }
+goto(9,g) => I42{ letter -> g .  #  }
+goto(9,h) => I43{ letter -> h .  #  }
+goto(9,i) => I44{ letter -> i .  #  }
+goto(9,j) => I45{ letter -> j .  #  }
+goto(9,k) => I46{ letter -> k .  #  }
+goto(9,l) => I47{ letter -> l .  #  }
+goto(9,m) => I48{ letter -> m .  #  }
+goto(9,n) => I49{ letter -> n .  #  }
+goto(9,o) => I50{ letter -> o .  #  }
+goto(9,p) => I51{ letter -> p .  #  }
+goto(9,q) => I52{ letter -> q .  #  }
+goto(9,r) => I53{ letter -> r .  #  }
+goto(9,s) => I54{ letter -> s .  #  }
+goto(9,t) => I55{ letter -> t .  #  }
+goto(9,u) => I56{ letter -> u .  #  }
+goto(9,v) => I57{ letter -> v .  #  }
+goto(9,w) => I58{ letter -> w .  #  }
+goto(9,x) => I59{ letter -> x .  #  }
+goto(9,y) => I60{ letter -> y .  #  }
+goto(9,z) => I61{ letter -> z .  #  }
+goto(9,{) => I62{ stmts -> . stmt stmts  # stmts -> . stmt  # conditionalStmt -> . expr ? expr : expr ;  # num -> . digit  # returnStmt -> . return expr ;  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # getStmt -> . get id ;  # id -> . letter  # putStmt -> . put expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # assignmentStmt -> . id = expr ;  # stmt -> { . stmts }  # stmt -> . assignmentStmt  # stmt -> . returnStmt  # stmt -> . conditionalStmt  # stmt -> . getStmt  # stmt -> . putStmt  # stmt -> . { stmts }  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(9,stmt) => I63{ stmts -> stmt . stmts  # stmts -> stmt .  # stmts -> . stmt stmts  # stmts -> . stmt  # conditionalStmt -> . expr ? expr : expr ;  # num -> . digit  # returnStmt -> . return expr ;  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # getStmt -> . get id ;  # id -> . letter  # putStmt -> . put expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # assignmentStmt -> . id = expr ;  # stmt -> . assignmentStmt  # stmt -> . returnStmt  # stmt -> . conditionalStmt  # stmt -> . getStmt  # stmt -> . putStmt  # stmt -> . { stmts }  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(9,return) => I64{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # returnStmt -> return . expr ;  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(11,num) => I10{ factor -> num .  #  }
+goto(11,expr) => I66{ putStmt -> put expr . ;  #  }
+goto(11,term) => I32{ expr' -> . relop term expr'  # expr' -> .  # expr -> term . expr'  # relop -> . <  # relop -> . >  # relop -> . ==  #  }
+goto(11,id) => I65{ factor -> id .  #  }
+goto(11,factor) => I33{ term' -> . arith_op factor term'  # term' -> .  # term -> factor . term'  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+goto(11,digit) => I14{ num -> digit .  #  }
+goto(11,a) => I35{ letter -> a .  #  }
+goto(11,b) => I36{ letter -> b .  #  }
+goto(11,c) => I37{ letter -> c .  #  }
+goto(11,d) => I38{ letter -> d .  #  }
+goto(11,e) => I40{ letter -> e .  #  }
+goto(11,f) => I41{ letter -> f .  #  }
+goto(11,g) => I42{ letter -> g .  #  }
+goto(11,() => I16{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> ( . expr )  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(11,h) => I43{ letter -> h .  #  }
+goto(11,i) => I44{ letter -> i .  #  }
+goto(11,j) => I45{ letter -> j .  #  }
+goto(11,k) => I46{ letter -> k .  #  }
+goto(11,l) => I47{ letter -> l .  #  }
+goto(11,m) => I48{ letter -> m .  #  }
+goto(11,n) => I49{ letter -> n .  #  }
+goto(11,o) => I50{ letter -> o .  #  }
+goto(11,0) => I18{ digit -> 0 .  #  }
+goto(11,p) => I51{ letter -> p .  #  }
+goto(11,1) => I19{ digit -> 1 .  #  }
+goto(11,q) => I52{ letter -> q .  #  }
+goto(11,2) => I20{ digit -> 2 .  #  }
+goto(11,r) => I53{ letter -> r .  #  }
+goto(11,3) => I21{ digit -> 3 .  #  }
+goto(11,s) => I54{ letter -> s .  #  }
+goto(11,4) => I22{ digit -> 4 .  #  }
+goto(11,t) => I55{ letter -> t .  #  }
+goto(11,5) => I23{ digit -> 5 .  #  }
+goto(11,u) => I56{ letter -> u .  #  }
+goto(11,6) => I24{ digit -> 6 .  #  }
+goto(11,v) => I57{ letter -> v .  #  }
+goto(11,letter) => I25{ id -> letter .  #  }
+goto(11,7) => I26{ digit -> 7 .  #  }
+goto(11,w) => I58{ letter -> w .  #  }
+goto(11,8) => I27{ digit -> 8 .  #  }
+goto(11,x) => I59{ letter -> x .  #  }
+goto(11,9) => I28{ digit -> 9 .  #  }
+goto(11,y) => I60{ letter -> y .  #  }
+goto(11,z) => I61{ letter -> z .  #  }
+goto(12,=) => I67{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # assignmentStmt -> id = . expr ;  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(76,num) => I10{ factor -> num .  #  }
+goto(76,term) => I90{ expr' -> relop term . expr'  # expr' -> . relop term expr'  # expr' -> .  # relop -> . <  # relop -> . >  # relop -> . ==  #  }
+goto(76,id) => I65{ factor -> id .  #  }
+goto(76,factor) => I33{ term' -> . arith_op factor term'  # term' -> .  # term -> factor . term'  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+goto(76,digit) => I14{ num -> digit .  #  }
+goto(76,a) => I35{ letter -> a .  #  }
+goto(76,b) => I36{ letter -> b .  #  }
+goto(76,c) => I37{ letter -> c .  #  }
+goto(76,d) => I38{ letter -> d .  #  }
+goto(76,e) => I40{ letter -> e .  #  }
+goto(76,f) => I41{ letter -> f .  #  }
+goto(76,g) => I42{ letter -> g .  #  }
+goto(76,() => I16{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> ( . expr )  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(76,h) => I43{ letter -> h .  #  }
+goto(76,i) => I44{ letter -> i .  #  }
+goto(76,j) => I45{ letter -> j .  #  }
+goto(76,k) => I46{ letter -> k .  #  }
+goto(76,l) => I47{ letter -> l .  #  }
+goto(76,m) => I48{ letter -> m .  #  }
+goto(76,n) => I49{ letter -> n .  #  }
+goto(76,o) => I50{ letter -> o .  #  }
+goto(76,0) => I18{ digit -> 0 .  #  }
+goto(76,p) => I51{ letter -> p .  #  }
+goto(76,1) => I19{ digit -> 1 .  #  }
+goto(76,q) => I52{ letter -> q .  #  }
+goto(76,2) => I20{ digit -> 2 .  #  }
+goto(76,r) => I53{ letter -> r .  #  }
+goto(76,3) => I21{ digit -> 3 .  #  }
+goto(76,s) => I54{ letter -> s .  #  }
+goto(76,4) => I22{ digit -> 4 .  #  }
+goto(76,t) => I55{ letter -> t .  #  }
+goto(76,5) => I23{ digit -> 5 .  #  }
+goto(76,u) => I56{ letter -> u .  #  }
+goto(76,6) => I24{ digit -> 6 .  #  }
+goto(76,v) => I57{ letter -> v .  #  }
+goto(76,letter) => I25{ id -> letter .  #  }
+goto(76,7) => I26{ digit -> 7 .  #  }
+goto(76,w) => I58{ letter -> w .  #  }
+goto(76,8) => I27{ digit -> 8 .  #  }
+goto(76,x) => I59{ letter -> x .  #  }
+goto(76,9) => I28{ digit -> 9 .  #  }
+goto(76,y) => I60{ letter -> y .  #  }
+goto(76,z) => I61{ letter -> z .  #  }
+goto(15,}) => I68{ prog -> type main ( ) { stmts } .  #  }
+goto(16,num) => I10{ factor -> num .  #  }
+goto(16,expr) => I69{ factor -> ( expr . )  #  }
+goto(16,term) => I32{ expr' -> . relop term expr'  # expr' -> .  # expr -> term . expr'  # relop -> . <  # relop -> . >  # relop -> . ==  #  }
+goto(16,id) => I65{ factor -> id .  #  }
+goto(16,factor) => I33{ term' -> . arith_op factor term'  # term' -> .  # term -> factor . term'  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+goto(16,digit) => I14{ num -> digit .  #  }
+goto(16,a) => I35{ letter -> a .  #  }
+goto(16,b) => I36{ letter -> b .  #  }
+goto(16,c) => I37{ letter -> c .  #  }
+goto(16,d) => I38{ letter -> d .  #  }
+goto(16,e) => I40{ letter -> e .  #  }
+goto(16,f) => I41{ letter -> f .  #  }
+goto(16,g) => I42{ letter -> g .  #  }
+goto(16,() => I16{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> ( . expr )  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(16,h) => I43{ letter -> h .  #  }
+goto(16,i) => I44{ letter -> i .  #  }
+goto(16,j) => I45{ letter -> j .  #  }
+goto(16,k) => I46{ letter -> k .  #  }
+goto(16,l) => I47{ letter -> l .  #  }
+goto(16,m) => I48{ letter -> m .  #  }
+goto(16,n) => I49{ letter -> n .  #  }
+goto(16,o) => I50{ letter -> o .  #  }
+goto(16,0) => I18{ digit -> 0 .  #  }
+goto(16,p) => I51{ letter -> p .  #  }
+goto(16,1) => I19{ digit -> 1 .  #  }
+goto(16,q) => I52{ letter -> q .  #  }
+goto(16,2) => I20{ digit -> 2 .  #  }
+goto(16,r) => I53{ letter -> r .  #  }
+goto(16,3) => I21{ digit -> 3 .  #  }
+goto(16,s) => I54{ letter -> s .  #  }
+goto(16,4) => I22{ digit -> 4 .  #  }
+goto(16,t) => I55{ letter -> t .  #  }
+goto(16,5) => I23{ digit -> 5 .  #  }
+goto(16,u) => I56{ letter -> u .  #  }
+goto(16,6) => I24{ digit -> 6 .  #  }
+goto(16,v) => I57{ letter -> v .  #  }
+goto(16,letter) => I25{ id -> letter .  #  }
+goto(16,7) => I26{ digit -> 7 .  #  }
+goto(16,w) => I58{ letter -> w .  #  }
+goto(16,8) => I27{ digit -> 8 .  #  }
+goto(16,x) => I59{ letter -> x .  #  }
+goto(16,9) => I28{ digit -> 9 .  #  }
+goto(16,y) => I60{ letter -> y .  #  }
+goto(16,z) => I61{ letter -> z .  #  }
+goto(80,num) => I10{ factor -> num .  #  }
+goto(80,id) => I65{ factor -> id .  #  }
+goto(80,factor) => I91{ term' -> arith_op factor . term'  # term' -> . arith_op factor term'  # term' -> .  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+goto(80,digit) => I14{ num -> digit .  #  }
+goto(80,a) => I35{ letter -> a .  #  }
+goto(80,b) => I36{ letter -> b .  #  }
+goto(80,c) => I37{ letter -> c .  #  }
+goto(80,d) => I38{ letter -> d .  #  }
+goto(80,e) => I40{ letter -> e .  #  }
+goto(80,f) => I41{ letter -> f .  #  }
+goto(80,g) => I42{ letter -> g .  #  }
+goto(80,() => I16{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> ( . expr )  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(80,h) => I43{ letter -> h .  #  }
+goto(80,i) => I44{ letter -> i .  #  }
+goto(80,j) => I45{ letter -> j .  #  }
+goto(80,k) => I46{ letter -> k .  #  }
+goto(80,l) => I47{ letter -> l .  #  }
+goto(80,m) => I48{ letter -> m .  #  }
+goto(80,n) => I49{ letter -> n .  #  }
+goto(80,o) => I50{ letter -> o .  #  }
+goto(80,0) => I18{ digit -> 0 .  #  }
+goto(80,p) => I51{ letter -> p .  #  }
+goto(80,1) => I19{ digit -> 1 .  #  }
+goto(80,q) => I52{ letter -> q .  #  }
+goto(80,2) => I20{ digit -> 2 .  #  }
+goto(80,r) => I53{ letter -> r .  #  }
+goto(80,3) => I21{ digit -> 3 .  #  }
+goto(80,s) => I54{ letter -> s .  #  }
+goto(80,4) => I22{ digit -> 4 .  #  }
+goto(80,t) => I55{ letter -> t .  #  }
+goto(80,5) => I23{ digit -> 5 .  #  }
+goto(80,u) => I56{ letter -> u .  #  }
+goto(80,6) => I24{ digit -> 6 .  #  }
+goto(80,v) => I57{ letter -> v .  #  }
+goto(80,letter) => I25{ id -> letter .  #  }
+goto(80,7) => I26{ digit -> 7 .  #  }
+goto(80,w) => I58{ letter -> w .  #  }
+goto(80,8) => I27{ digit -> 8 .  #  }
+goto(80,x) => I59{ letter -> x .  #  }
+goto(80,9) => I28{ digit -> 9 .  #  }
+goto(80,y) => I60{ letter -> y .  #  }
+goto(80,z) => I61{ letter -> z .  #  }
+goto(82,}) => I92{ stmt -> { stmts } .  #  }
+goto(84,;) => I93{ returnStmt -> return expr ; .  #  }
+goto(86,;) => I94{ assignmentStmt -> id = expr ; .  #  }
+goto(89,:) => I95{ conditionalStmt -> expr ? expr : . expr ;  # num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(90,==) => I73{ relop -> == .  #  }
+goto(90,expr') => I96{ expr' -> relop term expr' .  #  }
+goto(90,<) => I74{ relop -> < .  #  }
+goto(90,relop) => I76{ expr' -> relop . term expr'  # num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # term -> . factor term'  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(90,>) => I75{ relop -> > .  #  }
+goto(91,term') => I97{ term' -> arith_op factor term' .  #  }
+goto(91,*) => I78{ arith_op -> * .  #  }
+goto(91,+) => I79{ arith_op -> + .  #  }
+goto(91,arith_op) => I80{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # term' -> arith_op . factor term'  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(91,-) => I81{ arith_op -> - .  #  }
+goto(30,id) => I70{ getStmt -> get id . ;  #  }
+goto(30,a) => I35{ letter -> a .  #  }
+goto(30,b) => I36{ letter -> b .  #  }
+goto(30,c) => I37{ letter -> c .  #  }
+goto(30,d) => I38{ letter -> d .  #  }
+goto(30,e) => I40{ letter -> e .  #  }
+goto(30,f) => I41{ letter -> f .  #  }
+goto(30,g) => I42{ letter -> g .  #  }
+goto(30,h) => I43{ letter -> h .  #  }
+goto(30,i) => I44{ letter -> i .  #  }
+goto(30,j) => I45{ letter -> j .  #  }
+goto(30,k) => I46{ letter -> k .  #  }
+goto(30,l) => I47{ letter -> l .  #  }
+goto(30,m) => I48{ letter -> m .  #  }
+goto(30,n) => I49{ letter -> n .  #  }
+goto(30,o) => I50{ letter -> o .  #  }
+goto(30,p) => I51{ letter -> p .  #  }
+goto(30,q) => I52{ letter -> q .  #  }
+goto(30,r) => I53{ letter -> r .  #  }
+goto(30,s) => I54{ letter -> s .  #  }
+goto(30,t) => I55{ letter -> t .  #  }
+goto(30,u) => I56{ letter -> u .  #  }
+goto(30,v) => I57{ letter -> v .  #  }
+goto(30,letter) => I25{ id -> letter .  #  }
+goto(30,w) => I58{ letter -> w .  #  }
+goto(30,x) => I59{ letter -> x .  #  }
+goto(30,y) => I60{ letter -> y .  #  }
+goto(30,z) => I61{ letter -> z .  #  }
+goto(31,?) => I71{ conditionalStmt -> expr ? . expr : expr ;  # num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(95,num) => I10{ factor -> num .  #  }
+goto(95,expr) => I98{ conditionalStmt -> expr ? expr : expr . ;  #  }
+goto(95,term) => I32{ expr' -> . relop term expr'  # expr' -> .  # expr -> term . expr'  # relop -> . <  # relop -> . >  # relop -> . ==  #  }
+goto(95,id) => I65{ factor -> id .  #  }
+goto(95,factor) => I33{ term' -> . arith_op factor term'  # term' -> .  # term -> factor . term'  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+goto(95,digit) => I14{ num -> digit .  #  }
+goto(95,a) => I35{ letter -> a .  #  }
+goto(95,b) => I36{ letter -> b .  #  }
+goto(95,c) => I37{ letter -> c .  #  }
+goto(95,d) => I38{ letter -> d .  #  }
+goto(95,e) => I40{ letter -> e .  #  }
+goto(95,f) => I41{ letter -> f .  #  }
+goto(95,g) => I42{ letter -> g .  #  }
+goto(95,() => I16{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> ( . expr )  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(95,h) => I43{ letter -> h .  #  }
+goto(95,i) => I44{ letter -> i .  #  }
+goto(95,j) => I45{ letter -> j .  #  }
+goto(95,k) => I46{ letter -> k .  #  }
+goto(95,l) => I47{ letter -> l .  #  }
+goto(95,m) => I48{ letter -> m .  #  }
+goto(95,n) => I49{ letter -> n .  #  }
+goto(95,o) => I50{ letter -> o .  #  }
+goto(95,0) => I18{ digit -> 0 .  #  }
+goto(95,p) => I51{ letter -> p .  #  }
+goto(95,1) => I19{ digit -> 1 .  #  }
+goto(95,q) => I52{ letter -> q .  #  }
+goto(95,2) => I20{ digit -> 2 .  #  }
+goto(95,r) => I53{ letter -> r .  #  }
+goto(95,3) => I21{ digit -> 3 .  #  }
+goto(95,s) => I54{ letter -> s .  #  }
+goto(95,4) => I22{ digit -> 4 .  #  }
+goto(95,t) => I55{ letter -> t .  #  }
+goto(95,5) => I23{ digit -> 5 .  #  }
+goto(95,u) => I56{ letter -> u .  #  }
+goto(95,6) => I24{ digit -> 6 .  #  }
+goto(95,v) => I57{ letter -> v .  #  }
+goto(95,letter) => I25{ id -> letter .  #  }
+goto(95,7) => I26{ digit -> 7 .  #  }
+goto(95,w) => I58{ letter -> w .  #  }
+goto(95,8) => I27{ digit -> 8 .  #  }
+goto(95,x) => I59{ letter -> x .  #  }
+goto(95,9) => I28{ digit -> 9 .  #  }
+goto(95,y) => I60{ letter -> y .  #  }
+goto(95,z) => I61{ letter -> z .  #  }
+goto(32,==) => I73{ relop -> == .  #  }
+goto(32,expr') => I72{ expr -> term expr' .  #  }
+goto(32,<) => I74{ relop -> < .  #  }
+goto(32,relop) => I76{ expr' -> relop . term expr'  # num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # term -> . factor term'  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(32,>) => I75{ relop -> > .  #  }
+goto(33,term') => I77{ term -> factor term' .  #  }
+goto(33,*) => I78{ arith_op -> * .  #  }
+goto(33,+) => I79{ arith_op -> + .  #  }
+goto(33,arith_op) => I80{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # term' -> arith_op . factor term'  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(33,-) => I81{ arith_op -> - .  #  }
+goto(98,;) => I99{ conditionalStmt -> expr ? expr : expr ; .  #  }
+goto(62,num) => I10{ factor -> num .  #  }
+goto(62,put) => I11{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # putStmt -> put . expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(62,id) => I12{ factor -> id .  # assignmentStmt -> id . = expr ;  #  }
+goto(62,putStmt) => I13{ stmt -> putStmt .  #  }
+goto(62,digit) => I14{ num -> digit .  #  }
+goto(62,stmts) => I82{ stmt -> { stmts . }  #  }
+goto(62,() => I16{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> ( . expr )  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(62,returnStmt) => I17{ stmt -> returnStmt .  #  }
+goto(62,0) => I18{ digit -> 0 .  #  }
+goto(62,1) => I19{ digit -> 1 .  #  }
+goto(62,2) => I20{ digit -> 2 .  #  }
+goto(62,3) => I21{ digit -> 3 .  #  }
+goto(62,4) => I22{ digit -> 4 .  #  }
+goto(62,5) => I23{ digit -> 5 .  #  }
+goto(62,6) => I24{ digit -> 6 .  #  }
+goto(62,letter) => I25{ id -> letter .  #  }
+goto(62,7) => I26{ digit -> 7 .  #  }
+goto(62,8) => I27{ digit -> 8 .  #  }
+goto(62,9) => I28{ digit -> 9 .  #  }
+goto(62,getStmt) => I29{ stmt -> getStmt .  #  }
+goto(62,get) => I30{ letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # getStmt -> get . id ;  # id -> . letter  #  }
+goto(62,expr) => I31{ conditionalStmt -> expr . ? expr : expr ;  #  }
+goto(62,term) => I32{ expr' -> . relop term expr'  # expr' -> .  # expr -> term . expr'  # relop -> . <  # relop -> . >  # relop -> . ==  #  }
+goto(62,factor) => I33{ term' -> . arith_op factor term'  # term' -> .  # term -> factor . term'  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+goto(62,assignmentStmt) => I34{ stmt -> assignmentStmt .  #  }
+goto(62,a) => I35{ letter -> a .  #  }
+goto(62,b) => I36{ letter -> b .  #  }
+goto(62,c) => I37{ letter -> c .  #  }
+goto(62,d) => I38{ letter -> d .  #  }
+goto(62,conditionalStmt) => I39{ stmt -> conditionalStmt .  #  }
+goto(62,e) => I40{ letter -> e .  #  }
+goto(62,f) => I41{ letter -> f .  #  }
+goto(62,g) => I42{ letter -> g .  #  }
+goto(62,h) => I43{ letter -> h .  #  }
+goto(62,i) => I44{ letter -> i .  #  }
+goto(62,j) => I45{ letter -> j .  #  }
+goto(62,k) => I46{ letter -> k .  #  }
+goto(62,l) => I47{ letter -> l .  #  }
+goto(62,m) => I48{ letter -> m .  #  }
+goto(62,n) => I49{ letter -> n .  #  }
+goto(62,o) => I50{ letter -> o .  #  }
+goto(62,p) => I51{ letter -> p .  #  }
+goto(62,q) => I52{ letter -> q .  #  }
+goto(62,r) => I53{ letter -> r .  #  }
+goto(62,s) => I54{ letter -> s .  #  }
+goto(62,t) => I55{ letter -> t .  #  }
+goto(62,u) => I56{ letter -> u .  #  }
+goto(62,v) => I57{ letter -> v .  #  }
+goto(62,w) => I58{ letter -> w .  #  }
+goto(62,x) => I59{ letter -> x .  #  }
+goto(62,y) => I60{ letter -> y .  #  }
+goto(62,z) => I61{ letter -> z .  #  }
+goto(62,{) => I62{ stmts -> . stmt stmts  # stmts -> . stmt  # conditionalStmt -> . expr ? expr : expr ;  # num -> . digit  # returnStmt -> . return expr ;  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # getStmt -> . get id ;  # id -> . letter  # putStmt -> . put expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # assignmentStmt -> . id = expr ;  # stmt -> { . stmts }  # stmt -> . assignmentStmt  # stmt -> . returnStmt  # stmt -> . conditionalStmt  # stmt -> . getStmt  # stmt -> . putStmt  # stmt -> . { stmts }  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(62,stmt) => I63{ stmts -> stmt . stmts  # stmts -> stmt .  # stmts -> . stmt stmts  # stmts -> . stmt  # conditionalStmt -> . expr ? expr : expr ;  # num -> . digit  # returnStmt -> . return expr ;  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # getStmt -> . get id ;  # id -> . letter  # putStmt -> . put expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # assignmentStmt -> . id = expr ;  # stmt -> . assignmentStmt  # stmt -> . returnStmt  # stmt -> . conditionalStmt  # stmt -> . getStmt  # stmt -> . putStmt  # stmt -> . { stmts }  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(62,return) => I64{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # returnStmt -> return . expr ;  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(63,num) => I10{ factor -> num .  #  }
+goto(63,put) => I11{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # putStmt -> put . expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(63,id) => I12{ factor -> id .  # assignmentStmt -> id . = expr ;  #  }
+goto(63,putStmt) => I13{ stmt -> putStmt .  #  }
+goto(63,digit) => I14{ num -> digit .  #  }
+goto(63,stmts) => I83{ stmts -> stmt stmts .  #  }
+goto(63,() => I16{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # id -> . letter  # factor -> ( . expr )  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(63,returnStmt) => I17{ stmt -> returnStmt .  #  }
+goto(63,0) => I18{ digit -> 0 .  #  }
+goto(63,1) => I19{ digit -> 1 .  #  }
+goto(63,2) => I20{ digit -> 2 .  #  }
+goto(63,3) => I21{ digit -> 3 .  #  }
+goto(63,4) => I22{ digit -> 4 .  #  }
+goto(63,5) => I23{ digit -> 5 .  #  }
+goto(63,6) => I24{ digit -> 6 .  #  }
+goto(63,letter) => I25{ id -> letter .  #  }
+goto(63,7) => I26{ digit -> 7 .  #  }
+goto(63,8) => I27{ digit -> 8 .  #  }
+goto(63,9) => I28{ digit -> 9 .  #  }
+goto(63,getStmt) => I29{ stmt -> getStmt .  #  }
+goto(63,get) => I30{ letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # getStmt -> get . id ;  # id -> . letter  #  }
+goto(63,expr) => I31{ conditionalStmt -> expr . ? expr : expr ;  #  }
+goto(63,term) => I32{ expr' -> . relop term expr'  # expr' -> .  # expr -> term . expr'  # relop -> . <  # relop -> . >  # relop -> . ==  #  }
+goto(63,factor) => I33{ term' -> . arith_op factor term'  # term' -> .  # term -> factor . term'  # arith_op -> . +  # arith_op -> . -  # arith_op -> . *  #  }
+goto(63,assignmentStmt) => I34{ stmt -> assignmentStmt .  #  }
+goto(63,a) => I35{ letter -> a .  #  }
+goto(63,b) => I36{ letter -> b .  #  }
+goto(63,c) => I37{ letter -> c .  #  }
+goto(63,d) => I38{ letter -> d .  #  }
+goto(63,conditionalStmt) => I39{ stmt -> conditionalStmt .  #  }
+goto(63,e) => I40{ letter -> e .  #  }
+goto(63,f) => I41{ letter -> f .  #  }
+goto(63,g) => I42{ letter -> g .  #  }
+goto(63,h) => I43{ letter -> h .  #  }
+goto(63,i) => I44{ letter -> i .  #  }
+goto(63,j) => I45{ letter -> j .  #  }
+goto(63,k) => I46{ letter -> k .  #  }
+goto(63,l) => I47{ letter -> l .  #  }
+goto(63,m) => I48{ letter -> m .  #  }
+goto(63,n) => I49{ letter -> n .  #  }
+goto(63,o) => I50{ letter -> o .  #  }
+goto(63,p) => I51{ letter -> p .  #  }
+goto(63,q) => I52{ letter -> q .  #  }
+goto(63,r) => I53{ letter -> r .  #  }
+goto(63,s) => I54{ letter -> s .  #  }
+goto(63,t) => I55{ letter -> t .  #  }
+goto(63,u) => I56{ letter -> u .  #  }
+goto(63,v) => I57{ letter -> v .  #  }
+goto(63,w) => I58{ letter -> w .  #  }
+goto(63,x) => I59{ letter -> x .  #  }
+goto(63,y) => I60{ letter -> y .  #  }
+goto(63,z) => I61{ letter -> z .  #  }
+goto(63,{) => I62{ stmts -> . stmt stmts  # stmts -> . stmt  # conditionalStmt -> . expr ? expr : expr ;  # num -> . digit  # returnStmt -> . return expr ;  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # getStmt -> . get id ;  # id -> . letter  # putStmt -> . put expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # assignmentStmt -> . id = expr ;  # stmt -> { . stmts }  # stmt -> . assignmentStmt  # stmt -> . returnStmt  # stmt -> . conditionalStmt  # stmt -> . getStmt  # stmt -> . putStmt  # stmt -> . { stmts }  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(63,stmt) => I63{ stmts -> stmt . stmts  # stmts -> stmt .  # stmts -> . stmt stmts  # stmts -> . stmt  # conditionalStmt -> . expr ? expr : expr ;  # num -> . digit  # returnStmt -> . return expr ;  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # getStmt -> . get id ;  # id -> . letter  # putStmt -> . put expr ;  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # assignmentStmt -> . id = expr ;  # stmt -> . assignmentStmt  # stmt -> . returnStmt  # stmt -> . conditionalStmt  # stmt -> . getStmt  # stmt -> . putStmt  # stmt -> . { stmts }  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
+goto(63,return) => I64{ num -> . digit  # letter -> . a  # letter -> . b  # letter -> . c  # letter -> . d  # letter -> . e  # letter -> . f  # letter -> . g  # letter -> . h  # letter -> . i  # letter -> . j  # letter -> . k  # letter -> . l  # letter -> . m  # letter -> . n  # letter -> . o  # letter -> . p  # letter -> . q  # letter -> . r  # letter -> . s  # letter -> . t  # letter -> . u  # letter -> . v  # letter -> . w  # letter -> . x  # letter -> . y  # letter -> . z  # expr -> . term expr'  # term -> . factor term'  # returnStmt -> return . expr ;  # id -> . letter  # factor -> . id  # factor -> . num  # factor -> . ( expr )  # digit -> . 0  # digit -> . 1  # digit -> . 2  # digit -> . 3  # digit -> . 4  # digit -> . 5  # digit -> . 6  # digit -> . 7  # digit -> . 8  # digit -> . 9  #  }
 
-goto(2,E') = 7
-goto(2,+) = 8
+> Production Numbers : 
 
-goto(4,T') = 9
-goto(4,*) = 10
-
-goto(5,T) = 2
-goto(5,E) = 11
-goto(5,F) = 4
-goto(5,() = 5
-goto(5,id) = 6
-
-goto(8,T) = 12
-goto(8,F) = 4
-goto(8,() = 5
-goto(8,id) = 6
-
-goto(10,F) = 13
-goto(10,() = 5
-goto(10,id) = 6
-
-goto(11,)) = 14
-
-goto(12,E') = 15
-goto(12,+) = 8
-
-goto(13,T') = 16
-goto(13,*) = 10
-
---------------------
-
+letter_1 -> b 
+letter_2 -> c 
+letter_3 -> d 
+letter_4 -> e 
+arith_op_1 -> - 
+letter_5 -> f 
+arith_op_2 -> * 
+letter_6 -> g 
+getStmt_0 -> get id ; 
+returnStmt_0 -> return expr ; 
+letter_7 -> h 
+arith_op_0 -> + 
+letter_8 -> i 
+stmts_1 -> stmt 
+term'_0 -> arith_op factor term' 
+stmts_0 -> stmt stmts 
+term'_1 -> 
+putStmt_0 -> put expr ; 
+letter_0 -> a 
+prog_0 -> type main ( ) { stmts } 
+type_2 -> string 
+assignmentStmt_0 -> id = expr ; 
+type_1 -> char 
+type_0 -> int 
+stmt_2 -> conditionalStmt 
+stmt_1 -> returnStmt 
+stmt_0 -> assignmentStmt 
+term_0 -> factor term' 
+stmt_5 -> { stmts } 
+stmt_4 -> putStmt 
+stmt_3 -> getStmt 
+letter_9 -> j 
+factor_2 -> ( expr ) 
+factor_0 -> id 
+factor_1 -> num 
+id_0 -> letter 
+letter_25 -> z 
+letter_24 -> y 
+letter_23 -> x 
+letter_22 -> w 
+letter_21 -> v 
+letter_20 -> u 
+expr_0 -> term expr' 
+conditionalStmt_0 -> expr ? expr : expr ; 
+digit_2 -> 2 
+digit_3 -> 3 
+digit_4 -> 4 
+digit_5 -> 5 
+digit_6 -> 6 
+digit_7 -> 7 
+letter_19 -> t 
+digit_8 -> 8 
+letter_18 -> s 
+digit_9 -> 9 
+letter_17 -> r 
+letter_16 -> q 
+letter_15 -> p 
+letter_14 -> o 
+letter_13 -> n 
+letter_12 -> m 
+letter_11 -> l 
+digit_0 -> 0 
+letter_10 -> k 
+digit_1 -> 1 
+relop_2 -> == 
+relop_1 -> > 
+relop_0 -> < 
+num_0 -> digit 
+expr'_0 -> relop term expr' 
+expr'_1 -> 
 
 > SLR Parsing Table : 
 
-  State       E'        S         T'        T         $         E         F         (         )         *         +         id    
-    0                   1                   2                   3         4        S_5                                     S_6    
-    1                                                ACC                                                                          
-    2         7                                                                                                  S_8              
-    3                                               R_S_0                                                                         
-    4                             9                                                                    S_10                       
-    5                                       2                   11        4        S_5                                     S_6    
-    6                                               R_F_1                                   R_F_1     R_F_1     R_F_1             
-    7                                               R_E_0                                   R_E_0                                 
-    8                                       12                            4        S_5                                     S_6    
-    9                                               R_T_0                                   R_T_0               R_T_0             
-    10                                                                    13       S_5                                     S_6    
-    11                                                                                       S_14                                 
-    12        15                                                                                                 S_8              
-    13                            16                                                                   S_10                       
-    14                                              R_F_0                                   R_F_0     R_F_0     R_F_0             
-    15                                              R_E'_0                                  R_E'_0                                
-    16                                              R_T'_0                                  R_T'_0              R_T'_0            
+  State      num       main      type      put      expr'       id     putStmt    digit       ==      stmts       $         (       term'       )         *     returnStmt    +      arith_op     -         0         1         2         3         4         5         6       letter      7         8         9         :         ;      getStmt      <         =         >         ?       string    relop      get       expr      term     factor  assignmentStmt    a         b         c         d     conditionalStmt    e         f         g         h         i         j         k         l         m        int       prog       n         o         p         q         r         s         t         u         v         w        char       x         y         z         {         }        stmt     return  
+    0                             1                                                                                                                                                                                                                                                                                                                                                            S_2                                                                                                                                                                                                               S_3        4                                                                                                            S_5                                                                          
+    1                  S_6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+    2                R_type_2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+    3                R_type_0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+    4                                                                                                            ACC                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+    5                R_type_1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+    6                                                                                                                      S_7                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+    7                                                                                                                                          S_8                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    8                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            S_9                                  
+    9         10                           S_11                 12        13        14                  15                 S_16                                     17                                     S_18      S_19      S_20      S_21      S_22      S_23      S_24       25       S_26      S_27      S_28                           29                                                                   S_30       31        32        33        34       S_35      S_36      S_37      S_38       39       S_40      S_41      S_42      S_43      S_44      S_45      S_46      S_47      S_48                          S_49      S_50      S_51      S_52      S_53      S_54      S_55      S_56      S_57      S_58                S_59      S_60      S_61      S_62                 63       S_64   
+    10                                                                                    R_factor_1                                        R_factor_1R_factor_1          R_factor_1          R_factor_1                                                                                                              R_factor_1R_factor_1          R_factor_1          R_factor_1R_factor_1                                                                                                                                                                                                                                                                                                                                                                                                                          
+    11        10                                                65                  14                                     S_16                                                                            S_18      S_19      S_20      S_21      S_22      S_23      S_24       25       S_26      S_27      S_28                                                                                                           66        32        33                 S_35      S_36      S_37      S_38                S_40      S_41      S_42      S_43      S_44      S_45      S_46      S_47      S_48                          S_49      S_50      S_51      S_52      S_53      S_54      S_55      S_56      S_57      S_58                S_59      S_60      S_61                                           
+    12                                                                                    R_factor_0                                        R_factor_0R_factor_0          R_factor_0          R_factor_0                                                                                                              R_factor_0R_factor_0          R_factor_0   S_67   R_factor_0R_factor_0                                                                                                                                                                                                                                                                                                                                                                                                                          
+    13                                   R_stmt_4                                                                        R_stmt_4                                                                        R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4            R_stmt_4  R_stmt_4  R_stmt_4                                                                                            R_stmt_4                                          R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4            R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4                      R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4            R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4  R_stmt_4            R_stmt_4 
+    14                                                                                     R_num_0                                           R_num_0   R_num_0             R_num_0             R_num_0                                                                                                                 R_num_0   R_num_0             R_num_0             R_num_0   R_num_0                                                                                                                                                                                                                                                                                                                                                                                                                            
+    15                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     S_68                       
+    16        10                                                65                  14                                     S_16                                                                            S_18      S_19      S_20      S_21      S_22      S_23      S_24       25       S_26      S_27      S_28                                                                                                           69        32        33                 S_35      S_36      S_37      S_38                S_40      S_41      S_42      S_43      S_44      S_45      S_46      S_47      S_48                          S_49      S_50      S_51      S_52      S_53      S_54      S_55      S_56      S_57      S_58                S_59      S_60      S_61                                           
+    17                                   R_stmt_1                                                                        R_stmt_1                                                                        R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1            R_stmt_1  R_stmt_1  R_stmt_1                                                                                            R_stmt_1                                          R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1            R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1                      R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1            R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1  R_stmt_1            R_stmt_1 
+    18                                                                                    R_digit_0                                         R_digit_0 R_digit_0           R_digit_0           R_digit_0                                                                                                               R_digit_0 R_digit_0           R_digit_0           R_digit_0 R_digit_0                                                                                                                                                                                                                                                                                                                                                                                                                           
+    19                                                                                    R_digit_1                                         R_digit_1 R_digit_1           R_digit_1           R_digit_1                                                                                                               R_digit_1 R_digit_1           R_digit_1           R_digit_1 R_digit_1                                                                                                                                                                                                                                                                                                                                                                                                                           
+    20                                                                                    R_digit_2                                         R_digit_2 R_digit_2           R_digit_2           R_digit_2                                                                                                               R_digit_2 R_digit_2           R_digit_2           R_digit_2 R_digit_2                                                                                                                                                                                                                                                                                                                                                                                                                           
+    21                                                                                    R_digit_3                                         R_digit_3 R_digit_3           R_digit_3           R_digit_3                                                                                                               R_digit_3 R_digit_3           R_digit_3           R_digit_3 R_digit_3                                                                                                                                                                                                                                                                                                                                                                                                                           
+    22                                                                                    R_digit_4                                         R_digit_4 R_digit_4           R_digit_4           R_digit_4                                                                                                               R_digit_4 R_digit_4           R_digit_4           R_digit_4 R_digit_4                                                                                                                                                                                                                                                                                                                                                                                                                           
+    23                                                                                    R_digit_5                                         R_digit_5 R_digit_5           R_digit_5           R_digit_5                                                                                                               R_digit_5 R_digit_5           R_digit_5           R_digit_5 R_digit_5                                                                                                                                                                                                                                                                                                                                                                                                                           
+    24                                                                                    R_digit_6                                         R_digit_6 R_digit_6           R_digit_6           R_digit_6                                                                                                               R_digit_6 R_digit_6           R_digit_6           R_digit_6 R_digit_6                                                                                                                                                                                                                                                                                                                                                                                                                           
+    25                                                                                      R_id_0                                            R_id_0    R_id_0              R_id_0              R_id_0                                                                                                                  R_id_0    R_id_0              R_id_0    R_id_0    R_id_0    R_id_0                                                                                                                                                                                                                                                                                                                                                                                                                            
+    26                                                                                    R_digit_7                                         R_digit_7 R_digit_7           R_digit_7           R_digit_7                                                                                                               R_digit_7 R_digit_7           R_digit_7           R_digit_7 R_digit_7                                                                                                                                                                                                                                                                                                                                                                                                                           
+    27                                                                                    R_digit_8                                         R_digit_8 R_digit_8           R_digit_8           R_digit_8                                                                                                               R_digit_8 R_digit_8           R_digit_8           R_digit_8 R_digit_8                                                                                                                                                                                                                                                                                                                                                                                                                           
+    28                                                                                    R_digit_9                                         R_digit_9 R_digit_9           R_digit_9           R_digit_9                                                                                                               R_digit_9 R_digit_9           R_digit_9           R_digit_9 R_digit_9                                                                                                                                                                                                                                                                                                                                                                                                                           
+    29                                   R_stmt_3                                                                        R_stmt_3                                                                        R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3            R_stmt_3  R_stmt_3  R_stmt_3                                                                                            R_stmt_3                                          R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3            R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3                      R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3            R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3  R_stmt_3            R_stmt_3 
+    30                                                          70                                                                                                                                                                                                                25                                                                                                                                                                                 S_35      S_36      S_37      S_38                S_40      S_41      S_42      S_43      S_44      S_45      S_46      S_47      S_48                          S_49      S_50      S_51      S_52      S_53      S_54      S_55      S_56      S_57      S_58                S_59      S_60      S_61                                           
+    31                                                                                                                                                                                                                                                                                                                                                                               S_71                                                                                                                                                                                                                                                                                                                                                                                                                             
+    32                                                72                                     S_73                                           R_expr'_1                                                                                                                                                                 R_expr'_1 R_expr'_1              S_74                S_75   R_expr'_1               76                                                                                                                                                                                                                                                                                                                                                                                                          
+    33                                                                                    R_term'_1                                   77    R_term'_1    S_78                S_79       80       S_81                                                                                                                 R_term'_1 R_term'_1           R_term'_1           R_term'_1 R_term'_1                                                                                                                                                                                                                                                                                                                                                                                                                           
+    34                                   R_stmt_0                                                                        R_stmt_0                                                                        R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0            R_stmt_0  R_stmt_0  R_stmt_0                                                                                            R_stmt_0                                          R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0            R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0                      R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0            R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0  R_stmt_0            R_stmt_0 
+    35                                                                                    R_letter_0                                        R_letter_0R_letter_0          R_letter_0          R_letter_0                                                                                                              R_letter_0R_letter_0          R_letter_0R_letter_0R_letter_0R_letter_0                                                                                                                                                                                                                                                                                                                                                                                                                          
+    36                                                                                    R_letter_1                                        R_letter_1R_letter_1          R_letter_1          R_letter_1                                                                                                              R_letter_1R_letter_1          R_letter_1R_letter_1R_letter_1R_letter_1                                                                                                                                                                                                                                                                                                                                                                                                                          
+    37                                                                                    R_letter_2                                        R_letter_2R_letter_2          R_letter_2          R_letter_2                                                                                                              R_letter_2R_letter_2          R_letter_2R_letter_2R_letter_2R_letter_2                                                                                                                                                                                                                                                                                                                                                                                                                          
+    38                                                                                    R_letter_3                                        R_letter_3R_letter_3          R_letter_3          R_letter_3                                                                                                              R_letter_3R_letter_3          R_letter_3R_letter_3R_letter_3R_letter_3                                                                                                                                                                                                                                                                                                                                                                                                                          
+    39                                   R_stmt_2                                                                        R_stmt_2                                                                        R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2            R_stmt_2  R_stmt_2  R_stmt_2                                                                                            R_stmt_2                                          R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2            R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2                      R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2            R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2  R_stmt_2            R_stmt_2 
+    40                                                                                    R_letter_4                                        R_letter_4R_letter_4          R_letter_4          R_letter_4                                                                                                              R_letter_4R_letter_4          R_letter_4R_letter_4R_letter_4R_letter_4                                                                                                                                                                                                                                                                                                                                                                                                                          
+    41                                                                                    R_letter_5                                        R_letter_5R_letter_5          R_letter_5          R_letter_5                                                                                                              R_letter_5R_letter_5          R_letter_5R_letter_5R_letter_5R_letter_5                                                                                                                                                                                                                                                                                                                                                                                                                          
+    42                                                                                    R_letter_6                                        R_letter_6R_letter_6          R_letter_6          R_letter_6                                                                                                              R_letter_6R_letter_6          R_letter_6R_letter_6R_letter_6R_letter_6                                                                                                                                                                                                                                                                                                                                                                                                                          
+    43                                                                                    R_letter_7                                        R_letter_7R_letter_7          R_letter_7          R_letter_7                                                                                                              R_letter_7R_letter_7          R_letter_7R_letter_7R_letter_7R_letter_7                                                                                                                                                                                                                                                                                                                                                                                                                          
+    44                                                                                    R_letter_8                                        R_letter_8R_letter_8          R_letter_8          R_letter_8                                                                                                              R_letter_8R_letter_8          R_letter_8R_letter_8R_letter_8R_letter_8                                                                                                                                                                                                                                                                                                                                                                                                                          
+    45                                                                                    R_letter_9                                        R_letter_9R_letter_9          R_letter_9          R_letter_9                                                                                                              R_letter_9R_letter_9          R_letter_9R_letter_9R_letter_9R_letter_9                                                                                                                                                                                                                                                                                                                                                                                                                          
+    46                                                                                    R_letter_10                                        R_letter_10R_letter_10          R_letter_10          R_letter_10                                                                                                              R_letter_10R_letter_10          R_letter_10R_letter_10R_letter_10R_letter_10                                                                                                                                                                                                                                                                                                                                                                                                                          
+    47                                                                                    R_letter_11                                        R_letter_11R_letter_11          R_letter_11          R_letter_11                                                                                                              R_letter_11R_letter_11          R_letter_11R_letter_11R_letter_11R_letter_11                                                                                                                                                                                                                                                                                                                                                                                                                          
+    48                                                                                    R_letter_12                                        R_letter_12R_letter_12          R_letter_12          R_letter_12                                                                                                              R_letter_12R_letter_12          R_letter_12R_letter_12R_letter_12R_letter_12                                                                                                                                                                                                                                                                                                                                                                                                                          
+    49                                                                                    R_letter_13                                        R_letter_13R_letter_13          R_letter_13          R_letter_13                                                                                                              R_letter_13R_letter_13          R_letter_13R_letter_13R_letter_13R_letter_13                                                                                                                                                                                                                                                                                                                                                                                                                          
+    50                                                                                    R_letter_14                                        R_letter_14R_letter_14          R_letter_14          R_letter_14                                                                                                              R_letter_14R_letter_14          R_letter_14R_letter_14R_letter_14R_letter_14                                                                                                                                                                                                                                                                                                                                                                                                                          
+    51                                                                                    R_letter_15                                        R_letter_15R_letter_15          R_letter_15          R_letter_15                                                                                                              R_letter_15R_letter_15          R_letter_15R_letter_15R_letter_15R_letter_15                                                                                                                                                                                                                                                                                                                                                                                                                          
+    52                                                                                    R_letter_16                                        R_letter_16R_letter_16          R_letter_16          R_letter_16                                                                                                              R_letter_16R_letter_16          R_letter_16R_letter_16R_letter_16R_letter_16                                                                                                                                                                                                                                                                                                                                                                                                                          
+    53                                                                                    R_letter_17                                        R_letter_17R_letter_17          R_letter_17          R_letter_17                                                                                                              R_letter_17R_letter_17          R_letter_17R_letter_17R_letter_17R_letter_17                                                                                                                                                                                                                                                                                                                                                                                                                          
+    54                                                                                    R_letter_18                                        R_letter_18R_letter_18          R_letter_18          R_letter_18                                                                                                              R_letter_18R_letter_18          R_letter_18R_letter_18R_letter_18R_letter_18                                                                                                                                                                                                                                                                                                                                                                                                                          
+    55                                                                                    R_letter_19                                        R_letter_19R_letter_19          R_letter_19          R_letter_19                                                                                                              R_letter_19R_letter_19          R_letter_19R_letter_19R_letter_19R_letter_19                                                                                                                                                                                                                                                                                                                                                                                                                          
+    56                                                                                    R_letter_20                                        R_letter_20R_letter_20          R_letter_20          R_letter_20                                                                                                              R_letter_20R_letter_20          R_letter_20R_letter_20R_letter_20R_letter_20                                                                                                                                                                                                                                                                                                                                                                                                                          
+    57                                                                                    R_letter_21                                        R_letter_21R_letter_21          R_letter_21          R_letter_21                                                                                                              R_letter_21R_letter_21          R_letter_21R_letter_21R_letter_21R_letter_21                                                                                                                                                                                                                                                                                                                                                                                                                          
+    58                                                                                    R_letter_22                                        R_letter_22R_letter_22          R_letter_22          R_letter_22                                                                                                              R_letter_22R_letter_22          R_letter_22R_letter_22R_letter_22R_letter_22                                                                                                                                                                                                                                                                                                                                                                                                                          
+    59                                                                                    R_letter_23                                        R_letter_23R_letter_23          R_letter_23          R_letter_23                                                                                                              R_letter_23R_letter_23          R_letter_23R_letter_23R_letter_23R_letter_23                                                                                                                                                                                                                                                                                                                                                                                                                          
+    60                                                                                    R_letter_24                                        R_letter_24R_letter_24          R_letter_24          R_letter_24                                                                                                              R_letter_24R_letter_24          R_letter_24R_letter_24R_letter_24R_letter_24                                                                                                                                                                                                                                                                                                                                                                                                                          
+    61                                                                                    R_letter_25                                        R_letter_25R_letter_25          R_letter_25          R_letter_25                                                                                                              R_letter_25R_letter_25          R_letter_25R_letter_25R_letter_25R_letter_25                                                                                                                                                                                                                                                                                                                                                                                                                          
+    62        10                           S_11                 12        13        14                  82                 S_16                                     17                                     S_18      S_19      S_20      S_21      S_22      S_23      S_24       25       S_26      S_27      S_28                           29                                                                   S_30       31        32        33        34       S_35      S_36      S_37      S_38       39       S_40      S_41      S_42      S_43      S_44      S_45      S_46      S_47      S_48                          S_49      S_50      S_51      S_52      S_53      S_54      S_55      S_56      S_57      S_58                S_59      S_60      S_61      S_62                 63       S_64   
+    63        10                           S_11                 12        13        14                  83                 S_16                                     17                                     S_18      S_19      S_20      S_21      S_22      S_23      S_24       25       S_26      S_27      S_28                           29                                                                   S_30       31        32        33        34       S_35      S_36      S_37      S_38       39       S_40      S_41      S_42      S_43      S_44      S_45      S_46      S_47      S_48                          S_49      S_50      S_51      S_52      S_53      S_54      S_55      S_56      S_57      S_58                S_59      S_60      S_61      S_62   R_stmts_1     63       S_64   
+    64        10                                                65                  14                                     S_16                                                                            S_18      S_19      S_20      S_21      S_22      S_23      S_24       25       S_26      S_27      S_28                                                                                                           84        32        33                 S_35      S_36      S_37      S_38                S_40      S_41      S_42      S_43      S_44      S_45      S_46      S_47      S_48                          S_49      S_50      S_51      S_52      S_53      S_54      S_55      S_56      S_57      S_58                S_59      S_60      S_61                                           
+    65                                                                                    R_factor_0                                        R_factor_0R_factor_0          R_factor_0          R_factor_0                                                                                                              R_factor_0R_factor_0          R_factor_0          R_factor_0R_factor_0                                                                                                                                                                                                                                                                                                                                                                                                                          
+    66                                                                                                                                                                                                                                                                                                                             S_85                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+    67        10                                                65                  14                                     S_16                                                                            S_18      S_19      S_20      S_21      S_22      S_23      S_24       25       S_26      S_27      S_28                                                                                                           86        32        33                 S_35      S_36      S_37      S_38                S_40      S_41      S_42      S_43      S_44      S_45      S_46      S_47      S_48                          S_49      S_50      S_51      S_52      S_53      S_54      S_55      S_56      S_57      S_58                S_59      S_60      S_61                                           
+    68                                                                                                         R_prog_0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+    69                                                                                                                                         S_87                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+    70                                                                                                                                                                                                                                                                                                                             S_88                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+    71        10                                                65                  14                                     S_16                                                                            S_18      S_19      S_20      S_21      S_22      S_23      S_24       25       S_26      S_27      S_28                                                                                                           89        32        33                 S_35      S_36      S_37      S_38                S_40      S_41      S_42      S_43      S_44      S_45      S_46      S_47      S_48                          S_49      S_50      S_51      S_52      S_53      S_54      S_55      S_56      S_57      S_58                S_59      S_60      S_61                                           
+    72                                                                                                                                       R_expr_0                                                                                                                                                                  R_expr_0  R_expr_0                                          R_expr_0                                                                                                                                                                                                                                                                                                                                                                                                                           
+    73                                                                                                                  R_relop_2                                                                       R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2           R_relop_2 R_relop_2 R_relop_2                                                                                                                                             R_relop_2 R_relop_2 R_relop_2 R_relop_2           R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2                     R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2 R_relop_2           R_relop_2 R_relop_2 R_relop_2                                         
+    74                                                                                                                  R_relop_0                                                                       R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0           R_relop_0 R_relop_0 R_relop_0                                                                                                                                             R_relop_0 R_relop_0 R_relop_0 R_relop_0           R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0                     R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0 R_relop_0           R_relop_0 R_relop_0 R_relop_0                                         
+    75                                                                                                                  R_relop_1                                                                       R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1           R_relop_1 R_relop_1 R_relop_1                                                                                                                                             R_relop_1 R_relop_1 R_relop_1 R_relop_1           R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1                     R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1 R_relop_1           R_relop_1 R_relop_1 R_relop_1                                         
+    76        10                                                65                  14                                     S_16                                                                            S_18      S_19      S_20      S_21      S_22      S_23      S_24       25       S_26      S_27      S_28                                                                                                                     90        33                 S_35      S_36      S_37      S_38                S_40      S_41      S_42      S_43      S_44      S_45      S_46      S_47      S_48                          S_49      S_50      S_51      S_52      S_53      S_54      S_55      S_56      S_57      S_58                S_59      S_60      S_61                                           
+    77                                                                                     R_term_0                                          R_term_0                                                                                                                                                                  R_term_0  R_term_0            R_term_0            R_term_0  R_term_0                                                                                                                                                                                                                                                                                                                                                                                                                           
+    78                                                                                                                  R_arith_op_2                                                                      R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2          R_arith_op_2R_arith_op_2R_arith_op_2                                                                                                                                            R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2          R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2                    R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2R_arith_op_2          R_arith_op_2R_arith_op_2R_arith_op_2                                        
+    79                                                                                                                  R_arith_op_0                                                                      R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0          R_arith_op_0R_arith_op_0R_arith_op_0                                                                                                                                            R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0          R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0                    R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0R_arith_op_0          R_arith_op_0R_arith_op_0R_arith_op_0                                        
+    80        10                                                65                  14                                     S_16                                                                            S_18      S_19      S_20      S_21      S_22      S_23      S_24       25       S_26      S_27      S_28                                                                                                                               91                 S_35      S_36      S_37      S_38                S_40      S_41      S_42      S_43      S_44      S_45      S_46      S_47      S_48                          S_49      S_50      S_51      S_52      S_53      S_54      S_55      S_56      S_57      S_58                S_59      S_60      S_61                                           
+    81                                                                                                                  R_arith_op_1                                                                      R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1          R_arith_op_1R_arith_op_1R_arith_op_1                                                                                                                                            R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1          R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1                    R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1R_arith_op_1          R_arith_op_1R_arith_op_1R_arith_op_1                                        
+    82                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     S_92                       
+    83                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  R_stmts_0                     
+    84                                                                                                                                                                                                                                                                                                                             S_93                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+    85                                  R_putStmt_0                                                                      R_putStmt_0                                                                      R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0          R_putStmt_0R_putStmt_0R_putStmt_0                                                                                          R_putStmt_0                                        R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0          R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0                    R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0          R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0R_putStmt_0          R_putStmt_0
+    86                                                                                                                                                                                                                                                                                                                             S_94                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+    87                                                                                    R_factor_2                                        R_factor_2R_factor_2          R_factor_2          R_factor_2                                                                                                              R_factor_2R_factor_2          R_factor_2          R_factor_2R_factor_2                                                                                                                                                                                                                                                                                                                                                                                                                          
+    88                                  R_getStmt_0                                                                      R_getStmt_0                                                                      R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0          R_getStmt_0R_getStmt_0R_getStmt_0                                                                                          R_getStmt_0                                        R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0          R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0                    R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0          R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0R_getStmt_0          R_getStmt_0
+    89                                                                                                                                                                                                                                                                                                                   S_95                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+    90                                                96                                     S_73                                           R_expr'_1                                                                                                                                                                 R_expr'_1 R_expr'_1              S_74                S_75   R_expr'_1               76                                                                                                                                                                                                                                                                                                                                                                                                          
+    91                                                                                    R_term'_1                                   97    R_term'_1    S_78                S_79       80       S_81                                                                                                                 R_term'_1 R_term'_1           R_term'_1           R_term'_1 R_term'_1                                                                                                                                                                                                                                                                                                                                                                                                                           
+    92                                   R_stmt_5                                                                        R_stmt_5                                                                        R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5            R_stmt_5  R_stmt_5  R_stmt_5                                                                                            R_stmt_5                                          R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5            R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5                      R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5            R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5  R_stmt_5            R_stmt_5 
+    93                                  R_returnStmt_0                                                                      R_returnStmt_0                                                                      R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0          R_returnStmt_0R_returnStmt_0R_returnStmt_0                                                                                          R_returnStmt_0                                        R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0          R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0                    R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0          R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0R_returnStmt_0          R_returnStmt_0
+    94                                  R_assignmentStmt_0                                                                      R_assignmentStmt_0                                                                      R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0          R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0                                                                                          R_assignmentStmt_0                                        R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0          R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0                    R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0          R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0R_assignmentStmt_0          R_assignmentStmt_0
+    95        10                                                65                  14                                     S_16                                                                            S_18      S_19      S_20      S_21      S_22      S_23      S_24       25       S_26      S_27      S_28                                                                                                           98        32        33                 S_35      S_36      S_37      S_38                S_40      S_41      S_42      S_43      S_44      S_45      S_46      S_47      S_48                          S_49      S_50      S_51      S_52      S_53      S_54      S_55      S_56      S_57      S_58                S_59      S_60      S_61                                           
+    96                                                                                                                                      R_expr'_0                                                                                                                                                                 R_expr'_0 R_expr'_0                                         R_expr'_0                                                                                                                                                                                                                                                                                                                                                                                                                           
+    97                                                                                    R_term'_0                                         R_term'_0                                                                                                                                                                 R_term'_0 R_term'_0           R_term'_0           R_term'_0 R_term'_0                                                                                                                                                                                                                                                                                                                                                                                                                           
+    98                                                                                                                                                                                                                                                                                                                             S_99                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+    99                                  R_conditionalStmt_0                                                                      R_conditionalStmt_0                                                                      R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0          R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0                                                                                          R_conditionalStmt_0                                        R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0          R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0                    R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0          R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0R_conditionalStmt_0          R_conditionalStmt_0
 
 > Parsing Tokens : 
 
-[id, +, (, id, ), $]
-Action: S_6 Stack: [0, id, 6] Input Queue: [+, (, id, ), $]
-Action: R_F_1 Stack: [0, F, 4] Input Queue: [+, (, id, ), $]
-Can't find action for state: 4 and input: + in parsing table !
-Parsing failed !
+[int, main, (, ), {, get, a, ;, put, a, ;, }, $]
+Action: S_3 Stack: [0, int, 3] Input Queue: [main, (, ), {, get, a, ;, put, a, ;, }, $]
+Action: R_type_0 Stack: [0, type, 1] Input Queue: [main, (, ), {, get, a, ;, put, a, ;, }, $]
+Action: S_6 Stack: [0, type, 1, main, 6] Input Queue: [(, ), {, get, a, ;, put, a, ;, }, $]
+Action: S_7 Stack: [0, type, 1, main, 6, (, 7] Input Queue: [), {, get, a, ;, put, a, ;, }, $]
+Action: S_8 Stack: [0, type, 1, main, 6, (, 7, ), 8] Input Queue: [{, get, a, ;, put, a, ;, }, $]
+Action: S_9 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9] Input Queue: [get, a, ;, put, a, ;, }, $]
+Action: S_30 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, get, 30] Input Queue: [a, ;, put, a, ;, }, $]
+Action: S_35 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, get, 30, a, 35] Input Queue: [;, put, a, ;, }, $]
+Action: R_letter_0 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, get, 30, letter, 25] Input Queue: [;, put, a, ;, }, $]
+Action: R_id_0 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, get, 30, id, 70] Input Queue: [;, put, a, ;, }, $]
+Action: S_88 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, get, 30, id, 70, ;, 88] Input Queue: [put, a, ;, }, $]
+Action: R_getStmt_0 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, getStmt, 29] Input Queue: [put, a, ;, }, $]
+Action: R_stmt_3 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63] Input Queue: [put, a, ;, }, $]
+Action: S_11 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, put, 11] Input Queue: [a, ;, }, $]
+Action: S_35 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, put, 11, a, 35] Input Queue: [;, }, $]
+Action: R_letter_0 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, put, 11, letter, 25] Input Queue: [;, }, $]
+Action: R_id_0 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, put, 11, id, 65] Input Queue: [;, }, $]
+Action: R_factor_0 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, put, 11, factor, 33] Input Queue: [;, }, $]
+Action: R_term'_1 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, put, 11, factor, 33, term', 77] Input Queue: [;, }, $]
+Action: R_term_0 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, put, 11, term, 32] Input Queue: [;, }, $]
+Action: R_expr'_1 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, put, 11, term, 32, expr', 72] Input Queue: [;, }, $]
+Action: R_expr_0 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, put, 11, expr, 66] Input Queue: [;, }, $]
+Action: S_85 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, put, 11, expr, 66, ;, 85] Input Queue: [}, $]
+Action: R_putStmt_0 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, putStmt, 13] Input Queue: [}, $]
+Action: R_stmt_4 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, stmt, 63] Input Queue: [}, $]
+Action: R_stmts_1 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmt, 63, stmts, 83] Input Queue: [}, $]
+Action: R_stmts_0 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmts, 15] Input Queue: [}, $]
+Action: S_68 Stack: [0, type, 1, main, 6, (, 7, ), 8, {, 9, stmts, 15, }, 68] Input Queue: [$]
+Action: R_prog_0 Stack: [0, prog, 4] Input Queue: [$]
+Accepted

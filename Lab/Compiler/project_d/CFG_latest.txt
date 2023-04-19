@@ -3,8 +3,7 @@ type -> int | char | string
 stmts -> stmt stmts | stmt
 stmt -> assignmentStmt | returnStmt | conditionalStmt | getStmt | putStmt | { stmts }
 returnStmt -> return expr ;
-assignmentStmt -> type id = expr ;
-assignmentStmt -> id = expr ;
+assignmentStmt -> type id = expr ; | id = expr ;
 conditionalStmt -> expr ? expr : expr ;
 getStmt -> get id ;
 putStmt -> put expr ;
