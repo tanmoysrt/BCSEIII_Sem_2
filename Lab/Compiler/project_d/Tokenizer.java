@@ -42,41 +42,29 @@ public class Tokenizer {
                     String text = matcher.group(0);
                     boolean charPatternMatched = false;
                     boolean stringPatternMatched = false;
-                    
+                    boolean integerPatternMatched = false;
+
                     // For string and char tokens, remove the quotes
                     if (tokenRegex[0].equals("constant")) {
                         // check if constant is a string or char
                         Pattern charPattern = Pattern.compile("\'.\'");
-                        Pattern stringPattern = Pattern.compile("\".\"");
+                        Pattern stringPattern = Pattern.compile("\".*\"");
                         Matcher charPatternMatcher = charPattern.matcher(text);
                         Matcher stringPatternMatcher = stringPattern.matcher(text);
                         charPatternMatched = charPatternMatcher.matches();
                         stringPatternMatched = stringPatternMatcher.matches();
-                        if (charPatternMatched || stringPatternMatched) {
-                            text = text.substring(1, text.length() - 1);
-
-                            if(stringPatternMatched){
-                                tokens.add(new Token("punctuator", "\"", lineColumn[0], lineColumn[1]));
-                            }
-
-                            if(charPatternMatched){
-                                tokens.add(new Token("punctuator", "\'", lineColumn[0], lineColumn[1]));
-                            }
-                        }
-
+                        integerPatternMatched = !charPatternMatched && !stringPatternMatched;
                     }
-
-                    // Add the token to the list
-                    tokens.add(new Token(tokenRegex[0], text, lineColumn[0], lineColumn[1]+1));
-
-                    // Add quotes in token list if necessary
 
                     if(stringPatternMatched){
-                        tokens.add(new Token("punctuator", "\"", lineColumn[0], lineColumn[1]+text.length()));
-                    }
-
-                    if(charPatternMatched){
-                        tokens.add(new Token("punctuator", "\'", lineColumn[0], lineColumn[1]+text.length()));
+                        tokens.add(new Token("constant", "string_constant", lineColumn[0], lineColumn[1]+text.length(), matcher.end(), text));
+                    }else if(charPatternMatched){
+                        tokens.add(new Token("constant", "char_constant", lineColumn[0], lineColumn[1]+text.length(), matcher.end(), text));
+                    }else if(integerPatternMatched){
+                        tokens.add(new Token("constant", "integer_constant", lineColumn[0], lineColumn[1]+text.length(), matcher.end(), text));
+                    }           
+                    else {
+                        tokens.add(new Token(tokenRegex[0], text, lineColumn[0], lineColumn[1]+1, matcher.end()));
                     }
 
                     // Update the position

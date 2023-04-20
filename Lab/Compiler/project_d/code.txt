@@ -1,5 +1,7 @@
 int main(){
-    int a = 0;
+    int a = 456;
+    string b = "hello";
+    char c = 'a';
     (a == 2) ? a*5 : a*6;
     a = (a < 2) ? 5 : 2;
     a=6;
