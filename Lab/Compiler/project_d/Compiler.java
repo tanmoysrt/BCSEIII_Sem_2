@@ -11,10 +11,11 @@ public class Compiler {
         // Generate tokens
        ArrayList<Token> tokens = Tokenizer.tokenize(code);
        System.out.println("\n> Tokens: ");
-       for (Token token : tokens) {
-           System.out.print(token.text);
-           System.out.print("|");
-       }
+       Tokenizer.displayTokens(tokens);
+    //    for (Token token : tokens) {
+    //        System.out.print(token.text);
+    //        System.out.print("|");
+    //    }
        System.out.println("\n--------------------\n");
         // Generate symbol table
        SymbolTable symbolTable = SymbolTable.generateFromTokens(tokens);
@@ -59,10 +60,5 @@ public class Compiler {
        }
        System.out.println("\n> Parsing Tokens : \n");
        slr.parseInput(output.toString());
-
-
-
-        
-
     }
 }

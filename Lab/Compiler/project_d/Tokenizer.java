@@ -10,7 +10,7 @@ public class Tokenizer {
         {"punctuator", "(\\(|\\)|\\{|\\}|\\,)"},
         {"delimiter", "(;)"},
         {"constant", "(\\d+|\'.\'|\".*\")"},
-        {"keyword", "(get|put|return|int|char|string)"},
+        {"keyword", "(get|put|return|int|char|string|main)"},
         {"identifier", "[a-zA-Z_]\\w*"}
     };
 
@@ -57,13 +57,14 @@ public class Tokenizer {
                     }
 
                     if(stringPatternMatched){
-                        tokens.add(new Token("constant", "string_constant", lineColumn[0], lineColumn[1]+text.length(), matcher.end(), text));
+                        tokens.add(new Token("constant", "string_constant", lineColumn[0], lineColumn[1]+1, matcher.end(), text));
                     }else if(charPatternMatched){
-                        tokens.add(new Token("constant", "char_constant", lineColumn[0], lineColumn[1]+text.length(), matcher.end(), text));
+                        tokens.add(new Token("constant", "char_constant", lineColumn[0], lineColumn[1]+1, matcher.end(), text));
                     }else if(integerPatternMatched){
-                        tokens.add(new Token("constant", "integer_constant", lineColumn[0], lineColumn[1]+text.length(), matcher.end(), text));
-                    }
-                    else {
+                        tokens.add(new Token("constant", "integer_constant", lineColumn[0], lineColumn[1]+1, matcher.end(), text));
+                    }else if(tokenRegex[0].equals("identifier")){
+                        tokens.add(new Token(tokenRegex[0], "id", lineColumn[0], lineColumn[1]+1, matcher.end(), text));
+                    }else {
                         tokens.add(new Token(tokenRegex[0], text, lineColumn[0], lineColumn[1]+1, matcher.end()));
                     }
 
@@ -92,6 +93,34 @@ public class Tokenizer {
         lineColumn[0] = line;
         lineColumn[1] = column;
         return lineColumn;
+    }
+
+    public static String centerText(String input, int width) {
+        if (input.length() >= width) {
+            return input; // if the input is already wider than the desired width, return it as-is
+        }
+        
+        int padding = width - input.length();
+        int leftPadding = padding / 2;
+        int rightPadding = padding - leftPadding;
+        
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < leftPadding; i++) {
+            builder.append(" "); // add left padding
+        }
+        builder.append(input); // add the input text
+        for (int i = 0; i < rightPadding; i++) {
+            builder.append(" "); // add right padding
+        }
+        
+        return builder.toString();
+    }
+    
+    public static void displayTokens(ArrayList<Token> tokens){
+        System.out.println(centerText("TYPE", 20) + centerText("TEXT", 20) + centerText("LINE", 10) + centerText("COLUMN", 10) + centerText("SIZE", 10) + centerText("VALUE", 20));
+        for (Token token : tokens) {
+            System.out.println(centerText(token.token_type, 20) + centerText(token.text, 20) + centerText(String.valueOf(token.line), 10) + centerText(String.valueOf(token.column), 10) + centerText(String.valueOf(token.size), 10) + centerText(String.valueOf(token.value), 20));
+        }
     }
 }
 

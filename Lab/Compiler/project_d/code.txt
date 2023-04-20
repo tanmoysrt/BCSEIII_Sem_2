@@ -1,4 +1,4 @@
-int main(){
+int main(int a, char b){
     int a = 456;
     string b = "hello";
     char c = 'a';

@@ -79,15 +79,10 @@ public class SymbolTable {
 
         for (Token token : tokens) {
             if(token.token_type.equals("identifier")){
-                Symbol lookupSymbol = symbolTable.lookup(token.text);
-                if(lookupSymbol != null){
-                    if(lastToken == null || !lastToken.token_type.equals("keyword") || !identifierTypes.contains(lastToken.text)){
-                        // TODO update value
-                    }else{
-                        symbolTable.insert(token.text, lastToken.text);
-                    }
+                if(lastToken == null || !lastToken.token_type.equals("keyword") || !identifierTypes.contains(lastToken.text)){
+                    // TODO update value
                 }else{
-                    symbolTable.insert(token.text, lastToken.text);
+                    symbolTable.insert(token.value, lastToken.text);
                 }
             }
             else if(token.token_type.equals("punctuator")){
