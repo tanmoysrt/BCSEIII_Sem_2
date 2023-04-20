@@ -62,7 +62,7 @@ public class Tokenizer {
                         tokens.add(new Token("constant", "char_constant", lineColumn[0], lineColumn[1]+text.length(), matcher.end(), text));
                     }else if(integerPatternMatched){
                         tokens.add(new Token("constant", "integer_constant", lineColumn[0], lineColumn[1]+text.length(), matcher.end(), text));
-                    }           
+                    }
                     else {
                         tokens.add(new Token(tokenRegex[0], text, lineColumn[0], lineColumn[1]+1, matcher.end()));
                     }
